@@ -1,20 +1,34 @@
 #include "JsonRequestPacketDeserializer.h"
 
-LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(std::vector<unsigned char> buffer)
+/// <summary>
+/// The function deserialize the buffer into json
+/// and than it takes the json and convert it to a LoginRequest struct
+/// </summary>
+/// <param name="buffer"> Row of bytes </param>
+/// <returns> LoginRequest struct ( password, username ) </returns>
+LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(std::vector<unsigned char> buffer) const
 {
-    nlohmann::json loginJson = jsonDeserializer(buffer);
+    nlohmann::json loginJson = jsonDeserializer(buffer); // converting buffer into json 
 
-    LoginRequest* t = new LoginRequest();
+    //Create new LoginRequest with parmeters from json
+    LoginRequest* t = new LoginRequest(); 
     t->password = loginJson["password"];
     t->username = loginJson["username"];
 
     return *t;
 }
 
-SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(std::vector<unsigned char> buffer)
+/// <summary>
+/// The function deserialize the buffer into json
+/// and than it takes the json and convert it to a SignupRequest struct 
+/// </summary>
+/// <param name="buffer"> Row of bytes </param>
+/// <returns> SignupRequest struct ( password, username, email ) </returns>
+SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(std::vector<unsigned char> buffer) const
 {
-    nlohmann::json SignupJson = jsonDeserializer(buffer);
+    nlohmann::json SignupJson = jsonDeserializer(buffer); // converting into json
 
+    //Create new SignupRequest with parmeters
     SignupRequest* t = new SignupRequest();
     t->password = SignupJson["password"];
     t->username = SignupJson["username"];
@@ -23,7 +37,12 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(std::vecto
     return *t;
 }
 
-nlohmann::json JsonRequestPacketDeserializer::jsonDeserializer(std::vector<unsigned char> buffer)
+/// <summary>
+/// The function convert the buffer into json parmeter
+/// </summary>
+/// <param name="buffer"> Row of bytes </param>
+/// <returns> the json parameter </returns>
+nlohmann::json JsonRequestPacketDeserializer::jsonDeserializer(std::vector<unsigned char> buffer) const
 {
     int len = (static_cast<int>(buffer[1]) << 24) |
         (static_cast<int>(buffer[2]) << 16) |

@@ -26,7 +26,7 @@ struct ErrorResponse
 class JsonResponsePacketSerializer 
 {
 public:
-	JsonResponsePacketSerializer();
+	JsonResponsePacketSerializer() = default; //constructor default
 	~JsonResponsePacketSerializer();
 	std::vector<unsigned char> serializeResponse(ErrorResponse er);
 	std::vector<unsigned char> serializeResponse(LoginResponse lr);
