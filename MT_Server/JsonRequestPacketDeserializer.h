@@ -4,6 +4,7 @@
 #include <fstream>
 #include "nlohmann/json.hpp"
 
+//Error code in bufffer
 #define ERROR_CODE 3
 
 struct LoginRequest
@@ -24,8 +25,10 @@ struct SignupRequest
 class JsonRequestPacketDeserializer
 {
 public:
-	LoginRequest deserializeLoginRequest(std::vector<unsigned char> buffer);
-	SignupRequest deserializeSignupRequest(std::vector<unsigned char> buffer);
-	nlohmann::json jsonDeserializer(std::vector<unsigned char> buffer);
+	JsonRequestPacketDeserializer() = default; //constrctor default
+	~JsonRequestPacketDeserializer() = default; //destrctur default
+	LoginRequest deserializeLoginRequest(std::vector<unsigned char> buffer) const;
+	SignupRequest deserializeSignupRequest(std::vector<unsigned char> buffer) const;
+	nlohmann::json jsonDeserializer(std::vector<unsigned char> buffer) const;
 };
 
