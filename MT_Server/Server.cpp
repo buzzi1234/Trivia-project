@@ -3,16 +3,20 @@
 #include <string>
 
 #pragma comment(lib, "ws2_32.lib")
-
+/// <summary>
+/// creates a socket and verifies that it was created successfully
+/// </summary>
 Server::Server() : _running(true)
 {
-	_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP); //creates TCP
 	if (_serverSocket == INVALID_SOCKET)
 	{
 		throw std::runtime_error("Failed to create socet");
 	}
 }
-
+/// <summary>
+/// closes the main socket and all client connections
+/// </summary>
 Server::~Server()
 {
 	closesocket(_serverSocket);
@@ -22,7 +26,10 @@ Server::~Server()
 		delete pair.second;
 	}
 }
-
+/// <summary>
+/// binds to a listening port and starts input and client acceptance processes
+/// </summary>
+/// <param name="port"></param>
 void Server::run(int port)
 {
 	sockaddr_in service{};
@@ -46,7 +53,9 @@ void Server::run(int port)
 	acceptClients();
 	consoleThread.join();
 }
-
+/// <summary>
+/// listens for new clients and runs a separate thread for each one
+/// </summary>
 void Server::acceptClients()
 {
 	while (_running)
@@ -54,7 +63,7 @@ void Server::acceptClients()
 		SOCKET clientSocket = accept(_serverSocket, nullptr, nullptr);
 		if (clientSocket == INVALID_SOCKET)
 		{
-			if (!_running)
+			if (!_running) //if the server closed
 			{
 				break;
 			}
@@ -70,14 +79,17 @@ void Server::acceptClients()
 		std::thread(&Server::handleClient, this, clientSocket).detach();
 	}
 }
-
-void Server::handleClient(SOCKET clientSocket)
+/// <summary>
+/// handles a single client: sends Hello and prints answer
+/// </summary>
+/// <param name="clientSocket"></param>
+void Server::handleClient(SOCKET clientSocket) // Sending Hello to the client
 {
 	std::string hello = "Hello";
 	send(clientSocket, hello.c_str(), hello.size(), 0);
 
-	char buffer[6] = { 0 };
-	int bytesReceived = recv(clientSocket, buffer, 5, 0);
+	char buffer[6] = { 0 }; // buffer for receiving up to 5 char
+	int bytesReceived = recv(clientSocket, buffer, 5, 0); //receiving a message from the client
 	if (bytesReceived > 0)
 	{
 		std::cout << "Cliet said: " << std::string(buffer, bytesReceived) << std::endl;
@@ -89,7 +101,9 @@ void Server::handleClient(SOCKET clientSocket)
 	delete _clients[clientSocket];
 	_clients.erase(clientSocket);
 }
-
+/// <summary>
+/// listens for commands to stops the server when "EXIT" is entered
+/// </summary>
 void Server::consoleListener()
 {
 	std::string input;
