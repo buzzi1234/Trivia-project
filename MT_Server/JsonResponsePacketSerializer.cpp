@@ -13,11 +13,12 @@ JsonResponsePacketSerializer::~JsonResponsePacketSerializer()
 /// </summary>
 /// <param name="er"> A struct that containe error message </param>
 /// <returns> Buffer ( row of bits ) to the client </returns>
-std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(ErrorResponse er)
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Structs::ErrorResponse er)
 {
 	std::vector<unsigned char> vec_char(er.mesagge.begin(), er.mesagge.end());
 
-	return serializeAll(vec_char);
+	return serializeAll(vec_char, ERROR_CODE);
+	
 }
 
 /// <summary>
@@ -25,12 +26,12 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Error
 /// </summary>
 /// <param name="lr"> A struct that containe statue num </param>
 /// <returns> Buffer ( row of bits ) to the client </returns>
-std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(LoginResponse lr)
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Structs::LoginResponse lr)
 {
 	std::string status = "{status: " + std::to_string(lr.status) + "}";
 	std::vector<unsigned char> vec_char(status.begin(), status.end());
 	
-	return serializeAll(vec_char);
+	return serializeAll(vec_char, LOG_CODE);
 }
 
 /// <summary>
@@ -38,22 +39,23 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Login
 /// </summary>
 /// <param name="lr"> A struct that containe statue num </param>
 /// <returns> Buffer ( row of bits ) to the client </returns>
-std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(SignupResponse sr)
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Structs::SignupResponse sr)
 {
-	std::string status = "{status: " + std::to_string(sr.status) + "}";
+	std::string status = R"({"status" : )" + std::to_string(sr.status) + "}";
 	std::vector<unsigned char> vec_char(status.begin(), status.end());
 
-	return serializeAll(vec_char);
+	return serializeAll(vec_char, SIGN_CODE);
 }
 
 /// <summary>
-/// The function serialize the All struct into buffer
+/// The function create a buffer that containe the code, length, msg
 /// </summary>
-/// <param name="lr"> A struct that containe statue num </param>
-/// <returns> Buffer ( row of bits ) to the client </returns>
-std::vector<unsigned char> JsonResponsePacketSerializer::serializeAll(std::vector<unsigned char> vec_char)
+/// <param name="vec_char"> buffer of the message </param>
+/// <param name="code"> code of the message </param>
+/// <returns> the complete buffer </returns>
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeAll(std::vector<unsigned char> vec_char, int code)
 {
-	unsigned char code = static_cast<unsigned char>(LOG_CODE); //turn code into byte
+	unsigned char code_byte = static_cast<unsigned char>(code); //turn code into byte
 
 	//turn length of msg into 4 byte 
 	std::vector<unsigned char> len(4);
@@ -63,7 +65,7 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeAll(std::vecto
 	len[3] = vec_char.size() & 0xFF;
 
 
-	this->buffer.push_back(code);
+	this->buffer.push_back(code_byte);
 
 	for (unsigned char c : len) {
 		this->buffer.push_back(c);
