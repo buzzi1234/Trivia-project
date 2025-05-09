@@ -6,12 +6,12 @@
 /// </summary>
 /// <param name="buffer"> Row of bytes </param>
 /// <returns> LoginRequest struct ( password, username ) </returns>
-LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(std::vector<unsigned char> buffer) const
+Structs::LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(std::vector<unsigned char> buffer) const
 {
     nlohmann::json loginJson = jsonDeserializer(buffer); // converting buffer into json 
 
     //Create new LoginRequest with parmeters from json
-    LoginRequest* t = new LoginRequest(); 
+    Structs::LoginRequest* t = new Structs::LoginRequest();
     t->password = loginJson["password"];
     t->username = loginJson["username"];
 
@@ -24,12 +24,12 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(std::vector<
 /// </summary>
 /// <param name="buffer"> Row of bytes </param>
 /// <returns> SignupRequest struct ( password, username, email ) </returns>
-SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(std::vector<unsigned char> buffer) const
+Structs::SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(std::vector<unsigned char> buffer) const
 {
     nlohmann::json SignupJson = jsonDeserializer(buffer); // converting into json
 
     //Create new SignupRequest with parmeters
-    SignupRequest* t = new SignupRequest();
+    Structs::SignupRequest* t = new Structs::SignupRequest();
     t->password = SignupJson["password"];
     t->username = SignupJson["username"];
     t->email = SignupJson["email"];
