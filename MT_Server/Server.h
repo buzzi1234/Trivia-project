@@ -11,7 +11,8 @@
 #include <fstream>
 #include <algorithm>
 #include <map>
-#include "LoginRequestHandler.h"
+#include <atomic>
+#include "Communicator.h"
 
 class Server
 {
@@ -21,13 +22,10 @@ public:
 	void run(int port);
 
 private:
-	void acceptClients();
-	void handleClient(SOCKET clientSocket);
 	void consoleListener();
-
-	SOCKET _serverSocket;
-	std::map<SOCKET, LoginRequestHandler*> _clients;
-	std::mutex _clientsMutex;
+	
+	Communicator _communicator;
+	std::thread _consoleThread;
 	std::atomic<bool> _running;
 };
 

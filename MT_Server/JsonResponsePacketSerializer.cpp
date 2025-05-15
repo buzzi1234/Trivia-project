@@ -28,7 +28,7 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Struc
 /// <returns> Buffer ( row of bits ) to the client </returns>
 std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Structs::LoginResponse lr)
 {
-	std::string status = "{status: " + std::to_string(lr.status) + "}";
+	std::string status = R"({"status": )" + std::to_string(lr.status) + "}";
 	std::vector<unsigned char> vec_char(status.begin(), status.end());
 	
 	return serializeAll(vec_char, LOG_CODE);

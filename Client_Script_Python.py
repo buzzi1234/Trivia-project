@@ -2,7 +2,6 @@ import socket
 import json
 import struct
 
-
 SERVER_IP = "127.0.0.1"
 SERVER_PORT = 8826
 
@@ -24,24 +23,47 @@ def build_json_message(code, payload):
 def connect_to_server(ip, port):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect((ip, port))
-    print(f"You have connected to the server{ip}:{port}")
+    print(f"You have connected to the server {ip}:{port}")
     return sock
+
+
+def recv_all(sock, n):
+    data = b''
+    while len(data) < n:
+        packet = sock.recv(n - len(data))
+        if not packet:
+            return None
+        data += packet
+    return data
 
 
 def send_json_message(sock, code, data):
     message = build_json_message(code, data)
     sock.sendall(message)
-    print(f"send with code{code}")
+    print(f"send with code {code}")
 
-    response = sock.recv(4096)
+    header = recv_all(sock, 5)
+    if not header:
+        print("No response header received")
+        return
+
+    resp_code = header[0]
+    length = int.from_bytes(header[1:5], byteorder='big')
+    print(f"Received response cod: {resp_code}, length: {length}")
+
+    body = recv_all(sock, length)
+    if not body:
+        print("No response body received")
+        return
+
     try:
-        decoded = response.decode('utf-8')
+        decoded = body.decode('utf-8')
         parsed = json.loads(decoded)
         print("Server response:")
         print(json.dumps(parsed, indent=2, ensure_ascii=False))
     except Exception as e:
         print("Error parsing server response", e)
-        print("Raw text from the server", response)
+        print("Raw text from the server", body)
 
 
 def main():

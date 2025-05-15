@@ -17,6 +17,6 @@ public:
 	std::vector<unsigned char> serializeResponse(Structs::LoginResponse lr);
 	std::vector<unsigned char> serializeResponse(Structs::SignupResponse sr);
 	std::vector<unsigned char> serializeAll(std::vector<unsigned char> vec_char, int code);
-	static std::vector<unsigned char> buffer;
+	std::vector<unsigned char> buffer;
 };
 
