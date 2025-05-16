@@ -36,9 +36,9 @@
     <ClInclude Include="Communicator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="RequestHandlerFactory.h">
-=======
+	  <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="LoggedUser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -58,7 +58,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Question.h">
->>>>>>> 1be85a23c931dfbdd6fa3e4336812fa31ceee66f
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -87,9 +86,9 @@
     <ClCompile Include="Communicator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="RequestHandlerFactory.cpp">
-=======
+	  <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="LoggedUser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -103,7 +102,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Question.cpp">
->>>>>>> 1be85a23c931dfbdd6fa3e4336812fa31ceee66f
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -136,11 +136,8 @@
     <ClInclude Include="LoggedUser.h" />
     <ClInclude Include="LoginManager.h" />
     <ClInclude Include="LoginRequestHandler.h" />
-<<<<<<< HEAD
     <ClInclude Include="RequestHandlerFactory.h" />
-=======
     <ClInclude Include="Question.h" />
->>>>>>> 1be85a23c931dfbdd6fa3e4336812fa31ceee66f
     <ClInclude Include="Server.h" />
     <ClInclude Include="SqliteDatabase.h" />
     <ClInclude Include="Structs.h" />
@@ -155,11 +152,8 @@
     <ClCompile Include="LoginManager.cpp" />
     <ClCompile Include="LoginRequestHandler.cpp" />
     <ClCompile Include="main.cpp" />
-<<<<<<< HEAD
     <ClCompile Include="RequestHandlerFactory.cpp" />
-=======
     <ClCompile Include="Question.cpp" />
->>>>>>> 1be85a23c931dfbdd6fa3e4336812fa31ceee66f
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="SqliteDatabase.cpp" />
     <ClCompile Include="Structs.cpp" />
