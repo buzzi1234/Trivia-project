@@ -1,12 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "Structs.h"
-
-//Codes for the buffer 
-#define LOG_CODE 1
-#define SIGN_CODE 2
-#define ERROR_CODE 3
+#include "Constant.h"
 
 class JsonResponsePacketSerializer 
 {

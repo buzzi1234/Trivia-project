@@ -3,10 +3,8 @@
 #include <vector>
 #include <fstream>
 #include "nlohmann/json.hpp"
-#include "Structs.h"
+#include "Constant.h"
 
-//Error code in bufffer
-#define ERROR_CODE 3
 
 class JsonRequestPacketDeserializer
 {
