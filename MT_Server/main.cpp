@@ -22,5 +22,5 @@ int main()
 		std::cerr << "Error: " << e.what() << std::endl;
 	}
 
-	return 0;
+	return 0; //Exit the program
 }
