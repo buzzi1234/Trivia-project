@@ -1,7 +1,9 @@
 #pragma once
 #include <vector>
 #include <ctime>
-#include "IRequestHandler.h"
+#include <string>
+
+class IRequestHandler;
 
 class Structs
 {
