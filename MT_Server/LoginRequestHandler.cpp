@@ -1,5 +1,12 @@
 #include "LoginRequestHandler.h"
 
+
+LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory) : _handlerFactory(handlerFactory)
+{
+}
+
+
+
 /// <summary>
 /// The function gets RequestInfo struct and checks
 /// if the code is login or signup
@@ -50,7 +57,7 @@ Structs::RequestResult LoginRequestHandler::handleLoginRequest(Structs::RequestI
 
     delete sr;
 
-    rr->newHandler = new LoginRequestHandler();
+    rr->newHandler = _handlerFactory.createLoginRequestHandler();
     return *rr;
 }
 

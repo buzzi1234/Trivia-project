@@ -8,17 +8,18 @@
 #include <vector>
 #include "IRequestHandler.h"
 #include "LoginRequestHandler.h"
+#include "RequestHandlerFactory.h"
 
 class Communicator
 {
 public:
-	Communicator();
+	Communicator(RequestHandlerFactory& handlerFactory);
 	~Communicator();
 
 	void bindAndListen(int port) const;
 	void startHandleRequests();
 	void stop();
-
+	RequestHandlerFactory& _handlerFactory;
 private:
 	void handleNewClient(SOCKET clientSocket);
 

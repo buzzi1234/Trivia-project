@@ -13,6 +13,8 @@
 #include <map>
 #include <atomic>
 #include "Communicator.h"
+#include "IDatabase.h"
+#include "RequestHandlerFactory.h"
 
 class Server
 {
@@ -20,10 +22,12 @@ public:
 	Server();
 	~Server();
 	void run(int port);
+	IDatabase* _database;
+	RequestHandlerFactory _handlerFactory;
 
 private:
 	void consoleListener();
-	
+
 	Communicator _communicator;
 	std::thread _consoleThread;
 	std::atomic<bool> _running;

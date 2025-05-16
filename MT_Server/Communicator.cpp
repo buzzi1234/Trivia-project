@@ -5,7 +5,7 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
-Communicator::Communicator() : _running(false)
+Communicator::Communicator(RequestHandlerFactory& handlerFactory) : _handlerFactory(handlerFactory), _running(false)
 {
     WSADATA wsaData;
     WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -22,9 +22,9 @@ Communicator::~Communicator()
 
 void Communicator::bindAndListen(int port) const
 {
-	sockaddr_in sa = { 0 };
-	sa.sin_family = AF_INET;
-	sa.sin_addr.s_addr = INADDR_ANY;
+    sockaddr_in sa = { 0 };
+    sa.sin_family = AF_INET;
+    sa.sin_addr.s_addr = INADDR_ANY;
     sa.sin_port = htons(port);
 
     if (bind(_serverSocket, (SOCKADDR*)&sa, sizeof(sa)) == SOCKET_ERROR)
@@ -49,7 +49,7 @@ void Communicator::startHandleRequests()
         }
 
         std::lock_guard<std::mutex> lock(_clientsMutex);
-        _clients[clientSocket] = new LoginRequestHandler();
+        _clients[clientSocket] = _handlerFactory.createLoginRequestHandler();
 
         std::thread(&Communicator::handleNewClient, this, clientSocket).detach();
     }
@@ -76,7 +76,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 {
     try
     {
-        std::unique_ptr<IRequestHandler> handler = std::make_unique<LoginRequestHandler>();
+        std::unique_ptr<IRequestHandler> handler(_handlerFactory.createLoginRequestHandler());
 
         while (true)
         {
@@ -87,7 +87,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
                 break;
             }
             uint8_t id = headerBuffer[0];
-            uint32_t size = *(uint32_t*)(headerBuffer + 1); 
+            uint32_t size = *(uint32_t*)(headerBuffer + 1);
 
             std::vector<uint8_t> buffer(size);
             bytesRead = recv(clientSocket, reinterpret_cast<char*>(buffer.data()), size, 0);
