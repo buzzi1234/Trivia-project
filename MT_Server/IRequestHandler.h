@@ -2,7 +2,6 @@
 #include <vector>
 #include <ctime>
 #include "JsonRequestPacketDeserializer.h"
-#include "Structs.h"
 
 
 class IRequestHandler

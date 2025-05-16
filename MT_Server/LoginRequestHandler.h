@@ -1,6 +1,5 @@
 #pragma once
 #include "IRequestHandler.h"
-#include "Structs.h"
 #include "JsonResponsePacketSerializer.h"
 
 
