@@ -4,11 +4,11 @@
 #include <vector>
 #include "Constant.h"
 
-class LoginManger
+class LoginManager
 {
 public:
-	LoginManger(SqliteDatabase* sqlDS);
-	~LoginManger();
+	LoginManager(SqliteDatabase* sqlDS);
+	~LoginManager();
 	int signup(std::string username, std::string password, std::string email);
 	int login(std::string username, std::string password);
 	void logout(std::string username);

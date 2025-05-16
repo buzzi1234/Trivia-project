@@ -1,14 +1,14 @@
-#include "LoginManger.h"
+#include "LoginManager.h"
 
 //constructor
-LoginManger::LoginManger(SqliteDatabase* sqlDS)
+LoginManager::LoginManager(SqliteDatabase* sqlDS)
 {
     this->m_database = sqlDS;
     this->m_database->open();
 }
 
 //destructor
-LoginManger::~LoginManger()
+LoginManager::~LoginManager()
 {
     this->m_database->close();
 }
@@ -21,7 +21,7 @@ LoginManger::~LoginManger()
 /// <param name="password"> The user password </param>
 /// <param name="email"> The user email </param>
 /// <returns> Signup status if complete if not than error status </returns>
-int LoginManger::signup(std::string username, std::string password, std::string email)
+int LoginManager::signup(std::string username, std::string password, std::string email)
 {
     if (!this->m_database->doesUserExist(username))
     {
@@ -38,7 +38,7 @@ int LoginManger::signup(std::string username, std::string password, std::string 
 /// <param name="username"> The username </param>
 /// <param name="password"> The user password </param>
 /// <returns> Login status if complete if not than error status </returns>
-int LoginManger::login(std::string username, std::string password)
+int LoginManager::login(std::string username, std::string password)
 {
     if (this->m_database->doesUserExist(username) && this->m_database->doesPasswordMatch(username, password))
     {
@@ -61,7 +61,7 @@ int LoginManger::login(std::string username, std::string password)
 /// The func check if user exist and is logged if he do than the function logged out
 /// </summary>
 /// <param name="username"> The username </param>
-void LoginManger::logout(std::string username)
+void LoginManager::logout(std::string username)
 {
     if (this->m_database->doesUserExist(username))
     {
