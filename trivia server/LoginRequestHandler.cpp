@@ -79,7 +79,7 @@ Structs::RequestResult LoginRequestHandler::handleSignupRequest(Structs::Request
 
     delete sr;
 
-    rr->newHandler = new LoginRequestHandler();
+    rr->newHandler = _handlerFactory.createLoginRequestHandler();
     return *rr;
 }
 
@@ -101,7 +101,7 @@ Structs::RequestResult LoginRequestHandler::handleErrorRequest(Structs::RequestI
 
     delete sr;
 
-    rr->newHandler = new LoginRequestHandler();
+    rr->newHandler = _handlerFactory.createLoginRequestHandler();
     return *rr;
 }
 

@@ -2,6 +2,13 @@
 
 #define DB_NAME "MyDB.sqlite"
 
+SqliteDatabase::~SqliteDatabase()
+{
+    delete _db;
+    _questionList.clear();
+    _usersList.clear();
+}
+
 bool SqliteDatabase::open()
 {
     std::string dbFileName = DB_NAME;
@@ -249,8 +256,10 @@ bool SqliteDatabase::initDB()
     isTheTableCreated(createSqlStatement, "USERS");
 
     // Create another table:
-    std::string createSqlStatement = "CREATE TABLE IF NOT EXISTS QUESTION_BANK(ID INTEGER PRIMARY KEY AUTOINCREMENT, QUESTION TEXT NOT NULL, ANSWER_1 TEXT NOT NULL, ANSWER_2 TEXT NOT NULL, ANSWER_3 TEXT NOT NULL,  RIGHT_ANSWER_4 TEXT NOT NULL);";
-    isTheTableCreated(createSqlStatement, "QUESTION_BANK");
+    std::string createSqlStatement_2 = "CREATE TABLE IF NOT EXISTS QUESTION_BANK(ID INTEGER PRIMARY KEY AUTOINCREMENT, QUESTION TEXT NOT NULL, ANSWER_1 TEXT NOT NULL, ANSWER_2 TEXT NOT NULL, ANSWER_3 TEXT NOT NULL,  RIGHT_ANSWER_4 TEXT NOT NULL);";
+    isTheTableCreated(createSqlStatement_2, "QUESTION_BANK");
+
+    return true;
 }
 
 bool SqliteDatabase::isTheTableCreated(std::string createSqlStatement, std::string tableName)

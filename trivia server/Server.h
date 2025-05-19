@@ -19,7 +19,7 @@
 class Server
 {
 public:
-	Server();
+	Server(RequestHandlerFactory handlerFactory, IDatabase* database);
 	~Server();
 	void run(int port);
 	IDatabase* _database;

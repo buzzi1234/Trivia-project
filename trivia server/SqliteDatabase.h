@@ -15,6 +15,9 @@
 class SqliteDatabase : public IDatabase
 {
 public:
+	SqliteDatabase() = default;
+	~SqliteDatabase();
+
 	bool open() override;
 	bool close() override;
 	int doesUserExist(std::string userName) override;

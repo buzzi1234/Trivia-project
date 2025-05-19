@@ -1,7 +1,7 @@
 #include "LoginManager.h"
 
 //constructor
-LoginManager::LoginManager(SqliteDatabase* sqlDS)
+LoginManager::LoginManager(IDatabase* sqlDS)
 {
     this->m_database = sqlDS;
     this->m_database->open();
@@ -26,7 +26,7 @@ int LoginManager::signup(std::string username, std::string password, std::string
     if (!this->m_database->doesUserExist(username))
     {
         this->m_database->addNewUser(username, password, email);
-        this->m_loggedUsers.push_back(*(new LoggedUser(username)));
+        this->m_loggedUsers.push_back(new LoggedUser(username));
         return SIGN_CODE;
     }
     return ERROR_CODE;
@@ -44,13 +44,13 @@ int LoginManager::login(std::string username, std::string password)
     {
         for (auto it : this->m_loggedUsers)
         {
-            if (it.getUserName() == username)
+            if (it->getUserName() == username)
             {
                 return ERROR_CODE;
             }
         }
         
-        this->m_loggedUsers.push_back(*(new LoggedUser(username)));
+        this->m_loggedUsers.push_back(new LoggedUser(username));
         return LOG_CODE;
     }
     return ERROR_CODE;
@@ -67,7 +67,7 @@ void LoginManager::logout(std::string username)
     {
         for (int i = 0; i < this->m_loggedUsers.size(); i++)
         {
-            if (this->m_loggedUsers[i].getUserName() == username)
+            if (this->m_loggedUsers[i]->getUserName() == username)
             {
                 this->m_loggedUsers.erase(this->m_loggedUsers.begin() + i);
             }

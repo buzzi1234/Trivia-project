@@ -6,7 +6,9 @@
 /// <summary>
 /// creates a socket and verifies that it was created successfully
 /// </summary>
-Server::Server() : _running(true) {}
+Server::Server(RequestHandlerFactory handlerFactory, IDatabase* database) : _running(true), _handlerFactory(handlerFactory), _database(database), _communicator(_handlerFactory)
+{
+}
 /// <summary>
 /// closes the main socket and all client connections
 /// </summary>
