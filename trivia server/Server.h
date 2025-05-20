@@ -11,23 +11,25 @@
 #include <fstream>
 #include <algorithm>
 #include <map>
-#include "LoginRequestHandler.h"
+#include <atomic>
+#include "Communicator.h"
+#include "IDatabase.h"
+#include "RequestHandlerFactory.h"
 
 class Server
 {
 public:
-	Server();
+	Server(RequestHandlerFactory handlerFactory, IDatabase* database);
 	~Server();
 	void run(int port);
+	IDatabase* _database;
+	RequestHandlerFactory _handlerFactory;
 
 private:
-	void acceptClients();
-	void handleClient(SOCKET clientSocket);
 	void consoleListener();
 
-	SOCKET _serverSocket;
-	std::map<SOCKET, LoginRequestHandler*> _clients;
-	std::mutex _clientsMutex;
+	Communicator _communicator;
+	std::thread _consoleThread;
 	std::atomic<bool> _running;
 };
 
