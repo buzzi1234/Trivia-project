@@ -4,10 +4,8 @@ import struct
 
 SERVER_IP = "127.0.0.1"
 SERVER_PORT = 8826
-
-
-def is_valid_port(port):
-    return 1024 <= port <= 65535
+LOGIN_CODE = 1
+SIGNUP_CODE = 2
 
 
 def build_json_message(code, payload):
@@ -57,32 +55,58 @@ def send_json_message(sock, code, data):
         return
 
     try:
-        decoded = body.decode('utf-8')
+        decoded = response[5:].decode('utf-8')
         parsed = json.loads(decoded)
         print("Server response:")
         print(json.dumps(parsed, indent=2, ensure_ascii=False))
+        return parsed
     except Exception as e:
         print("Error parsing server response", e)
-        print("Raw text from the server", body)
+        print("Raw text from the server", response)
+        return None
+
+
+def run_tests():
+    print("== test proper registration ==\n")
+    sock1 = connect_to_server(SERVER_IP, SERVER_PORT)
+    send_json_message(sock1, SIGNUP_CODE, {"username": "user_test", "password": "1234", "mail": "test@gmail.com"})
+    sock1.close()
+
+    print("== test double registration (same user) ==\n")
+    sock2 = connect_to_server(SERVER_IP, SERVER_PORT)
+    send_json_message(sock2, SIGNUP_CODE, {"username": "user_test", "password": "1234", "mail": "test@gmail.com"})
+    sock2.close()
+
+    print("== test connecting with a non-existent user ==\n")
+    sock3 = connect_to_server(SERVER_IP, SERVER_PORT)
+    send_json_message(sock3, LOGIN_CODE, {"username": "not_exists", "password": "1234"})
+    sock3.close()
+
+    print("== test proper connection ==\n")
+    sock4 = connect_to_server(SERVER_IP, SERVER_PORT)
+    send_json_message(sock4, LOGIN_CODE, {"username": "user_test", "password": "1234"})
+
+    print("== test double login (same user again) ==\n")
+    sock5 = connect_to_server(SERVER_IP, SERVER_PORT)
+    send_json_message(sock5, LOGIN_CODE, {"username": "user_test", "password": "1234"})
+    sock5.close()
+    sock4.close()
+
+    print("== test invalid usernames ==\n")
+    invalid_username = ["", "a" * 300, "us!@#", " "]
+    for uname in invalid_username:
+        print(f"\n--testing with invalid username'{uname}'--")
+        sock = connect_to_server(SERVER_IP, SERVER_PORT)
+        send_json_message(sock, SIGNUP_CODE, {
+            "username": uname,
+            "password": "1234",
+            "mail": "bad@mail.com"
+        })
+        sock.close()
 
 
 def main():
-    if not is_valid_port(SERVER_PORT):
-        print("Error")
-        return
-
-    try:
-        sock = connect_to_server(SERVER_IP, SERVER_PORT)
-
-        login_info = {"username": "user1", "password": "1234"}
-        send_json_message(sock, 1, login_info)
-        signup_info = {"username": "user1", "password": "1234", "mail": "user1@gmail.com"}
-        send_json_message(sock, 2, signup_info)
-
-        sock.close()
-
-    except Exception as e:
-        print("Error while communicating with the server ", e)
+    run_tests()
 
 
 if __name__ == "__main__":
