@@ -61,7 +61,7 @@ def run_tests():
 
     print("== test proper connection ==\n")
     sock4 = connect_to_server(SERVER_IP, SERVER_PORT)
-    send_json_message(sock3, LOGIN_CODE, {"username": "user_test", "password": "1234"})
+    send_json_message(sock4, LOGIN_CODE, {"username": "user_test", "password": "1234"})
 
     print("== test double login (same user again) ==\n")
     sock5 = connect_to_server(SERVER_IP, SERVER_PORT)
