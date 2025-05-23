@@ -14,4 +14,3 @@ LoginManager& RequestHandlerFactory::getLoginManager()
 {
 	return _loginManager;
 }
-

@@ -1,4 +1,5 @@
 #include "LoginManager.h"
+#include <iostream>
 
 //constructor
 LoginManager::LoginManager(IDatabase* sqlDS)
@@ -10,6 +11,9 @@ LoginManager::LoginManager(IDatabase* sqlDS)
 //destructor
 LoginManager::~LoginManager()
 {
+    for (auto user : m_loggedUsers)
+        delete user;
+    this->m_loggedUsers.clear();
     this->m_database->close();
 }
 
@@ -23,11 +27,30 @@ LoginManager::~LoginManager()
 /// <returns> Signup status if complete if not than error status </returns>
 int LoginManager::signup(std::string username, std::string password, std::string email)
 {
+    if (username.empty() || username.length() < 3 || username.length() > 20)
+    {
+        std::cout << "Invalid username length" << std::endl;
+        return ERROR_CODE;
+    }
+
+    for (char c : username)
+    {
+        if (!isalnum(c) && c != '_')
+        {
+            std::cout << "Invalid character in username: " << c << std::endl;
+            return ERROR_CODE;
+        }
+    }
+
     if (!this->m_database->doesUserExist(username))
     {
         this->m_database->addNewUser(username, password, email);
         this->m_loggedUsers.push_back(new LoggedUser(username));
         return SIGN_CODE;
+    }
+    else
+    {
+        std::cout << "Signup failed: user already exists" << std::endl;
     }
     return ERROR_CODE;
 }
@@ -46,6 +69,7 @@ int LoginManager::login(std::string username, std::string password)
         {
             if (it->getUserName() == username)
             {
+                std::cout << "fls" << std::endl;
                 return ERROR_CODE;
             }
         }

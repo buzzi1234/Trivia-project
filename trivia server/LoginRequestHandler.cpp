@@ -1,4 +1,5 @@
 #include "LoginRequestHandler.h"
+#include "JsonRequestPacketDeserializer.h"
 
 
 LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory) : _handlerFactory(handlerFactory)
@@ -47,18 +48,31 @@ Structs::RequestResult LoginRequestHandler::handleRequest(Structs::RequestInfo& 
 /// <returns> RequestResult of ( log, sign, error ) </returns>
 Structs::RequestResult LoginRequestHandler::handleLoginRequest(Structs::RequestInfo& ri) const
 {
-    JsonResponsePacketSerializer j; // obj for serializer
+    JsonResponsePacketSerializer serializer;
 
-    Structs::RequestResult* rr = new Structs::RequestResult();
-    Structs::LoginResponse* sr = new Structs::LoginResponse(); //Response obj for seriazlie
+    try 
+    {
+        nlohmann::json j = nlohmann::json::parse(ri.buffer);
+        std::string username = j["username"];
+        std::string password = j["password"];
 
-    sr->status = ri.id;
-    rr->response = j.serializeResponse(*sr);
+        LoginManager& loginManager = _handlerFactory.getLoginManager();
+        int loginResult = loginManager.login(username, password);
 
-    delete sr;
+        Structs::RequestResult rr;
+        Structs::LoginResponse loginResponse;
 
-    rr->newHandler = _handlerFactory.createLoginRequestHandler();
-    return *rr;
+        loginResponse.status = loginResult;
+        rr.response = serializer.serializeResponse(loginResponse);
+
+        rr.newHandler = _handlerFactory.createLoginRequestHandler();
+
+        return rr;
+    }
+    catch (const std::exception& e) 
+    {
+        return handleErrorRequest(ri);
+    }
 }
 
 
@@ -69,18 +83,33 @@ Structs::RequestResult LoginRequestHandler::handleLoginRequest(Structs::RequestI
 /// <returns> RequestResult of ( log, sign, error ) </returns>
 Structs::RequestResult LoginRequestHandler::handleSignupRequest(Structs::RequestInfo& ri) const
 {
-    JsonResponsePacketSerializer j;// obj for serializer
+    JsonResponsePacketSerializer serializer;
 
-    Structs::RequestResult* rr = new Structs::RequestResult();
-    Structs::SignupResponse* sr = new Structs::SignupResponse(); //Response obj for seriazlie
+    try 
+    {
 
-    sr->status = ri.id;
-    rr->response = j.serializeResponse(*sr);
+        nlohmann::json j = nlohmann::json::parse(ri.buffer);
+        std::string username = j["username"];
+        std::string password = j["password"];
+        std::string email = j["email"];
 
-    delete sr;
+        LoginManager& loginManager = _handlerFactory.getLoginManager();
+        int signupResult = loginManager.signup(username, password, email);
 
-    rr->newHandler = _handlerFactory.createLoginRequestHandler();
-    return *rr;
+        Structs::RequestResult rr;
+        Structs::SignupResponse signupResponse;
+
+        signupResponse.status = signupResult; 
+        rr.response = serializer.serializeResponse(signupResponse);
+
+        rr.newHandler = _handlerFactory.createLoginRequestHandler();
+
+        return rr;
+    }
+    catch (const std::exception& e) 
+    {
+        return handleErrorRequest(ri);
+    }
 }
 
 /// <summary>
@@ -90,19 +119,16 @@ Structs::RequestResult LoginRequestHandler::handleSignupRequest(Structs::Request
 /// <returns> RequestResult of ( log, sign, error ) </returns>
 Structs::RequestResult LoginRequestHandler::handleErrorRequest(Structs::RequestInfo& ri) const
 {
-    JsonResponsePacketSerializer j; // obj for serializer
+    JsonResponsePacketSerializer serializer;
 
-    Structs::RequestResult* rr = new Structs::RequestResult();
-    Structs::ErrorResponse* sr = new Structs::ErrorResponse(); //Response obj for seriazlie
+    Structs::RequestResult rr;
+    Structs::ErrorResponse errorResponse;
 
-    sr->mesagge = R"({
-        "mesagge" : "ERROR"})";
-    rr->response = j.serializeResponse(*sr);
+    errorResponse.mesagge = R"({"message": "ERROR"})";
+    rr.response = serializer.serializeResponse(errorResponse);
+    rr.newHandler = _handlerFactory.createLoginRequestHandler();
 
-    delete sr;
-
-    rr->newHandler = _handlerFactory.createLoginRequestHandler();
-    return *rr;
+    return rr;
 }
 
 
