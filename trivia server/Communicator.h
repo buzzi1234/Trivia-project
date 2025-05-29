@@ -27,5 +27,6 @@ private:
 	std::atomic<bool> _running;
 	std::map<SOCKET, IRequestHandler*> _clients;
 	std::mutex _clientsMutex;
+
 };
 

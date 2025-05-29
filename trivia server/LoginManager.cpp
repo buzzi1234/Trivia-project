@@ -30,9 +30,17 @@ int LoginManager::signup(std::string username, std::string password, std::string
 
     if (!this->m_database->doesUserExist(username))
     {
-        this->m_database->addNewUser(username, password, email);
-        this->m_loggedUsers.push_back(new LoggedUser(username));
-        return SIGN_CODE;
+        if (username != "")
+        {
+            this->m_database->addNewUser(username, password, email);
+			return SIGN_CODE;
+		}
+		else
+		{
+			std::cout << "Signup failed: username cannot be empty" << std::endl;
+			return ERROR_CODE;
+        }
+   
     }
     else
     {
