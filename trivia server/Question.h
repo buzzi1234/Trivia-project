@@ -1,19 +1,19 @@
 #pragma once
 
 #include <iostream>
+#include <string>
 #include <vector>
 
 class Question
 {
 public:
-	Question(std::string question, std::vector<std::string> possibleAnswers);
+	Question(const std::string& questionText, const std::vector<std::string>& answers);
 	~Question() = default;
 
-	std::string getQuestion();
-	std::vector<std::string> getPossibleAnswers();
-	int getCorrectAnswerId();
+	std::string getQuestion() const;
+	std::vector<std::string> getAnswers() const;
 
 private:
-	std::string m_question;
-	std::vector<std::string> m_possibleAnswers;
+	std::string _question;
+	std::vector<std::string> _answers;
 };

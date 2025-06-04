@@ -90,9 +90,6 @@ std::list<Question> SqliteDatabase::getQuestions(int numberOfQuestions)
     return _questionList;
 }
 
-
-// Private functions.
-
 // Callback function to extract user data (ID and name)
 int usercallback(void* data, int argc, char** argv, char** azColName)
 {
@@ -141,58 +138,29 @@ int usercallback(void* data, int argc, char** argv, char** azColName)
 
 int questioncallback(void* data, int argc, char** argv, char** azColName)
 {
-    std::string the_question = "\0";
+    std::string questionText;
+    std::vector<std::string> answers(4);
 
-    std::string first_answer = "\0";
-    std::string second_answer = "\0";
-    std::string third_answer = "\0";
-    std::string fourth_right_answer = "\0";
-
-    // Iterate over each column and extract the data
     for (int i = 0; i < argc; i++)
     {
-        if (argv[i] != nullptr)
+        if (argv[i])
         {
-            std::string columnName = std::string(azColName[i]);
-            std::string value = argv[i];
+			std::string col = azColName[i];
+            std::string val = argv[i];
 
-            if (columnName == "QUESTION")
-            {
-                the_question = value;
-            }
-
-            if (columnName == "ANSWER_1")
-            {
-                first_answer = value;
-            }
-
-            if (columnName == "ANSWER_2")
-            {
-                second_answer = value;
-            }
-
-            if (columnName == "ANSWER_3")
-            {
-                third_answer = value;
-            }
-
-            if (columnName == "RIGHT_ANSWER_4")
-            {
-                fourth_right_answer = value;
-            }
+            if (col == "QUESTION") questionText = val;
+            else if (col == "ANSWER_1") answers[0] = val;
+            else if (col == "ANSWER_2") answers[1] = val;
+            else if (col == "ANSWER_3") answers[2] = val;
+            else if (col == "CORRECT_ANSWER") answers[3] = val;
         }
     }
 
     // Create a User object and add it to the list
     // , first_question, second_question, third_question, fourth_right_question
         // to do vector
-    std::vector<std::string> possibleAnswers;
-    possibleAnswers.push_back(first_answer);
-    possibleAnswers.push_back(second_answer);
-    possibleAnswers.push_back(third_answer);
-    possibleAnswers.push_back(fourth_right_answer);
 
-    Question question(the_question, possibleAnswers);
+    Question question(questionText, answers);
     auto* questionList = static_cast<std::list<Question>*>(data);
     questionList->push_back(question);
 
