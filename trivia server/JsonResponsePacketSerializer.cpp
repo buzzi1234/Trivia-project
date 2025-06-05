@@ -77,3 +77,136 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeAll(std::vecto
 
 	return this->buffer;
 }
+
+/// <summary>
+/// The func turn room data to json masagge
+/// </summary>
+/// <param name="rd"> Room data </param>
+/// <returns> json msg </returns>
+std::string JsonResponsePacketSerializer::RoomDataToJsonMsg(Structs::RoomData rd)
+{
+	std::string str = R"({"id" : )" + std::to_string(rd.id) +
+		R"(,"name" : )" + rd.name +
+		R"(,"maxPlayers" : )" + std::to_string(rd.maxPlayers) +
+		R"(,"numOfQuestionsInGame" : )" + std::to_string(rd.numOfQuestionsInGame) +
+		R"(,"timePerQuestion" : )" + std::to_string(rd.timePerQuestion) +
+		R"(,"status" : )" + std::to_string(rd.status) + "}";
+}
+
+/// <summary>
+/// The function serialize the LogoutResponse struct into buffer
+/// </summary>
+/// <param name="lr"> A struct that containe status num </param>
+/// <returns> Buffer ( row of bits ) to the client </returns>
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Structs::LogoutResponse lor)
+{
+	std::string status = R"({"status" : )" + std::to_string(lor.status) + "}";
+	std::vector<unsigned char> vec_char(status.begin(), status.end());
+
+	return serializeAll(vec_char, LOGOUT);
+}
+
+/// <summary>
+/// The function serialize the GetRoomsResponse struct into buffer
+/// </summary>
+/// <param name="lr"> A struct that containe status num and a vector of room data </param>
+/// <returns> Buffer ( row of bits ) to the client </returns>
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Structs::GetRoomsResponse grr)
+{
+	std::string status = R"({"status" : )" + std::to_string(grr.status);
+	int i = 1;
+	for (auto it : grr.rooms)
+	{
+		status += R"(,room)" + std::to_string(i) + R"( : )" + RoomDataToJsonMsg(it) + "}";
+		i++;
+	}
+	std::vector<unsigned char> vec_char(status.begin(), status.end());
+
+	serializeAll(vec_char, GET_ROOMS);
+
+}
+
+/// <summary>
+/// The function serialize the GetPlayersInRoomResponse struct into buffer
+/// </summary>
+/// <param name="lr"> A struct that containe status num and a vector of players that in the room </param>
+/// <returns> Buffer ( row of bits ) to the client </returns>
+std::vector<unsigned char> JsonResponsePacketSerializer::serializerResponse(Structs::GetPlayersInRoomResponse gpr)
+{
+	std::string status = "{";
+	int i = 1;
+	for (auto it : gpr.players)
+	{
+		status += R"(player)" + std::to_string(i) + " : " + it + ",";
+		i++;
+	}
+	status[status.size() - 1] = '}';
+	std::vector<unsigned char> vec_char(status.begin(), status.end());
+
+	return serializeAll(vec_char, GET_PLAYERS_IN_ROOM);
+}
+
+/// <summary>
+/// The function serialize the JoinRoomResponse struct into buffer
+/// </summary>
+/// <param name="lr"> A struct that containe status num </param>
+/// <returns> Buffer ( row of bits ) to the client </returns>
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Structs::JoinRoomResponse jrr)
+{
+	std::string status = R"({"status" : )" + std::to_string(jrr.status) + "}";
+	std::vector<unsigned char> vec_char(status.begin(), status.end());
+
+	return serializeAll(vec_char, JOIN_ROOM);
+}
+
+/// <summary>
+/// The function serialize the CreateRoomResponse struct into buffer
+/// </summary>
+/// <param name="lr"> A struct that containe status num </param>
+/// <returns> Buffer ( row of bits ) to the client </returns>
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Structs::CreateRoomResponse crr)
+{
+	std::string status = R"({"status" : )" + std::to_string(crr.status) + "}";
+	std::vector<unsigned char> vec_char(status.begin(), status.end());
+
+	return serializeAll(vec_char, CREATE_ROOM);
+}
+
+
+/// <summary>
+/// The function serialize the GetHighScoreResponse struct into buffer
+/// </summary>
+/// <param name="lr"> A struct that containe status num and a vector of the highest scores </param>
+/// <returns> Buffer ( row of bits ) to the client </returns>
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Structs::GetHighScoreResponse ghr)
+{
+	std::string status = R"({"status" : )" + std::to_string(ghr.status);
+	int i = 1;
+	for (auto it : ghr.statistics)
+	{
+		status += R"(score)" + std::to_string(i) + " : " + it + ",";
+		i++;
+	}
+	std::vector<unsigned char> vec_char(status.begin(), status.end());
+
+	serializeAll(vec_char, GET_HIGH_SCORE);
+}
+
+/// <summary>
+/// The function serialize the GetPersonalStatsResponse struct into buffer
+/// </summary>
+/// <param name="lr"> A struct that containe status num and a vector of the stats </param>
+/// <returns> Buffer ( row of bits ) to the client </returns>
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Structs::GetPersonalStatsResponse gsr)
+{
+	std::string status = R"({"status" : )" + std::to_string(gsr.status);
+	int i = 1;
+	for (auto it : gsr.statistics)
+	{
+		status += R"(stats)" + std::to_string(i) + " : " + it + ",";
+		i++;
+	}
+	std::vector<unsigned char> vec_char(status.begin(), status.end());
+
+	serializeAll(vec_char, GET_PERSONAL_STATS);
+}
