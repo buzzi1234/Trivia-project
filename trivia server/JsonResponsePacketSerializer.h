@@ -14,6 +14,8 @@ public:
 	std::vector<unsigned char> serializeAll(std::vector<unsigned char> vec_char, int code);
 	std::vector<unsigned char> buffer;
 
+	std::string RoomDataToJsonMsg(Structs::RoomData rd);
+
 	std::vector<unsigned char> serializeResponse(Structs::LogoutResponse lor);
 	std::vector<unsigned char> serializeResponse(Structs::GetRoomsResponse grr);
 	std::vector<unsigned char> serializerResponse(Structs::GetPlayersInRoomResponse gpr);
