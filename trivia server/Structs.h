@@ -8,6 +8,7 @@ class IRequestHandler;
 class Structs
 {
 public:
+
 	struct RoomData
 	{
 		unsigned int id;
@@ -17,6 +18,45 @@ public:
 		unsigned int timePerQuestion;
 		unsigned int status;
 	}typedef RoomData;
+
+	struct LogoutResponse
+	{
+		unsigned int status;
+	};
+
+	struct JoinRoomResponse
+	{
+		unsigned int status;
+	};
+
+	struct CreateRoomResponse
+	{
+		unsigned int status;
+	};
+
+	struct GetRoomsResponse
+	{
+		unsigned int status;
+		std::vector<Structs::RoomData> rooms;
+	};
+
+	struct GetPlayersInRoomResponse
+	{
+		std::vector<std::string> players;
+	};
+
+	struct GetHighScoreResponse
+	{
+		unsigned int status;
+		std::vector<std::string> statistics;
+	};
+
+	struct GetPersonalStatsResponse
+	{
+		unsigned int status;
+		std::vector<std::string> statistics;
+	};
+
 
 	struct RequestResult
 	{
