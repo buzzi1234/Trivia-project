@@ -5,6 +5,11 @@ RequestHandlerFactory::RequestHandlerFactory(LoginManager& loginManager, IDataba
 {
 }
 
+MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler()
+{
+	return new MenuRequestHandler();
+}
+
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 {
 	return new LoginRequestHandler(*this);

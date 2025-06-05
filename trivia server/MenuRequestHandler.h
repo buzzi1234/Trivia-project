@@ -12,4 +12,3 @@ public:
 	virtual Structs::RequestResult handleRequest(Structs::RequestInfo& reqInfo) const override;
 
 };
-

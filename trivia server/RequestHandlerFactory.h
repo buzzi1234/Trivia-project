@@ -4,8 +4,8 @@
 #include "MenuRequestHandler.h"
 #include "LoginManager.h"
 #include "IDatabase.h"
-
-class LoginRequestHandler;
+#include "MenuRequestHandler.h"
+#include "LoginRequestHandler.h"
 
 class RequestHandlerFactory
 {
