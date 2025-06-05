@@ -27,26 +27,20 @@ LoginManager::~LoginManager()
 /// <returns> Signup status if complete if not than error status </returns>
 int LoginManager::signup(std::string username, std::string password, std::string email)
 {
-    if (username.empty() || username.length() < 3 || username.length() > 20)
-    {
-        std::cout << "Invalid username length" << std::endl;
-        return ERROR_CODE;
-    }
-
-    for (char c : username)
-    {
-        if (!isalnum(c) && c != '_')
-        {
-            std::cout << "Invalid character in username: " << c << std::endl;
-            return ERROR_CODE;
-        }
-    }
 
     if (!this->m_database->doesUserExist(username))
     {
-        this->m_database->addNewUser(username, password, email);
-        this->m_loggedUsers.push_back(new LoggedUser(username));
-        return SIGN_CODE;
+        if (username != "")
+        {
+            this->m_database->addNewUser(username, password, email);
+			return SIGN_CODE;
+		}
+		else
+		{
+			std::cout << "Signup failed: username cannot be empty" << std::endl;
+			return ERROR_CODE;
+        }
+   
     }
     else
     {

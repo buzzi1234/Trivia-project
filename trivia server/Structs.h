@@ -42,7 +42,7 @@ public:
 	{
 		std::string username;
 		std::string password;
-		std::string email;
+		std::string mail;
 	}typedef SignupRequest;
 
 	struct LoginResponse

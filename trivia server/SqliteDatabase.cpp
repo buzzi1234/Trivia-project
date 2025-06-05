@@ -44,7 +44,7 @@ bool SqliteDatabase::close()
 // CHECK
 int SqliteDatabase::doesUserExist(std::string userName)
 {
-    std::string sqlQuery = "SELECT NAME FROM USERS WHERE USERNAME = '" + userName + "';";	// Get specific user name.
+    std::string sqlQuery = "SELECT USERNAME FROM USERS WHERE USERNAME = '" + userName + "';";	// Get specific user name.
     UserSqlStatement(sqlQuery);		// Call the sqlStatement() in order to send the query.
 
     if (_usersList.empty())	// Check if the users list is empty.

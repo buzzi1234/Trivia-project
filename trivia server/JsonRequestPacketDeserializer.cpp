@@ -29,12 +29,12 @@ Structs::SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(s
     nlohmann::json SignupJson = jsonDeserializer(buffer); // converting into json
 
     //Create new SignupRequest with parmeters
-    Structs::SignupRequest* t = new Structs::SignupRequest();
-    t->password = SignupJson["password"];
-    t->username = SignupJson["username"];
-    t->email = SignupJson["email"];
+    Structs::SignupRequest t;
+    t.password = SignupJson["password"];
+    t.username = SignupJson["username"];
+    t.mail = SignupJson["mail"];
 
-    return *t;
+    return t;
 }
 
 /// <summary>
@@ -44,16 +44,6 @@ Structs::SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(s
 /// <returns> the json parameter </returns>
 nlohmann::json JsonRequestPacketDeserializer::jsonDeserializer(std::vector<unsigned char> buffer) const
 {
-    int len = (static_cast<int>(buffer[1]) << 24) |
-        (static_cast<int>(buffer[2]) << 16) |
-        (static_cast<int>(buffer[3]) << 8) |
-        (static_cast<int>(buffer[4]));
-
-    for (int i = 0; i < 5; i++)
-    {
-        buffer.erase(buffer.begin());
-    }
-
     std::string jsonStr(buffer.begin(), buffer.end());
 
     return nlohmann::json::parse(jsonStr);

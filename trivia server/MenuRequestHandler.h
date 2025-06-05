@@ -6,9 +6,9 @@
 class MenuRequestHandler : public IRequestHandler
 {
 public:
-    MenuRequestHandler() = default;
-    ~MenuRequestHandler() = default;
-    virtual bool isRequestRelevant(Structs::RequestInfo& reqInfo) const override;
-    virtual Structs::RequestResult handleRequest(Structs::RequestInfo& reqInfo) const override;
+	MenuRequestHandler() = default;
+
+	virtual bool isRequestRelevant(Structs::RequestInfo& reqInfo) const override;
+	virtual Structs::RequestResult handleRequest(Structs::RequestInfo& reqInfo) const override;
 
 };

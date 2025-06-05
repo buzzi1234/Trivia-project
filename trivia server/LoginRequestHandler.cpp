@@ -1,4 +1,5 @@
 #include "LoginRequestHandler.h"
+#include "RequestHandlerFactory.h"
 #include <iostream>
 
 LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory) : _handlerFactory(handlerFactory)
@@ -63,7 +64,7 @@ Structs::RequestResult LoginRequestHandler::handleLoginRequest(Structs::RequestI
     }
     else
     {
-        result.newHandler = new LoginRequestHandler(_handlerFactory);
+        result.newHandler = nullptr;
     }
 
     return result;
@@ -81,7 +82,7 @@ Structs::RequestResult LoginRequestHandler::handleSignupRequest(Structs::Request
     JsonRequestPacketDeserializer d;
 
     Structs::SignupRequest req = d.deserializeSignupRequest(ri.buffer);
-    int status = _handlerFactory.getLoginManager().signup(req.username, req.password, req.email);
+    int status = _handlerFactory.getLoginManager().signup(req.username, req.password, req.mail);
 
     Structs::SignupResponse res;
     res.status = status;
@@ -108,6 +109,15 @@ Structs::RequestResult LoginRequestHandler::handleErrorRequest(Structs::RequestI
     JsonResponsePacketSerializer s; // obj for serializer
 
     Structs::ErrorResponse res;
+
+    res.mesagge = R"({
+        "mesagge" : "ERROR"})";
+    Structs::RequestResult reault;
+    reault.response = s.serializeResponse(res);
+    reault.newHandler = nullptr;
+
+    return reault;
+}
 
     res.mesagge = R"({
         "mesagge" : "ERROR"})";
