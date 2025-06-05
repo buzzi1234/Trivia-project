@@ -1,12 +1,9 @@
 #include "LoginRequestHandler.h"
-#include "JsonRequestPacketDeserializer.h"
-
+#include <iostream>
 
 LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory) : _handlerFactory(handlerFactory)
 {
 }
-
-
 
 /// <summary>
 /// The function gets RequestInfo struct and checks
@@ -48,31 +45,28 @@ Structs::RequestResult LoginRequestHandler::handleRequest(Structs::RequestInfo& 
 /// <returns> RequestResult of ( log, sign, error ) </returns>
 Structs::RequestResult LoginRequestHandler::handleLoginRequest(Structs::RequestInfo& ri) const
 {
-    JsonResponsePacketSerializer serializer;
+    JsonResponsePacketSerializer s; // obj for serializer
+    JsonRequestPacketDeserializer d;
 
-    try 
+    Structs::LoginRequest req = d.deserializeLoginRequest(ri.buffer);
+    int status = _handlerFactory.getLoginManager().login(req.username, req.password);
+
+    Structs::LoginResponse res;
+    res.status = status;
+
+    Structs::RequestResult result;
+    result.response = s.serializeResponse(res);
+
+    if (status == LOG_CODE)
     {
-        nlohmann::json j = nlohmann::json::parse(ri.buffer);
-        std::string username = j["username"];
-        std::string password = j["password"];
-
-        LoginManager& loginManager = _handlerFactory.getLoginManager();
-        int loginResult = loginManager.login(username, password);
-
-        Structs::RequestResult rr;
-        Structs::LoginResponse loginResponse;
-
-        loginResponse.status = loginResult;
-        rr.response = serializer.serializeResponse(loginResponse);
-
-        rr.newHandler = _handlerFactory.createLoginRequestHandler();
-
-        return rr;
+        result.newHandler = _handlerFactory.createMenuRequestHandler();
     }
-    catch (const std::exception& e) 
+    else
     {
-        return handleErrorRequest(ri);
+        result.newHandler = new LoginRequestHandler(_handlerFactory);
     }
+
+    return result;
 }
 
 
@@ -83,33 +77,25 @@ Structs::RequestResult LoginRequestHandler::handleLoginRequest(Structs::RequestI
 /// <returns> RequestResult of ( log, sign, error ) </returns>
 Structs::RequestResult LoginRequestHandler::handleSignupRequest(Structs::RequestInfo& ri) const
 {
-    JsonResponsePacketSerializer serializer;
+    JsonResponsePacketSerializer s;// obj for serializer
+    JsonRequestPacketDeserializer d;
 
-    try 
+    Structs::SignupRequest req = d.deserializeSignupRequest(ri.buffer);
+    int status = _handlerFactory.getLoginManager().signup(req.username, req.password, req.email);
+
+    Structs::SignupResponse res;
+    res.status = status;
+    Structs::RequestResult result;
+    result.response = s.serializeResponse(res);
+    if (status == SIGN_CODE)
     {
-
-        nlohmann::json j = nlohmann::json::parse(ri.buffer);
-        std::string username = j["username"];
-        std::string password = j["password"];
-        std::string email = j["email"];
-
-        LoginManager& loginManager = _handlerFactory.getLoginManager();
-        int signupResult = loginManager.signup(username, password, email);
-
-        Structs::RequestResult rr;
-        Structs::SignupResponse signupResponse;
-
-        signupResponse.status = signupResult; 
-        rr.response = serializer.serializeResponse(signupResponse);
-
-        rr.newHandler = _handlerFactory.createLoginRequestHandler();
-
-        return rr;
+        result.newHandler = _handlerFactory.createMenuRequestHandler();
     }
-    catch (const std::exception& e) 
+    else
     {
-        return handleErrorRequest(ri);
+        result.newHandler = new LoginRequestHandler(_handlerFactory);
     }
+    return result;
 }
 
 /// <summary>
@@ -119,16 +105,15 @@ Structs::RequestResult LoginRequestHandler::handleSignupRequest(Structs::Request
 /// <returns> RequestResult of ( log, sign, error ) </returns>
 Structs::RequestResult LoginRequestHandler::handleErrorRequest(Structs::RequestInfo& ri) const
 {
-    JsonResponsePacketSerializer serializer;
+    JsonResponsePacketSerializer s; // obj for serializer
 
-    Structs::RequestResult rr;
-    Structs::ErrorResponse errorResponse;
+    Structs::ErrorResponse res;
 
-    errorResponse.mesagge = R"({"message": "ERROR"})";
-    rr.response = serializer.serializeResponse(errorResponse);
-    rr.newHandler = _handlerFactory.createLoginRequestHandler();
+    res.mesagge = R"({
+        "mesagge" : "ERROR"})";
+    Structs::RequestResult reault;
+    reault.response = s.serializeResponse(res);
+    reault.newHandler = nullptr;
 
-    return rr;
+    return reault;
 }
-
-

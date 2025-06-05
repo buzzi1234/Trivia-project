@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Structs.h"
+#include <optional>
 
-#define LOG_CODE 1
-#define SIGN_CODE 2
-#define ERROR_CODE 3
+enum {LOG_CODE = 1, SIGN_CODE, ERROR_CODE, NAME_EXIST_ERROR, NAME_DOES_NOT_EXIST_ERROR, ROOM_IS_ACTIVE, ROOM_IS_NOT_ACTIVE, ROOM_DOES_NOT_EXIST};

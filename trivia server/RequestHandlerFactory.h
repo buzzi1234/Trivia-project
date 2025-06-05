@@ -2,8 +2,8 @@
 
 #include "LoginManager.h"
 #include "IDatabase.h"
-
-class LoginRequestHandler;
+#include "MenuRequestHandler.h"
+#include "LoginRequestHandler.h"
 
 class RequestHandlerFactory
 {
@@ -12,8 +12,9 @@ private:
 	IDatabase* _database;
 
 public:
-	RequestHandlerFactory(LoginManager& loginManager, IDatabase* database);
 
+	RequestHandlerFactory(LoginManager& loginManager, IDatabase* database);
+	MenuRequestHandler* createMenuRequestHandler();
 	LoginRequestHandler* createLoginRequestHandler();
 	LoginManager& getLoginManager();
 };

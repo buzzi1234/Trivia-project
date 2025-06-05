@@ -8,6 +8,16 @@ class IRequestHandler;
 class Structs
 {
 public:
+	struct RoomData
+	{
+		unsigned int id;
+		std::string name;
+		unsigned int maxPlayers;
+		unsigned int numOfQuestionsInGame;
+		unsigned int timePerQuestion;
+		unsigned int status;
+	}typedef RoomData;
+
 	struct RequestResult
 	{
 		std::vector<unsigned char> response;
