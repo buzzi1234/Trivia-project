@@ -90,6 +90,81 @@ std::list<Question> SqliteDatabase::getQuestions(int numberOfQuestions)
     return _questionList;
 }
 
+std::map<std::string, int> SqliteDatabase::getHighScore()
+{
+    std::string query = "SELECT user_name FROM statistics ORDER BY score DESC LIMIT 5;";
+    statesSqlStatement(query);
+
+    for (const auto& state : _statesList)
+    {
+        std::string userName = state.getName();
+        int score = std::stoi(state.getDescription()); // Assuming the score is stored in the description field.
+        _highScoreMap[userName] = score; // Add to the high score map.
+    }
+    return _highScoreMap;
+}
+
+float SqliteDatabase::getPllayerAverageAnswerTime(const std::string& username)
+{
+    std::string query = "SELECT average_answer_time FROM statistics WHERE user_name = '" + username + "';";
+    statesSqlStatement(query);
+
+    if (_statesList.empty())
+    {
+        throw std::runtime_error("No statistics found for the user: " + username);
+    }
+    return std::stof(_statesList.front().getName());
+}
+
+int SqliteDatabase::getNumOfCorrectAnswers(const std::string& username)
+{
+    std::string query = "SELECT num_of_correct_answers FROM statistics WHERE user_name = '" + username + "';";
+    statesSqlStatement(query);
+    if (_statesList.empty())
+    {
+        throw std::runtime_error("No statistics found for the user: " + username);
+    }
+    return std::stoi(_statesList.front().getName());
+}
+
+int SqliteDatabase::getNumOfTotalAnswers(const std::string& username)
+{
+    std::string query = "SELECT num_of_total_answers FROM statistics WHERE user_name = '" + username + "';";
+    statesSqlStatement(query);
+    if (_statesList.empty())
+    {
+        throw std::runtime_error("No statistics found for the user: " + username);
+    }
+    return std::stoi(_statesList.front().getName());
+}
+
+int SqliteDatabase::getNumOfPlayerGames(const std::string& username)
+{
+    std::string query = "SELECT num_of_player_games FROM statistics WHERE user_name = '" + username + "';";
+    statesSqlStatement(query);
+    if (_statesList.empty())
+    {
+        throw std::runtime_error("No statistics found for the user: " + username);
+    }
+    return std::stoi(_statesList.front().getName());
+}
+
+int SqliteDatabase::getPlayerScore(const std::string& username)
+{
+    std::string query = "SELECT player_score FROM statistics WHERE user_name = '" + username + "';";
+    statesSqlStatement(query);
+    if (_statesList.empty())
+    {
+        throw std::runtime_error("No statistics found for the user: " + username);
+    }
+    return std::stoi(_statesList.front().getName());
+}
+
+
+//צריך לפתוח כלביק של סתטוס ולהשתמש במחלקה ובליסט שעשיתי ולעשות את השאילתות
+
+// Private functions.
+
 // Callback function to extract user data (ID and name)
 int usercallback(void* data, int argc, char** argv, char** azColName)
 {
@@ -167,6 +242,41 @@ int questioncallback(void* data, int argc, char** argv, char** azColName)
     return 0;
 }
 
+int statesCallback(void* data, int argc, char** argv, char** azColName)
+{
+    int id = 0;
+    std::string name = "\0";
+    std::string description = "\0";
+
+    for (int i = 0; i < argc; i++)
+    {
+        if (argv[i] != nullptr)
+        {
+            std::string columnName = std::string(azColName[i]);
+            std::string value = argv[i];
+            if (columnName == "ID")
+            {
+                id = std::stoi(value);
+            }
+            if (columnName == "NAME")
+            {
+                name = value;
+            }
+            if (columnName == "DESCRIPTION")
+            {
+                description = value;
+            }
+        }
+    }
+
+    States state(id, name, description);
+    auto* statesList = static_cast<std::list<States>*>(data);
+    statesList->push_back(state);
+
+    return 0;
+}
+
+
 // Executes a general SQL command without returning data
 bool SqliteDatabase::sqlStatement(std::string sqlQuery)
 {
@@ -217,6 +327,23 @@ void SqliteDatabase::questionSqlStatement(std::string sqlQuery)
         sqlite3_free(errMessage);
     }
 }
+
+void SqliteDatabase::statesSqlStatement(std::string sqlQuery)
+{
+    _statesList.clear();
+
+    const char* sqlStatement = sqlQuery.c_str();
+    char* errMessage;
+    int res;
+
+    res = sqlite3_exec(_db, sqlStatement, statesCallback, &_statesList, &errMessage);
+    if (res != SQLITE_OK)
+    {
+        std::cout << "States SqlStatement: " << errMessage << std::endl;
+        sqlite3_free(errMessage);
+    }
+}
+
 
 bool SqliteDatabase::initDB()
 {
