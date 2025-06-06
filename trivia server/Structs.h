@@ -9,6 +9,27 @@ class Structs
 {
 public:
 
+	struct CreateRoomRequest
+	{
+		std::string roomName;
+		unsigned int maxUsers;
+		unsigned int questionCount;
+		unsigned int answerTimeout;
+
+	}typedef CreateRoomRequest;
+
+	struct GetPlayersInRoomRequest
+	{
+		unsigned int roomId;
+
+	}typedef GetPlayersInRoomRequest;
+	
+	struct JoinRoomRequest
+	{
+		unsigned int roomId;
+
+	}typedef JoinRoomRequest;
+
 	struct RoomData
 	{
 		unsigned int id;

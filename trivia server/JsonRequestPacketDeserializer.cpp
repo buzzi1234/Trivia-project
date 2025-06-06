@@ -48,3 +48,57 @@ nlohmann::json JsonRequestPacketDeserializer::jsonDeserializer(std::vector<unsig
 
     return nlohmann::json::parse(jsonStr);
 }
+
+/// <summary>
+/// The function deserialize the buffer into json
+/// and than it takes the json and convert it to a GetPlayersInRoomRequest struct 
+/// </summary>
+/// <param name="buffer"> Row of bytes </param>
+/// <returns> GetPlayersInRoomRequest struct ( roomId ) </returns>
+Structs::GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializeGetPlayersRequest(std::vector<unsigned char> buffer) const
+{
+    nlohmann::json PlayersInRoom = jsonDeserializer(buffer); // converting into json
+
+    //Create new GetPlayersInRoomRequest with parmeters
+    Structs::GetPlayersInRoomRequest t;
+    t.roomId = PlayersInRoom["roomId"];
+
+    return t;
+}
+
+/// <summary>
+/// The function deserialize the buffer into json
+/// and than it takes the json and convert it to a JoinRoomRequest struct 
+/// </summary>
+/// <param name="buffer"> Row of bytes </param>
+/// <returns> JoinRoomRequest struct ( roomId ) </returns>
+Structs::JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(std::vector<unsigned char> buffer) const
+{
+    nlohmann::json JoinRoom = jsonDeserializer(buffer); // converting into json
+
+    //Create new JoinRoomRequest with parmeters
+    Structs::JoinRoomRequest t;
+    t.roomId = JoinRoom["roomId"];
+
+    return t;
+}
+
+/// <summary>
+/// The function deserialize the buffer into json
+/// and than it takes the json and convert it to a CreateRoomRequest struct 
+/// </summary>
+/// <param name="buffer"> Row of bytes </param>
+/// <returns> CreateRoomRequest struct ( roomName, maxUsers, questionCount, answerTimeout ) </returns>
+Structs::CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(std::vector<unsigned char> buffer) const
+{
+    nlohmann::json CreateRoom = jsonDeserializer(buffer); // converting into json
+
+    //Create new CreateRoomRequest with parmeters
+    Structs::CreateRoomRequest t;
+    t.roomName = CreateRoom["roomName"];
+    t.maxUsers = CreateRoom["maxUsers"];
+    t.questionCount = CreateRoom["questionCount"];
+    t.answerTimeout = CreateRoom["answerTimeout"];
+
+    return t;
+}
