@@ -91,6 +91,7 @@ std::string JsonResponsePacketSerializer::RoomDataToJsonMsg(Structs::RoomData rd
 		R"(,"numOfQuestionsInGame" : )" + std::to_string(rd.numOfQuestionsInGame) +
 		R"(,"timePerQuestion" : )" + std::to_string(rd.timePerQuestion) +
 		R"(,"status" : )" + std::to_string(rd.status) + "}";
+	return str;
 }
 
 /// <summary>
@@ -122,7 +123,7 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Struc
 	}
 	std::vector<unsigned char> vec_char(status.begin(), status.end());
 
-	serializeAll(vec_char, GET_ROOMS);
+	return serializeAll(vec_char, GET_ROOMS);
 
 }
 
@@ -189,7 +190,7 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Struc
 	}
 	std::vector<unsigned char> vec_char(status.begin(), status.end());
 
-	serializeAll(vec_char, GET_HIGH_SCORE);
+	return serializeAll(vec_char, GET_HIGH_SCORE);
 }
 
 /// <summary>
@@ -208,5 +209,5 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Struc
 	}
 	std::vector<unsigned char> vec_char(status.begin(), status.end());
 
-	serializeAll(vec_char, GET_PERSONAL_STATS);
+	return serializeAll(vec_char, GET_PERSONAL_STATS);
 }

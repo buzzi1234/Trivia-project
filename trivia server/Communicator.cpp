@@ -13,8 +13,8 @@
 Communicator::Communicator(RequestHandlerFactory& handlerFactory) : _handlerFactory(handlerFactory), _running(false)
 {
     WSADATA wsaData;
-	WSAStartup(MAKEWORD(2, 2), &wsaData); //activate the Winsock DLL
-	_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP); // create a socket for TCP communication
+    WSAStartup(MAKEWORD(2, 2), &wsaData); //activate the Winsock DLL
+    _serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP); // create a socket for TCP communication
     if (_serverSocket == INVALID_SOCKET)
         throw std::runtime_error("Failed to create socket");
 }
@@ -37,10 +37,10 @@ void Communicator::bindAndListen(int port) const
     sa.sin_addr.s_addr = INADDR_ANY;
     sa.sin_port = htons(port);
 
-	if (bind(_serverSocket, (SOCKADDR*)&sa, sizeof(sa)) == SOCKET_ERROR) // bind the socket to the address and port
+    if (bind(_serverSocket, (SOCKADDR*)&sa, sizeof(sa)) == SOCKET_ERROR) // bind the socket to the address and port
         throw std::runtime_error("Bind failed");
 
-	if (listen(_serverSocket, SOMAXCONN) == SOCKET_ERROR) // listen for incoming connections
+    if (listen(_serverSocket, SOMAXCONN) == SOCKET_ERROR) // listen for incoming connections
         throw std::runtime_error("Listen failed");
 }
 
@@ -53,7 +53,7 @@ void Communicator::startHandleRequests()
     std::cout << "server is listening for connections " << std::endl;
     while (_running)
     {
-		SOCKET clientSocket = accept(_serverSocket, nullptr, nullptr); // accept a new client connection
+        SOCKET clientSocket = accept(_serverSocket, nullptr, nullptr); // accept a new client connection
         if (clientSocket == INVALID_SOCKET)
         {
             if (!_running) break;
@@ -62,7 +62,7 @@ void Communicator::startHandleRequests()
         }
 
         std::lock_guard<std::mutex> lock(_clientsMutex);
-		_clients[clientSocket] = _handlerFactory.createLoginRequestHandler(); // create a new request handler for the client
+        _clients[clientSocket] = _handlerFactory.createLoginRequestHandler(); // create a new request handler for the client
 
         std::thread(&Communicator::handleNewClient, this, clientSocket).detach();
     }
@@ -108,10 +108,10 @@ void Communicator::handleNewClient(SOCKET clientSocket)
             }
 
             uint8_t id = headerBuffer[0];
-			uint8_t size = headerBuffer[1] << 24 | headerBuffer[2] << 16 | headerBuffer[3] << 8 | headerBuffer[4];
+            uint8_t size = headerBuffer[1] << 24 | headerBuffer[2] << 16 | headerBuffer[3] << 8 | headerBuffer[4];
 
             std::vector<unsigned char> buffer(size);
-            bytesRead = recv(clientSocket,(char*)buffer.data(), size, 0);
+            bytesRead = recv(clientSocket, (char*)buffer.data(), size, 0);
             if (bytesRead <= 0)
                 break;
 
@@ -121,10 +121,10 @@ void Communicator::handleNewClient(SOCKET clientSocket)
             info.receivalTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
             Structs::RequestResult result = handler->handleRequest(info);
-			if (result.newHandler != nullptr)
-			{
-				handler.reset(result.newHandler);
-			}
+            if (result.newHandler != nullptr)
+            {
+                handler.reset(result.newHandler);
+            }
 
             send(clientSocket, reinterpret_cast<const char*>(result.response.data()), result.response.size(), 0);
         }

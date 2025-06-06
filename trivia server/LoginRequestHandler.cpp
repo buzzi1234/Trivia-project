@@ -119,11 +119,4 @@ Structs::RequestResult LoginRequestHandler::handleErrorRequest(Structs::RequestI
     return reault;
 }
 
-    res.mesagge = R"({
-        "mesagge" : "ERROR"})";
-    Structs::RequestResult reault;
-    reault.response = s.serializeResponse(res);
-    reault.newHandler = nullptr;
 
-    return reault;
-}
