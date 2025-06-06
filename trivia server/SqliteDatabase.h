@@ -26,9 +26,9 @@ public:
 	std::list<Question> getQuestions(int) override;
 
 private:
-	sqlite3* _db;	// Data base info.
-	std::list<User> _usersList;	// List of User (User).
-	std::list<Question> _questionList;	// List of Question (Question).
+	sqlite3* _db = nullptr;
+	std::list<User> _usersList;
+	std::list<Question> _questionList;
 	std::string _password;
 
 	bool sqlStatement(std::string sqlQuery);
