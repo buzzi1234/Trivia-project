@@ -145,6 +145,8 @@
     <ClInclude Include="Server.h" />
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="SqliteDatabase.h" />
+    <ClInclude Include="States.h" />
+    <ClInclude Include="StatisticsManager.h" />
     <ClInclude Include="Structs.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>
@@ -165,6 +167,8 @@
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="sqlite3.c" />
     <ClCompile Include="SqliteDatabase.cpp" />
+    <ClCompile Include="States.cpp" />
+    <ClCompile Include="StatisticsManager.cpp" />
     <ClCompile Include="Structs.cpp" />
     <ClCompile Include="User.cpp" />
   </ItemGroup>
