@@ -47,26 +47,84 @@ Structs::RequestResult MenuRequestHandler::handleRequest(Structs::RequestInfo& r
 
 }
 
-Structs::RequestResult MenuRequestHandler::signout(Structs::RequestInfo reqInfo)
+Structs::RequestResult MenuRequestHandler::signout(Structs::RequestInfo& reqInfo) const
 {
-    JsonResponsePacketSerializer s; // obj for serializer
-    
+    Structs::RequestResult rr;
+    Structs::LogoutResponse lr;
+    JsonResponsePacketSerializer j;
 
-    Structs::LogoutResponse res;
-    res.status = reqInfo.id;
+    m_handlerFactory.getLoginManager().logout(m_user.getUserName());
 
-    Structs::RequestResult result;
-    result.response = s.serializeResponse(res);
+    lr.status = reqInfo.id;
 
-    if (res.status == LOGOUT)
-    {
-        result.newHandler = m_handlerFactory.createMenuRequestHandler();
-    }
-    else
-    {
-        result.newHandler = nullptr;
-    }
+    rr.response = j.serializeResponse(lr);
+    rr.newHandler = this;
 
-    return result;
+    return rr;
 }
+
+Structs::RequestResult MenuRequestHandler::getRooms(Structs::RequestInfo& reqInfo) const
+{
+    Structs::RequestResult rr;
+    Structs::GetRoomsResponse grr;
+    JsonResponsePacketSerializer j;
+
+    grr.rooms = m_handlerFactory.getRoomManager().getRooms();
+    grr.status = reqInfo.id;
+
+    rr.response = j.serializeResponse(grr);
+    rr.newHandler = this;
+
+}
+
+Structs::RequestResult MenuRequestHandler::getPlayersInRoom(Structs::RequestInfo& reqInfo) const
+{
+    Structs::RequestResult rr;
+
+    Structs::GetPlayersInRoomRequest rd;
+    Structs::GetPlayersInRoomResponse grr;
+
+
+    JsonResponsePacketSerializer j;
+    JsonRequestPacketDeserializer h;
+
+    rd = h.deserializeGetPlayersRequest(reqInfo.buffer);
+    std::vector<Structs::RoomData> roomInfo = m_handlerFactory.getRoomManager().getRooms();
+
+    for (auto it : roomInfo)
+    {
+        grr.players.push_back(it.name);
+    }
+
+    rr.response = j.serializeResponse(grr);
+    rr.newHandler = this;
+}
+
+Structs::RequestResult MenuRequestHandler::getPersonalStats(Structs::RequestInfo& reqInfo) const
+{
+    return Structs::RequestResult();
+}
+
+Structs::RequestResult MenuRequestHandler::getHighScore(Structs::RequestInfo& reqInfo) const
+{
+    return Structs::RequestResult();
+}
+
+Structs::RequestResult MenuRequestHandler::joinRoom(Structs::RequestInfo& reqInfo) const
+{
+    return Structs::RequestResult();
+}
+
+Structs::RequestResult MenuRequestHandler::createRoom(Structs::RequestInfo& reqInfo) const
+{
+    return Structs::RequestResult();
+}
+
+Structs::RequestResult MenuRequestHandler::handleErrorRequest(Structs::RequestInfo& reqInfo) const
+{
+    return Structs::RequestResult();
+}
+
+
+
 

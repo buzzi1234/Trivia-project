@@ -18,7 +18,7 @@ public:
 
 	std::vector<unsigned char> serializeResponse(Structs::LogoutResponse lor);
 	std::vector<unsigned char> serializeResponse(Structs::GetRoomsResponse grr);
-	std::vector<unsigned char> serializerResponse(Structs::GetPlayersInRoomResponse gpr);
+	std::vector<unsigned char> serializeResponse(Structs::GetPlayersInRoomResponse gpr);
 	std::vector<unsigned char> serializeResponse(Structs::JoinRoomResponse jrr);
 	std::vector<unsigned char> serializeResponse(Structs::CreateRoomResponse crr);
 	std::vector<unsigned char> serializeResponse(Structs::GetHighScoreResponse ghr);

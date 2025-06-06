@@ -16,14 +16,14 @@ public:
 
 	virtual bool isRequestRelevant(Structs::RequestInfo& reqInfo) const override;
 	virtual Structs::RequestResult handleRequest(Structs::RequestInfo& reqInfo) const override;
-	Structs::RequestResult signout(Structs::RequestInfo reqInfo);
-	Structs::RequestResult getRooms(Structs::RequestInfo reqInfo);
-	Structs::RequestResult getPlayersInRoom(Structs::RequestInfo reqInfo);
-	Structs::RequestResult getPersonalStats(Structs::RequestInfo reqInfo);
-	Structs::RequestResult getHighScore(Structs::RequestInfo reqInfo);
-	Structs::RequestResult joinRoom(Structs::RequestInfo reqInfo);
-	Structs::RequestResult createRoom(Structs::RequestInfo reqInfo);
-	Structs::RequestResult handleErrorRequest(Structs::RequestInfo reqInfo);
+	Structs::RequestResult signout(Structs::RequestInfo& reqInfo) const;
+	Structs::RequestResult getRooms(Structs::RequestInfo& reqInfo) const;
+	Structs::RequestResult getPlayersInRoom(Structs::RequestInfo& reqInfo) const;
+	Structs::RequestResult getPersonalStats(Structs::RequestInfo& reqInfo) const;
+	Structs::RequestResult getHighScore(Structs::RequestInfo& reqInfo) const;
+	Structs::RequestResult joinRoom(Structs::RequestInfo& reqInfo) const;
+	Structs::RequestResult createRoom(Structs::RequestInfo& reqInfo) const;
+	Structs::RequestResult handleErrorRequest(Structs::RequestInfo& reqInfo) const;
 
 
 

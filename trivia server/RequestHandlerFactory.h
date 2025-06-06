@@ -5,6 +5,7 @@
 #include "LoginManager.h"
 #include "IDatabase.h"
 #include "RoomManager.h"
+#include "StatisticsManager.h"
 
 class LoginRequestHandler;
 
@@ -13,12 +14,14 @@ class RequestHandlerFactory
 private:
 	LoginManager& _loginManager;
 	IDatabase* _database;
-	RoomManager m_roomManager;
+	RoomManager& m_roomManager;
+	StatisticsManager& m_StatisticsManager;
+
 public:
-	RequestHandlerFactory(LoginManager& loginManager, IDatabase* db);
+	RequestHandlerFactory(LoginManager& loginManager, IDatabase* db, RoomManager& roomManager, StatisticsManager& StatisticsManager);
 	LoginRequestHandler* createLoginRequestHandler();
-	MenuRequestHandler* createMenuRequestHandler();
 	LoginManager& getLoginManager();
 	MenuRequestHandler* createMenuRequestHandler(LoggedUser logged_user);
+	StatisticsManager& getStatisticsManager();
 	RoomManager& getRoomManager();
 };

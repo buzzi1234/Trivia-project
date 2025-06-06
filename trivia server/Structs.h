@@ -82,7 +82,7 @@ public:
 	struct RequestResult
 	{
 		std::vector<unsigned char> response;
-		IRequestHandler* newHandler;
+		const IRequestHandler* newHandler;
 
 	}typedef RequestResult;
 

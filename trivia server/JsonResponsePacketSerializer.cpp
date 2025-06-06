@@ -132,7 +132,7 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Struc
 /// </summary>
 /// <param name="lr"> A struct that containe status num and a vector of players that in the room </param>
 /// <returns> Buffer ( row of bits ) to the client </returns>
-std::vector<unsigned char> JsonResponsePacketSerializer::serializerResponse(Structs::GetPlayersInRoomResponse gpr)
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Structs::GetPlayersInRoomResponse gpr)
 {
 	std::string status = "{";
 	int i = 1;
