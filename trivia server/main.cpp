@@ -7,6 +7,8 @@
 #include "SqliteDatabase.h"
 #include "RequestHandlerFactory.h"
 #include "LoginManager.h"
+#include "RoomManager.h"
+#include "StatisticsManager.h"
 
 
 int main()
@@ -19,7 +21,10 @@ int main()
 		SqliteDatabase* db = new SqliteDatabase();
 
 		LoginManager loginManager(db);
-		RequestHandlerFactory factory(loginManager, db);
+		RoomManager roomManager;
+		StatisticsManager statsManager(db);
+
+		RequestHandlerFactory factory(loginManager, db,roomManager, statsManager);
 
 		Server server(factory, db);
 		server.run(8826);

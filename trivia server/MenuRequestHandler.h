@@ -3,7 +3,10 @@
 #include "Constant.h"
 #include "LoggedUser.h"
 #include "RequestHandlerFactory.h"
+#include "RoomMemberRequestHandler.h"
+#include "RoomAdminRequestHandler.h"
 
+class RequestHandlerFactory;
 
 class MenuRequestHandler : public IRequestHandler
 {
@@ -12,7 +15,8 @@ private:
 	RequestHandlerFactory& m_handlerFactory;
 
 public:
-	MenuRequestHandler() = default;
+	MenuRequestHandler(LoggedUser loged, RequestHandlerFactory& factory);
+	~MenuRequestHandler() = default;
 
 	virtual bool isRequestRelevant(Structs::RequestInfo& reqInfo) const override;
 	virtual Structs::RequestResult handleRequest(Structs::RequestInfo& reqInfo) const override;

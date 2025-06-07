@@ -60,7 +60,8 @@ Structs::RequestResult LoginRequestHandler::handleLoginRequest(Structs::RequestI
 
     if (status == LOG_CODE)
     {
-        result.newHandler = _handlerFactory.createMenuRequestHandler();
+        LoggedUser loged(req.username);
+        result.newHandler = _handlerFactory.createMenuRequestHandler(loged);
     }
     else
     {
@@ -90,7 +91,9 @@ Structs::RequestResult LoginRequestHandler::handleSignupRequest(Structs::Request
     result.response = s.serializeResponse(res);
     if (status == SIGN_CODE)
     {
-        result.newHandler = _handlerFactory.createMenuRequestHandler();
+       
+        LoggedUser loged(req.username);
+        result.newHandler = _handlerFactory.createMenuRequestHandler(loged);
     }
     else
     {

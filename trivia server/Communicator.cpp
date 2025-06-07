@@ -96,7 +96,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 {
     try
     {
-        std::unique_ptr<IRequestHandler> handler(_handlerFactory.createLoginRequestHandler());
+        std::unique_ptr<const IRequestHandler> handler(_handlerFactory.createLoginRequestHandler());
 
         while (true)
         {

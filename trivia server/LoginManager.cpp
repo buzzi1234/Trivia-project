@@ -94,6 +94,7 @@ void LoginManager::logout(std::string username)
     else
     {
         std::cout << "User Does not exist or does not login" << std::endl;
+        throw std::exception("User Does not exist or does not login");
     }
 
 }

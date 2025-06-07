@@ -1,5 +1,11 @@
 #include "MenuRequestHandler.h"
 
+//consructor
+MenuRequestHandler::MenuRequestHandler(LoggedUser loged, RequestHandlerFactory& factory) : m_user(loged), m_handlerFactory(factory)
+{
+}
+
+
 bool MenuRequestHandler::isRequestRelevant(Structs::RequestInfo& reqInfo) const
 {
     if (reqInfo.id == LOGOUT || reqInfo.id == GET_PERSONAL_STATS ||
@@ -53,9 +59,15 @@ Structs::RequestResult MenuRequestHandler::signout(Structs::RequestInfo& reqInfo
     Structs::LogoutResponse lr;
     JsonResponsePacketSerializer j;
 
-    m_handlerFactory.getLoginManager().logout(m_user.getUserName());
-
-    lr.status = reqInfo.id;
+    try {
+        m_handlerFactory.getLoginManager().logout(m_user.getUserName());
+        lr.status = reqInfo.id;
+    }
+  
+    catch (std::exception e)
+    {
+        lr.status = FAIL_LOGOUT;
+    }
 
     rr.response = j.serializeResponse(lr);
     rr.newHandler = this;
@@ -70,10 +82,19 @@ Structs::RequestResult MenuRequestHandler::getRooms(Structs::RequestInfo& reqInf
     JsonResponsePacketSerializer j;
 
     grr.rooms = m_handlerFactory.getRoomManager().getRooms();
-    grr.status = reqInfo.id;
+    if (grr.rooms.empty())
+    {
+        grr.status = FAIL_GET_ROOMS;
+    }
+    else
+    {
+        grr.status = reqInfo.id;
+    }
 
     rr.response = j.serializeResponse(grr);
     rr.newHandler = this;
+
+    return rr;
 
 }
 
@@ -89,40 +110,133 @@ Structs::RequestResult MenuRequestHandler::getPlayersInRoom(Structs::RequestInfo
     JsonRequestPacketDeserializer h;
 
     rd = h.deserializeGetPlayersRequest(reqInfo.buffer);
-    std::vector<Structs::RoomData> roomInfo = m_handlerFactory.getRoomManager().getRooms();
+    std::optional<Room*> roomInfo = m_handlerFactory.getRoomManager().getRoom(rd.roomId);
 
-    for (auto it : roomInfo)
+    if (roomInfo.has_value())
     {
-        grr.players.push_back(it.name);
+        grr.players = roomInfo.value()->getAllUsers();
     }
 
     rr.response = j.serializeResponse(grr);
     rr.newHandler = this;
+    return rr;
 }
 
 Structs::RequestResult MenuRequestHandler::getPersonalStats(Structs::RequestInfo& reqInfo) const
 {
-    return Structs::RequestResult();
+    Structs::RequestResult rr;
+    Structs::GetPersonalStatsResponse ps;
+
+    JsonResponsePacketSerializer j;
+    
+    ps.statistics = m_handlerFactory.getStatisticsManager().getUserStatistics(m_user.getUserName());
+
+    if (ps.statistics.empty())
+    {
+        ps.status = FAIL_GET_PERSONAL_STATS;
+    }
+    else
+    {
+        ps.status = reqInfo.id;
+    }
+
+    rr.response = j.serializeResponse(ps);
+    rr.newHandler = this;
+
+    return rr;
+    
 }
 
 Structs::RequestResult MenuRequestHandler::getHighScore(Structs::RequestInfo& reqInfo) const
 {
-    return Structs::RequestResult();
+    Structs::RequestResult rr;
+    Structs::GetHighScoreResponse ps;
+
+    JsonResponsePacketSerializer j;
+
+    
+    ps.statistics = m_handlerFactory.getStatisticsManager().getHighScore();
+
+    if (ps.statistics.empty())
+    {
+        ps.status = FAIL_GET_HIGH_SCORE;
+    }
+    else
+    {
+        ps.status = reqInfo.id;
+    }
+
+    rr.response = j.serializeResponse(ps);
+    rr.newHandler = this;
+
+    return rr;
 }
 
 Structs::RequestResult MenuRequestHandler::joinRoom(Structs::RequestInfo& reqInfo) const
 {
-    return Structs::RequestResult();
+    Structs::RequestResult rr;
+    Structs::JoinRoomRequest req;
+    Structs::JoinRoomResponse res;
+
+    JsonResponsePacketSerializer j;
+    JsonRequestPacketDeserializer d;
+
+    req = d.deserializeJoinRoomRequest(reqInfo.buffer);
+    if (m_handlerFactory.getRoomManager().getRoom(req.roomId) == std::nullopt)
+    {
+        res.status = FAIL_JOIN_ROOM;
+    }
+    else {
+        res.status = reqInfo.id;
+    }
+
+    rr.response = j.serializeResponse(res);
+    rr.newHandler = new RoomMemberRequestHandler();
+
+    return rr;
+
+    
 }
 
 Structs::RequestResult MenuRequestHandler::createRoom(Structs::RequestInfo& reqInfo) const
 {
-    return Structs::RequestResult();
+    Structs::RequestResult rr;
+    Structs::CreateRoomRequest res;
+    Structs::CreateRoomResponse req;
+
+    JsonResponsePacketSerializer j;
+    JsonRequestPacketDeserializer d;
+
+    res = d.deserializeCreateRoomRequest(reqInfo.buffer);
+    if (res.maxUsers > 0 && res.questionCount > 0 && res.roomName != "")
+    {
+        req.status = CREATE_ROOM;
+    }
+    else
+    {
+        req.status = FAIL_CREATE_ROOM;
+    }
+
+    rr.response = j.serializeResponse(req);
+    rr.newHandler = new RoomAdminRequestHandler();
+
+    return rr;
+
 }
 
 Structs::RequestResult MenuRequestHandler::handleErrorRequest(Structs::RequestInfo& reqInfo) const
 {
-    return Structs::RequestResult();
+    JsonResponsePacketSerializer s; // obj for serializer
+
+    Structs::ErrorResponse res;
+
+    res.mesagge = R"({
+        "mesagge" : "ERROR"})";
+    Structs::RequestResult reault;
+    reault.response = s.serializeResponse(res);
+    reault.newHandler = nullptr;
+
+    return reault;
 }
 
 

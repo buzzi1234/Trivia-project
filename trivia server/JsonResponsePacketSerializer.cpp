@@ -185,7 +185,7 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Struc
 	int i = 1;
 	for (auto it : ghr.statistics)
 	{
-		status += R"(score)" + std::to_string(i) + " : " + it + ",";
+		status += R"(score)" + std::to_string(i) + " : " + std::to_string(it.second) + ",";
 		i++;
 	}
 	std::vector<unsigned char> vec_char(status.begin(), status.end());

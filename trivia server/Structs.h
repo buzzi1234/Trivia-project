@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <map>
 #include <ctime>
 #include <string>
 
@@ -69,7 +70,7 @@ public:
 	struct GetHighScoreResponse
 	{
 		unsigned int status;
-		std::vector<std::string> statistics;
+		std::map<std::string, int> statistics;
 	};
 
 	struct GetPersonalStatsResponse
