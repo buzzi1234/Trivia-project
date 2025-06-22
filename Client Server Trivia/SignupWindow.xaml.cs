@@ -51,7 +51,7 @@ namespace Client_Server_Trivia
 
             string json = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\",\"mail\":\"" + email + "\"}";
             //send message
-            byte[] data = MessageBuilder.BuildJsonMessage(2, json);
+            byte[] data = MessageBuilder.BuildJsonMessage(json);
             stream.Write(data, 0, data.Length);
 
             byte[] buffer = new byte[1024];
