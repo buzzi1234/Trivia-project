@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System;
+using System.Net.Sockets;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -50,9 +52,28 @@ namespace Client_Server_Trivia
             * - If FAILURE - reason for failure
             */
 
-            // Here you would typically validate the credentials against a server or database
-            HideError();
-            MessageBox.Show($"Welcome, {username}!");
+            TcpClient client = new TcpClient("127.0.0.1", 8826);
+            NetworkStream stream = client.GetStream();
+
+            string json = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}";
+            //send message
+            byte[] data = MessageBuilder.BuildJsonMessage(1, json);
+            stream.Write(data, 0, data.Length);
+
+            byte[] buffer = new byte[1024];
+            int bytesRead = stream.Read(buffer, 0, buffer.Length);
+            string res = Encoding.UTF8.GetString(buffer, 5, bytesRead - 5);
+            int status = MessageBuilder.GetStatus(res);
+            if(status == 1)
+            {
+                MessageBox.Show($"Welcome, {username}!"); //go to the lobby page
+            }
+            else
+            {
+                // Here you would typically validate the credentials against a server or database
+                HideError();
+            }
+            
         }
         private void SignupButton_Click(object sender, RoutedEventArgs e)
         {
@@ -80,6 +101,11 @@ namespace Client_Server_Trivia
         private void HideError()
         {
             ErrorMessageTextBlock.Visibility = Visibility.Collapsed;
+        }
+
+        private void UsernameTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }
