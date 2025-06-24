@@ -1,0 +1,271 @@
+﻿<Window x:Class="Client_Server_Trivia.HighScoresWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Client_Server_Trivia"
+        mc:Ignorable="d"
+        Title="Trivia Game - High Scores"
+        Height="900" Width="850"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="Transparent"
+        AllowsTransparency="True"
+        WindowStyle="None">
+    <Window.Resources>
+        <LinearGradientBrush x:Key="BackgroundGradient" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#ff9a9e" Offset="0"/>
+            <GradientStop Color="#fecfef" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="CardGradient" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#FFFFFF" Offset="0"/>
+            <GradientStop Color="#F8F9FA" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="GoldGradient" StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#FFD700" Offset="0"/>
+            <GradientStop Color="#FFA500" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="SilverGradient" StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#C0C0C0" Offset="0"/>
+            <GradientStop Color="#A8A8A8" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="BronzeGradient" StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#CD7F32" Offset="0"/>
+            <GradientStop Color="#B87333" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="PurpleGradient" StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#667eea" Offset="0"/>
+            <GradientStop Color="#764ba2" Offset="1"/>
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="PrimaryColor" Color="#ff6b6b"/>
+        <SolidColorBrush x:Key="AccentColor" Color="#ee5a24"/>
+
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#ff6b6b" Offset="0"/>
+                        <GradientStop Color="#ee5a24" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="20,12"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="25">
+                            <Border.Effect>
+                                <DropShadowEffect Color="#ff6b6b" BlurRadius="20" ShadowDepth="0" Opacity="0.3"/>
+                            </Border.Effect>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                            <GradientStop Color="#ff5252" Offset="0"/>
+                                            <GradientStop Color="#d63031" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="HighScoreCard" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="20"/>
+            <Setter Property="Margin" Value="15"/>
+            <Setter Property="Padding" Value="25"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" BlurRadius="25" ShadowDepth="8" Opacity="0.2"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="TopScoreCard" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="25"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Padding" Value="30"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" BlurRadius="30" ShadowDepth="10" Opacity="0.25"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PlayerNameText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#2D3748"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,10,0,5"/>
+        </Style>
+
+        <Style x:Key="ScoreText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="32"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" BlurRadius="5" ShadowDepth="1" Opacity="0.4"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="RankText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#718096"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+
+        <Storyboard x:Key="FadeInAnimation">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.8"/>
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" From="30" To="0" Duration="0:0:0.8">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+    </Window.Resources>
+
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard Storyboard="{StaticResource FadeInAnimation}"/>
+        </EventTrigger>
+    </Window.Triggers>
+
+    <Grid Background="{StaticResource BackgroundGradient}">
+        <Grid.RenderTransform>
+            <TranslateTransform/>
+        </Grid.RenderTransform>
+
+        <Button Name="CloseButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,15,20,0" Width="35" Height="35" Background="Transparent" BorderThickness="0" Foreground="White" FontSize="18" Content="✕" Cursor="Hand" Click="CloseButton_Click"/>
+
+        <!-- Background decorative elements -->
+        <Ellipse Width="400" Height="400" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-300,-150,0,0" Fill="#FFFFFF" Opacity="0.1"/>
+        <Ellipse Width="300" Height="300" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,-150,-150" Fill="#FFFFFF" Opacity="0.1"/>
+        <Ellipse Width="200" Height="200" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,-100,0,0" Fill="#FFFFFF" Opacity="0.1"/>
+
+        <Border Background="{StaticResource CardGradient}" CornerRadius="25" Width="800" Height="780" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Border.Effect>
+                <DropShadowEffect Color="Black" BlurRadius="40" ShadowDepth="15" Opacity="0.3"/>
+            </Border.Effect>
+
+            <Grid Margin="40">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header Section -->
+                <StackPanel Grid.Row="0" Margin="0,0,0,20">
+                    <!-- Logo -->
+                    <Viewbox Width="70" Height="70" Margin="0,0,0,15">
+                        <Canvas Width="120" Height="120">
+                            <Ellipse Width="120" Height="120" Fill="#ff6b6b" Opacity="0.1"/>
+                            <Rectangle Width="35" Height="50" Canvas.Left="25" Canvas.Top="35" 
+                     Fill="#667eea" RadiusX="5" RadiusY="5" Stroke="White" StrokeThickness="2"/>
+                            <Rectangle Width="25" Height="15" Canvas.Left="30" Canvas.Top="45" 
+                     Fill="White" RadiusX="2" RadiusY="2"/>
+                            <Rectangle Width="25" Height="8" Canvas.Left="30" Canvas.Top="55" 
+                     Fill="White" RadiusX="2" RadiusY="2"/>
+                            <Rectangle Width="35" Height="50" Canvas.Left="60" Canvas.Top="35" 
+                     Fill="White" RadiusX="5" RadiusY="5" Stroke="#ff6b6b" StrokeThickness="2"/>
+                            <Path Canvas.Left="72" Canvas.Top="50" Fill="#ff6b6b" 
+                  Data="M0,5 C0,2 2,0 5,0 C8,0 10,2 10,5 C10,8 5,15 5,15 S0,8 0,5 Z"/>
+                            <TextBlock Canvas.Left="63" Canvas.Top="37" Text="A" FontSize="8" 
+                     FontWeight="Bold" Foreground="#ff6b6b"/>
+                            <Path Fill="#ffd700" Canvas.Left="15" Canvas.Top="20" 
+                  Data="M5,0 L6,3 L10,3 L7,5 L8,9 L5,7 L2,9 L3,5 L0,3 L4,3 Z"/>
+                            <Path Fill="#ffd700" Canvas.Left="95" Canvas.Top="25" 
+                  Data="M3,0 L4,2 L6,2 L4,3 L5,6 L3,4 L1,6 L2,3 L0,2 L2,2 Z"/>
+                            <Path Fill="#ffd700" Canvas.Left="85" Canvas.Top="90" 
+                  Data="M4,0 L5,2 L8,2 L6,4 L7,7 L4,5 L1,7 L2,4 L0,2 L3,2 Z"/>
+                        </Canvas>
+                    </Viewbox>
+                    <TextBlock Text="TRIVIA MASTER" FontSize="32" FontWeight="Bold" 
+              Foreground="#2D3748" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                    <TextBlock Text="Statistics" FontSize="20" FontWeight="SemiBold" 
+              Foreground="#4A5568" HorizontalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Podium Section -->
+                <Grid Grid.Row="1" Margin="0,0,0,30">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1.2*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 2nd Place -->
+                    <Border Grid.Column="0" Style="{StaticResource HighScoreCard}" Margin="5,30,5,0">
+                        <StackPanel>
+                            <Border Width="80" Height="80" Background="{StaticResource SilverGradient}" CornerRadius="40" Margin="0,0,0,15">
+                                <Border.Effect>
+                                    <DropShadowEffect Color="#C0C0C0" BlurRadius="15" ShadowDepth="0" Opacity="0.4"/>
+                                </Border.Effect>
+                                <TextBlock Text="2" Style="{StaticResource ScoreText}" FontSize="36" VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Name="SecondPlaceScore" Text="0" FontSize="24" FontWeight="Bold" Foreground="#C0C0C0" HorizontalAlignment="Center"/>
+                            <TextBlock Text="2nd Place" Style="{StaticResource RankText}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- 1st Place -->
+                    <Border Grid.Column="1" Style="{StaticResource TopScoreCard}">
+                        <StackPanel>
+                            <Border Width="100" Height="100" Background="{StaticResource GoldGradient}" CornerRadius="50" Margin="0,0,0,20">
+                                <Border.Effect>
+                                    <DropShadowEffect Color="#FFD700" BlurRadius="20" ShadowDepth="0" Opacity="0.5"/>
+                                </Border.Effect>
+                                <Grid>
+                                    <TextBlock Text="1" Style="{StaticResource ScoreText}" FontSize="42" VerticalAlignment="Center"/>
+                                    <Path Fill="White" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,15,0,0" 
+                                          Data="M5,0 L6,3 L10,3 L7,5 L8,9 L5,7 L2,9 L3,5 L0,3 L4,3 Z" 
+                                          RenderTransform="0.8,0,0,0.8,0,0" Opacity="0.9"/>
+                                </Grid>
+                            </Border>
+                            <TextBlock Name="FirstPlaceScore" Text="0" FontSize="32" FontWeight="Bold" Foreground="#FFD700" HorizontalAlignment="Center"/>
+                            <TextBlock Text="CHAMPION" FontSize="14" FontWeight="Bold" Foreground="#FFD700" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- 3rd Place -->
+                    <Border Grid.Column="2" Style="{StaticResource HighScoreCard}" Margin="5,30,5,0">
+                        <StackPanel>
+                            <Border Width="80" Height="80" Background="{StaticResource BronzeGradient}" CornerRadius="40" Margin="0,0,0,15">
+                                <Border.Effect>
+                                    <DropShadowEffect Color="#CD7F32" BlurRadius="15" ShadowDepth="0" Opacity="0.4"/>
+                                </Border.Effect>
+                                <TextBlock Text="3" Style="{StaticResource ScoreText}" FontSize="36" VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Name="ThirdPlaceScore" Text="0" FontSize="24" FontWeight="Bold" Foreground="#CD7F32" HorizontalAlignment="Center"/>
+                            <TextBlock Text="3rd Place" Style="{StaticResource RankText}"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <!-- Additional Stats Section -->
+
+                <!-- Back Button -->
+                <Button Grid.Row="3" Name="BackButton" Content="Back to Main Menu" Style="{StaticResource ModernButton}" Height="50" Width="250" HorizontalAlignment="Center" Click="BackButton_Click"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
