@@ -79,6 +79,7 @@ def run_tests():
         "password": "1234",
         "mail": "test@gmail.com"
     })
+   
     assert_result(status, ERROR_CODE, "Test 2 - Double registration should fail")
     sock2.close()
 

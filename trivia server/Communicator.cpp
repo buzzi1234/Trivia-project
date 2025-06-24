@@ -126,7 +126,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
                 handler.reset(result.newHandler);
             }
 
-            send(clientSocket, reinterpret_cast<const char*>(result.response.data()), result.response.size(), 0);
+            send(clientSocket, reinterpret_cast<char*>(result.response.data()), result.response.size(), 0);
         }
     }
     catch (const std::exception& e)
