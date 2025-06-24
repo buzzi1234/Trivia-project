@@ -6,7 +6,11 @@
         xmlns:local="clr-namespace:Client_Server_Trivia"
         mc:Ignorable="d"
         Title="Trivia Game - Main Lobby"
+<<<<<<< HEAD
         Height="825" Width="600"
+=======
+        Height="820" Width="600"
+>>>>>>> 7bb1dbf3a813ccb0e7945ba7e1b3f227031a4e49
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         Background="Transparent"
@@ -133,6 +137,7 @@
         </EventTrigger>
     </Window.Triggers>
 
+<<<<<<< HEAD
     <Grid Background="{DynamicResource BackgroundGradient}" Margin="0,75,0,-75">
         <Grid.RenderTransform>
             <TranslateTransform/>
@@ -142,11 +147,21 @@
 
         <!-- טופס מרכזי -->
         <Border Background="{StaticResource CardGradient}" CornerRadius="20" Width="500" Height="610" HorizontalAlignment="Center" VerticalAlignment="Center">
+=======
+    <Grid Height="820" Background="{DynamicResource BackgroundGradient}">
+        <Grid.RenderTransform>
+            <TranslateTransform/>
+        </Grid.RenderTransform>
+
+        <!-- טופס מרכזי -->
+        <Border Background="{StaticResource CardGradient}" CornerRadius="20" Width="500" Height="570" HorizontalAlignment="Center" VerticalAlignment="Center">
+>>>>>>> 7bb1dbf3a813ccb0e7945ba7e1b3f227031a4e49
             <Border.Effect>
                 <DropShadowEffect Color="Black" BlurRadius="30" ShadowDepth="10" Opacity="0.2"/>
             </Border.Effect>
 
             <StackPanel Margin="50,30">
+<<<<<<< HEAD
                 <!-- Logo Section -->
                 <StackPanel Margin="0,0,0,20">
                     <!-- Logo -->
@@ -189,8 +204,26 @@
                 <!-- הודעת שגיאה -->
                 <TextBlock Name="ErrorMessageTextBlock" Text="" Foreground="#E53E3E" FontSize="12" HorizontalAlignment="Center" Margin="0,15,0,15" Visibility="Collapsed"/>
 
+=======
+                <TextBlock FontSize="32" FontWeight="Bold" Foreground="#2D3748" HorizontalAlignment="Center" Margin="0,0,0,30"><Run Text="Select"/><LineBreak/><Run/></TextBlock>
+
+                <!-- שדות -->
+                <Button Name="CreateARoom" Content="Create A Room" Style="{StaticResource ModernButton}" Height="50" Margin="0,0,0,50" Click="CreateARoomButton_Click"/>
+
+                <Button Name="JoinARoom" Content="Join A Room" Style="{StaticResource ModernButton}" Height="50" Margin="0,0,0,50" Click="JoinARoomButton_Click"/>
+
+                <Button Name="Statistics" Content="Statistics" Style="{StaticResource ModernButton}" Height="50" Margin="0,0,0,50" Click="StatisticsButton_Click"/>
+
+
+                <!-- הודעת שגיאה -->
+                <TextBlock Name="ErrorMessageTextBlock" Text="" Foreground="#E53E3E" FontSize="12" HorizontalAlignment="Center" Margin="0,15,0,0" Visibility="Collapsed"/>
+>>>>>>> 7bb1dbf3a813ccb0e7945ba7e1b3f227031a4e49
                 <Button x:Name="Logout" Content="Logout" Style="{StaticResource ModernButton}" Height="50" Click="LogoutButton_Click"/>
             </StackPanel>
         </Border>
     </Grid>
+<<<<<<< HEAD
 </Window>
+=======
+</Window>
+>>>>>>> 7bb1dbf3a813ccb0e7945ba7e1b3f227031a4e49

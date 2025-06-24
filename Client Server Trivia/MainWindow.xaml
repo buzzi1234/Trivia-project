@@ -187,6 +187,7 @@ om/expression/blend/2008"
             <StackPanel Margin="50,40">
                 <!-- New Logo -->
                 <Viewbox Width="80" Height="80" Margin="0,0,0,20">
+<<<<<<< HEAD
                     <Canvas Width="120" Height="120">
                         <Ellipse Width="120" Height="120" Fill="#ff6b6b" Opacity="0.1"/>
                         <Rectangle Width="35" Height="50" Canvas.Left="25" Canvas.Top="35" 
@@ -207,6 +208,25 @@ om/expression/blend/2008"
                               Data="M3,0 L4,2 L6,2 L4,3 L5,6 L3,4 L1,6 L2,3 L0,2 L2,2 Z"/>
                         <Path Fill="#ffd700" Canvas.Left="85" Canvas.Top="90" 
                               Data="M4,0 L5,2 L8,2 L6,4 L7,7 L4,5 L1,7 L2,4 L0,2 L3,2 Z"/>
+=======
+                    <Canvas Width="100" Height="100">
+                        <!-- רקע עיגול -->
+                        <Ellipse Width="100" Height="100" Fill="#667eea" Opacity="0.1"/>
+
+                        <!-- מגן עם מנעול -->
+                        <Path Fill="#667eea" 
+                              Data="M20,35 L80,35 L80,85 L20,85 Z M50,15 C58,15 65,22 65,30 L65,35 L35,35 L35,30 C35,22 42,15 50,15 Z M42,30 C42,26 46,22 50,22 C54,22 58,26 58,30 L58,35 L42,35 Z"/>
+
+                        <!-- מנעול פנימי -->
+                        <Ellipse Width="12" Height="12" Canvas.Left="44" Canvas.Top="52" Fill="white"/>
+                        <Rectangle Width="3" Height="8" Canvas.Left="48.5" Canvas.Top="58" Fill="white"/>
+
+                        <!-- אפקט ברק -->
+                        <Path Fill="#764ba2" Opacity="0.7"
+                              Data="M15,15 L25,25 L20,30 L30,40 L20,35 L25,45 L15,35 L20,30 L10,20 Z"/>
+                        <Path Fill="#764ba2" Opacity="0.7"
+                              Data="M75,65 L85,75 L80,80 L90,90 L80,85 L85,95 L75,85 L80,80 L70,70 Z"/>
+>>>>>>> 7bb1dbf3a813ccb0e7945ba7e1b3f227031a4e49
                     </Canvas>
                 </Viewbox>
 

@@ -24,11 +24,14 @@ namespace Client_Server_Trivia
         {
             InitializeComponent();
         }
+<<<<<<< HEAD
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown(); // Close the application
         }
+=======
+>>>>>>> 7bb1dbf3a813ccb0e7945ba7e1b3f227031a4e49
         private void CreateARoomButton_Click(object sender, RoutedEventArgs e)
         {
             LobbyWindow signupWindow = new LobbyWindow();
