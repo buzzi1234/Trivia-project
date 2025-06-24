@@ -26,10 +26,9 @@ namespace Client_Server_Trivia
         }
         private void CreateARoomButton_Click(object sender, RoutedEventArgs e)
         {
-            LobbyWindow signupWindow = new LobbyWindow();
-            signupWindow.Show();
-            this.Hide(); // Hide the main window if needed
-            this.Close(); // Close the main window if needed
+            var create = new CreateRoomWindow();
+            create.Show();
+            this.Hide();
         }
         private void JoinARoomButton_Click(object sender, RoutedEventArgs e)
         {

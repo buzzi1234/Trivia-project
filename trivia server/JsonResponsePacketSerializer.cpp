@@ -141,6 +141,7 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Struc
 		status += R"(player)" + std::to_string(i) + " : " + it + ",";
 		i++;
 	}
+	
 	status[status.size() - 1] = '}';
 	std::vector<unsigned char> vec_char(status.begin(), status.end());
 

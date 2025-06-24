@@ -1,4 +1,5 @@
 #include "MenuRequestHandler.h"
+#include <cstdlib>
 
 //consructor
 MenuRequestHandler::MenuRequestHandler(LoggedUser loged, RequestHandlerFactory& factory) : m_user(loged), m_handlerFactory(factory)
@@ -88,7 +89,7 @@ Structs::RequestResult MenuRequestHandler::getRooms(Structs::RequestInfo& reqInf
     }
     else
     {
-        grr.status = reqInfo.id;
+        grr.status = GET_ROOMS;
     }
 
     rr.response = j.serializeResponse(grr);
@@ -203,6 +204,7 @@ Structs::RequestResult MenuRequestHandler::createRoom(Structs::RequestInfo& reqI
     Structs::RequestResult rr;
     Structs::CreateRoomRequest res;
     Structs::CreateRoomResponse req;
+    Structs::RoomData rd;
 
     JsonResponsePacketSerializer j;
     JsonRequestPacketDeserializer d;
@@ -211,11 +213,39 @@ Structs::RequestResult MenuRequestHandler::createRoom(Structs::RequestInfo& reqI
     if (res.maxUsers > 0 && res.questionCount > 0 && res.roomName != "")
     {
         req.status = CREATE_ROOM;
+
+        rd.maxPlayers = res.maxUsers;
+        rd.numOfQuestionsInGame = res.questionCount;
+        rd.timePerQuestion = res.answerTimeout;
+        rd.id = rand() % 101;
+        rd.name = res.roomName;
+        rd.status = ROOM_IS_ACTIVE;
+
+        std::vector<Structs::RoomData> rooms = this->m_handlerFactory.getRoomManager().getRooms();
+        bool flag = true;
+        for (auto it : rooms)
+        {
+            while(it.id == rd.id)
+            {
+                rd.id = rand() % 101;
+            }
+
+            if (it.name == rd.name)
+            {
+                req.status = FAIL_CREATE_ROOM;
+                flag = false;
+            }
+        }
+        if (flag)
+        {
+            this->m_handlerFactory.getRoomManager().createRoom(this->m_user, rd);
+        }
     }
     else
     {
         req.status = FAIL_CREATE_ROOM;
     }
+
 
     rr.response = j.serializeResponse(req);
     rr.newHandler = new RoomAdminRequestHandler();

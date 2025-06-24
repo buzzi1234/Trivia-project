@@ -10,6 +10,27 @@ namespace Client_Server_Trivia
 {
     class MessageBuilder
     {
+        public static byte[] buildMessage(int code , string payload)
+        {
+            // Convert payload to bytes
+            byte[] payloadBytes = Encoding.UTF8.GetBytes(payload);
+            int msgLength = payloadBytes.Length;
+
+            // Header: 1 byte for code, 4 bytes for payload length
+            byte[] header = new byte[5];
+            header[0] = (byte)(code & 0xFF);
+            header[1] = (byte)((msgLength >> 24) & 0xFF);
+            header[2] = (byte)((msgLength >> 16) & 0xFF);
+            header[3] = (byte)((msgLength >> 8) & 0xFF);
+            header[4] = (byte)(msgLength & 0xFF);
+
+            // Combine header + payload
+            byte[] message = new byte[5 + msgLength];
+            Buffer.BlockCopy(header, 0, message, 0, 5);
+            Buffer.BlockCopy(payloadBytes, 0, message, 5, msgLength);
+
+            return message;
+        }
         public static byte[] BuildLengthMessage(int code, string payload)
         {
             // 1. Get length of payload
