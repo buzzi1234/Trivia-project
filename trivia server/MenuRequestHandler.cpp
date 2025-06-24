@@ -183,7 +183,9 @@ Structs::RequestResult MenuRequestHandler::joinRoom(Structs::RequestInfo& reqInf
     JsonRequestPacketDeserializer d;
 
     req = d.deserializeJoinRoomRequest(reqInfo.buffer);
-    if (m_handlerFactory.getRoomManager().getRoom(req.roomId) == std::nullopt)
+    if (m_handlerFactory.getRoomManager().getRoom(req.roomId) == std::nullopt 
+        || m_handlerFactory.getRoomManager().getRoom(req.roomId).value()->getRoomData().status 
+        == ROOM_IS_NOT_ACTIVE)
     {
         res.status = FAIL_JOIN_ROOM;
     }

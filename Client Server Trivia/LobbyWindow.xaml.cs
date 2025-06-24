@@ -24,24 +24,17 @@ namespace Client_Server_Trivia
         {
             InitializeComponent();
         }
-<<<<<<< HEAD
-
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown(); // Close the application
-        }
-=======
->>>>>>> 7bb1dbf3a813ccb0e7945ba7e1b3f227031a4e49
         private void CreateARoomButton_Click(object sender, RoutedEventArgs e)
         {
             var create = new CreateRoomWindow();
             create.Show();
             this.Hide();
+            this.Close();
         }
         private void JoinARoomButton_Click(object sender, RoutedEventArgs e)
         {
-            LobbyWindow signupWindow = new LobbyWindow();
-            signupWindow.Show();
+            var joinRoomWindow1 = new JoinRoomWindow1();
+            joinRoomWindow1.Show();
             this.Hide(); // Hide the main window if needed
             this.Close(); // Close the main window if needed
         }
@@ -58,10 +51,7 @@ namespace Client_Server_Trivia
             NetworkStream stream = (NetworkStream)(Application.Current.Properties["stream"]);
 
             //send message
-            byte[] data = MessageBuilder.BuildLengthMessage(9, "{}");
-            stream.Write(data, 0, data.Length);
-
-            data = MessageBuilder.BuildJsonMessage("{}");
+            byte[] data = MessageBuilder.buildMessage(9, "{}");
             stream.Write(data, 0, data.Length);
 
             byte[] buffer = new byte[1024];
