@@ -199,10 +199,8 @@
              <StackPanel Margin="0,0,0,30" HorizontalAlignment="Center">
                     <Viewbox Width="80" Height="80" Margin="0,0,0,20">
                         <Canvas Width="120" Height="120">
-                            <!-- רקע מעגלי -->
                             <Ellipse Width="120" Height="120" Fill="#ff6b6b" Opacity="0.1"/>
 
-                            <!-- ספר שמאל -->
                             <Rectangle Width="35" Height="50" Canvas.Left="25" Canvas.Top="35" 
                                      Fill="#667eea" RadiusX="5" RadiusY="5" 
                                      Stroke="White" StrokeThickness="2"/>
@@ -211,7 +209,6 @@
                             <Rectangle Width="25" Height="8" Canvas.Left="30" Canvas.Top="55" 
                                      Fill="White" RadiusX="2" RadiusY="2"/>
 
-                            <!-- ספר ימין -->
                             <Rectangle Width="35" Height="50" Canvas.Left="60" Canvas.Top="35" 
                                      Fill="White" RadiusX="5" RadiusY="5" 
                                      Stroke="#ff6b6b" StrokeThickness="2"/>
@@ -220,7 +217,6 @@
                             <TextBlock Canvas.Left="63" Canvas.Top="37" Text="A" FontSize="8" 
                                      FontWeight="Bold" Foreground="#ff6b6b"/>
 
-                            <!-- כוכבים -->
                             <Path Fill="#ffd700" Canvas.Left="15" Canvas.Top="20" 
                                   Data="M5,0 L6,3 L10,3 L7,5 L8,9 L5,7 L2,9 L3,5 L0,3 L4,3 Z"/>
                             <Path Fill="#ffd700" Canvas.Left="95" Canvas.Top="25" 
