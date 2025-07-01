@@ -20,7 +20,7 @@ LoginManager& RequestHandlerFactory::getLoginManager()
 
 MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(LoggedUser logged_user)
 {
-	return new MenuRequestHandler(logged_user, *this, m_communicator);
+	return new MenuRequestHandler(logged_user, *this, *m_communicator);
 }
 
 StatisticsManager& RequestHandlerFactory::getStatisticsManager()

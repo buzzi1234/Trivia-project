@@ -40,7 +40,7 @@ Structs::RequestResult RoomAdminRequestHandler::closeRoom() const
 
 	for (const auto& username : users)
 	{
-		auto sockOpt = m_communicator->getUserSocket(username);
+		auto sockOpt = m_communicator.getUserSocket(username);
 		if (sockOpt.has_value())
 		{
 			send(sockOpt.value(), reinterpret_cast<const char*>(msg.data()), msg.size(), 0);

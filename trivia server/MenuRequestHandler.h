@@ -8,6 +8,8 @@
 #include "Communicator.h"
 
 class RequestHandlerFactory;
+class Communicator;
+
 
 class MenuRequestHandler : public IRequestHandler
 {

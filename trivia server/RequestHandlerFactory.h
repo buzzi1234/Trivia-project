@@ -13,6 +13,7 @@ class MenuRequestHandler;
 class RoomAdminRequestHandler;
 class RoomMemberRequestHandler;
 class RoomManager;
+class Communicator;
 
 class RequestHandlerFactory
 {
@@ -21,7 +22,7 @@ private:
 	IDatabase* _database;
 	RoomManager& m_roomManager;
 	StatisticsManager& m_StatisticsManager;
-	Communicator& m_communicator;
+	Communicator* m_communicator;
 
 public:
 	RequestHandlerFactory(LoginManager& loginManager, IDatabase* db, RoomManager& roomManager, StatisticsManager& StatisticsManager, Communicator* communicator);
