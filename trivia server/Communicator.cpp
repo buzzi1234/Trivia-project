@@ -88,6 +88,17 @@ void Communicator::stop()
     _clients.clear();
 }
 
+std::optional<SOCKET> Communicator::getUserSocket(const std::string& username) const
+{
+	std::lock_guard<std::mutex> lock(_clientsMutex);
+	auto it = _userToSocket.find(username);
+	if (it != _userToSocket.end())
+	{
+		return it->second;
+	}
+    return std::nullopt;
+}
+
 /// <summary>
 /// The function handles a new client connection.
 /// </summary>
@@ -97,6 +108,8 @@ void Communicator::handleNewClient(SOCKET clientSocket)
     try
     {
         std::unique_ptr<const IRequestHandler> handler(_handlerFactory.createLoginRequestHandler());
+        std::string loggedUsername;
+        bool loggedIn = false;
 
         while (true)
         {
@@ -123,7 +136,15 @@ void Communicator::handleNewClient(SOCKET clientSocket)
             Structs::RequestResult result = handler->handleRequest(info);
             if (result.newHandler != nullptr)
             {
-                handler.reset(result.newHandler);
+                auto* menuHandler = dynamic_cast<const MenuRequestHandler*>(handler.get());
+                if (menuHandler)
+                {
+                    loggedUsername = menuHandler->getUser().getUserName();
+                    loggedIn = true;
+
+                    std::lock_guard<std::mutex> lock(_clientsMutex);
+                    _userToSocket[loggedUsername] = clientSocket;
+                }
             }
 
             send(clientSocket, reinterpret_cast<char*>(result.response.data()), result.response.size(), 0);
@@ -135,4 +156,14 @@ void Communicator::handleNewClient(SOCKET clientSocket)
     }
 
     closesocket(clientSocket);
+    {
+        std::lock_guard<std::mutex> lock(_clientsMutex);
+        for (auto it = _userToSocket.begin(); it != _userToSocket.end(); )
+        {
+            if (it->second == clientSocket)
+                it = _userToSocket.erase(it);
+            else
+                ++it;
+        }
+    }
 }

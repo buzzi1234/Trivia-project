@@ -1,7 +1,9 @@
 #include "RequestHandlerFactory.h"
 #include "LoginRequestHandler.h"
+#include "RoomAdminRequestHandler.h"
+#include "RoomMemberRequestHandler.h"
 
-RequestHandlerFactory::RequestHandlerFactory(LoginManager& loginManager, IDatabase* db, RoomManager& roomManager, StatisticsManager& StatisticsManager) : _loginManager(loginManager), _database(db), m_roomManager(roomManager), m_StatisticsManager(StatisticsManager)
+RequestHandlerFactory::RequestHandlerFactory(LoginManager& loginManager, IDatabase* db, RoomManager& roomManager, StatisticsManager& StatisticsManager, Communicator* communicator) : _loginManager(loginManager), _database(db), m_roomManager(roomManager), m_StatisticsManager(StatisticsManager), m_communicator(communicator)
 {
 }
 
@@ -18,7 +20,7 @@ LoginManager& RequestHandlerFactory::getLoginManager()
 
 MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(LoggedUser logged_user)
 {
-	return new MenuRequestHandler(logged_user, *this);
+	return new MenuRequestHandler(logged_user, *this, m_communicator);
 }
 
 StatisticsManager& RequestHandlerFactory::getStatisticsManager()
@@ -29,4 +31,14 @@ StatisticsManager& RequestHandlerFactory::getStatisticsManager()
 RoomManager& RequestHandlerFactory::getRoomManager()
 {
 	return this->m_roomManager;
+}
+
+RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(LoggedUser user, Room& room)
+{
+	return new RoomAdminRequestHandler(user, room, *this, *m_communicator);
+}
+
+RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(LoggedUser user, Room& room)
+{
+	return new RoomMemberRequestHandler(user, room, *this);
 }

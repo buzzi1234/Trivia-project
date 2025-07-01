@@ -20,13 +20,15 @@ public:
 	void startHandleRequests();
 	void stop();
 	RequestHandlerFactory& _handlerFactory;
+	std::optional<SOCKET> getUserSocket(const std::string& username) const;
 private:
 	void handleNewClient(SOCKET clientSocket);
 
 	SOCKET _serverSocket;
 	std::atomic<bool> _running;
 	std::map<SOCKET, IRequestHandler*> _clients;
-	std::mutex _clientsMutex;
+	mutable std::mutex _clientsMutex;
+	std::map<std::string, SOCKET> _userToSocket;
 
 };
 

@@ -11,20 +11,26 @@ RoomManager::~RoomManager()
 /// </summary>
 /// <param name="lu"> User that want to create a room </param>
 /// <param name="rd"> Room data </param>
-void RoomManager::createRoom(LoggedUser lu, Structs::RoomData rd)
+Room* RoomManager::createRoom(LoggedUser lu, Structs::RoomData rd)
 {
 	std::vector<LoggedUser> vec;
 	vec.push_back(lu);
-	this->m_rooms.insert({ rd.id, Room(rd, vec) });
+
+	auto res = this->m_rooms.insert({ rd.id, Room(rd, vec) });
+	if (res.second) // if the insertion was successful
+	{
+		return &(res.first->second);
+	}
+	return nullptr;
 }
 
 /// <summary>
 /// The function delete a room by his id
 /// </summary>
 /// <param name="id"> room id </param>
-void RoomManager::deleteRoom(unsigned int id)
+bool RoomManager::deleteRoom(unsigned int id)
 {
-	this->m_rooms.erase(id);
+	return this->m_rooms.erase(id) > 0;
 }
 
 /// <summary>
