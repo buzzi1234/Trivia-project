@@ -5,17 +5,21 @@
 #include "RequestHandlerFactory.h"
 #include "RoomMemberRequestHandler.h"
 #include "RoomAdminRequestHandler.h"
+#include "Communicator.h"
 
 class RequestHandlerFactory;
+class Communicator;
+
 
 class MenuRequestHandler : public IRequestHandler
 {
 private:
 	LoggedUser m_user;
 	RequestHandlerFactory& m_handlerFactory;
+	Communicator& m_communicator;
 
 public:
-	MenuRequestHandler(LoggedUser loged, RequestHandlerFactory& factory);
+	MenuRequestHandler(LoggedUser loged, RequestHandlerFactory& factory, Communicator& communicator);
 	~MenuRequestHandler() = default;
 
 	virtual bool isRequestRelevant(Structs::RequestInfo& reqInfo) const override;
@@ -29,6 +33,6 @@ public:
 	Structs::RequestResult createRoom(Structs::RequestInfo& reqInfo) const;
 	Structs::RequestResult handleErrorRequest(Structs::RequestInfo& reqInfo) const;
 
-
+	LoggedUser getUser() const;
 
 };

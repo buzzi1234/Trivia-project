@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include "Constant.h"
+#include <chrono>
 
 class JsonResponsePacketSerializer 
 {
@@ -23,6 +24,11 @@ public:
 	std::vector<unsigned char> serializeResponse(Structs::CreateRoomResponse crr);
 	std::vector<unsigned char> serializeResponse(Structs::GetHighScoreResponse ghr);
 	std::vector<unsigned char> serializeResponse(Structs::GetPersonalStatsResponse gsr);
+
+	std::vector<unsigned char> serializeResponse(Structs::LeaveRoomResponse lrr);
+	std::vector<unsigned char> serializeResponse(Structs::StartGameResponse sgr);
+	std::vector<unsigned char> serializeResponse(Structs::GetRoomStateResponse ggr);
+	std::vector<unsigned char> serializeResponse(Structs::CloseRoomResponse crr);
 
 };
 

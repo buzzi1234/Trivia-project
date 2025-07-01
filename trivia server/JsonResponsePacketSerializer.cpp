@@ -214,3 +214,51 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Struc
 
 	return serializeAll(vec_char, GET_PERSONAL_STATS);
 }
+
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Structs::LeaveRoomResponse lrr)
+{
+	std::string jsonMsg = R"({"status" : )" + std::to_string(lrr.status) + "}";
+	std::vector<unsigned char> vec_char(jsonMsg.begin(), jsonMsg.end());
+
+	return serializeAll(vec_char, LEAVE_ROOM);
+}
+
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Structs::StartGameResponse sgr)
+{
+	std::string jsonMsg = R"({"status" : )" + std::to_string(sgr.status) + "}";
+	std::vector<unsigned char> vec_char(jsonMsg.begin(), jsonMsg.end());
+
+	return serializeAll(vec_char, START_GAME);;
+}
+
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Structs::GetRoomStateResponse ggr)
+{
+	std::string jsonMsg = "{\"status\":" + std::to_string(ggr.status) +
+		",\"hasGameBegun\":" + std::to_string(ggr.hasGameBegun) +
+		",\"players\":[";
+
+	for (int i = 0; i < ggr.players.size(); i++)
+	{
+		jsonMsg += "\"" + ggr.players[i] + "\"";
+		if (i != ggr.players.size() - 1)
+		{
+			jsonMsg += ",";
+		}
+	}
+
+	jsonMsg += "],\"questionCount\":" + std::to_string(ggr.questionCount) +
+		",\"answerTimeout\":" + std::to_string(ggr.answerTimeout) +
+		",\"maxPlayers\":" + std::to_string(ggr.maxPlayers) + "}";
+
+	std::vector<unsigned char> vec_char(jsonMsg.begin(), jsonMsg.end());
+	return serializeAll(vec_char, GET_ROOM_STATE);
+}
+
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Structs::CloseRoomResponse crr)
+{
+	std::string jsonMsg = R"({"status" : )" + std::to_string(crr.status) + "}";
+	std::vector<unsigned char> vec_char(jsonMsg.begin(), jsonMsg.end());
+
+	return serializeAll(vec_char, CLOSE_ROOM);
+}
+

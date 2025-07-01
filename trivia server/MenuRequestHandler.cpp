@@ -1,8 +1,9 @@
 #include "MenuRequestHandler.h"
 #include <cstdlib>
 
+
 //consructor
-MenuRequestHandler::MenuRequestHandler(LoggedUser loged, RequestHandlerFactory& factory) : m_user(loged), m_handlerFactory(factory)
+MenuRequestHandler::MenuRequestHandler(LoggedUser loged, RequestHandlerFactory& factory, Communicator& communicator) : m_user(loged), m_handlerFactory(factory), m_communicator(communicator)
 {
 }
 
@@ -188,13 +189,14 @@ Structs::RequestResult MenuRequestHandler::joinRoom(Structs::RequestInfo& reqInf
         == ROOM_IS_NOT_ACTIVE)
     {
         res.status = FAIL_JOIN_ROOM;
+		rr.newHandler = this;
     }
     else {
         res.status = JOIN_ROOM;
+        rr.newHandler = new RoomMemberRequestHandler(m_user, *room.value(), m_handlerFactory);
     }
 
     rr.response = j.serializeResponse(res);
-    rr.newHandler = new RoomMemberRequestHandler();
 
     return rr;
 
@@ -214,6 +216,8 @@ Structs::RequestResult MenuRequestHandler::createRoom(Structs::RequestInfo& reqI
     res = d.deserializeCreateRoomRequest(reqInfo.buffer);
     if (res.maxUsers > 0 && res.questionCount > 0 && res.roomName != "")
     {
+		Structs::RoomData roomData;
+        Room* newRoom = m_handlerFactory.getRoomManager().createRoom(m_user, roomData);
         req.status = CREATE_ROOM;
 
         rd.maxPlayers = res.maxUsers;
@@ -246,11 +250,11 @@ Structs::RequestResult MenuRequestHandler::createRoom(Structs::RequestInfo& reqI
     else
     {
         req.status = FAIL_CREATE_ROOM;
+		rr.newHandler = this;
     }
 
 
     rr.response = j.serializeResponse(req);
-    rr.newHandler = new RoomAdminRequestHandler();
 
     return rr;
 
@@ -269,6 +273,11 @@ Structs::RequestResult MenuRequestHandler::handleErrorRequest(Structs::RequestIn
     reault.newHandler = nullptr;
 
     return reault;
+}
+
+LoggedUser MenuRequestHandler::getUser() const
+{
+    return m_user;
 }
 
 

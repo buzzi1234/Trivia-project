@@ -9,7 +9,7 @@
 #include "LoginManager.h"
 #include "RoomManager.h"
 #include "StatisticsManager.h"
-
+#include "Communicator.h"
 
 int main()
 {
@@ -23,8 +23,9 @@ int main()
 		LoginManager loginManager(db);
 		RoomManager roomManager;
 		StatisticsManager statsManager(db);
+		Communicator* communicator = nullptr;
 
-		RequestHandlerFactory factory(loginManager, db,roomManager, statsManager);
+		RequestHandlerFactory factory(loginManager, db,roomManager, statsManager, communicator);
 
 		Server server(factory, db);
 		server.run(8826);

@@ -18,5 +18,10 @@ public:
 	Structs::GetPlayersInRoomRequest deserializeGetPlayersRequest(std::vector<unsigned char> buffer) const;
 	Structs::JoinRoomRequest deserializeJoinRoomRequest(std::vector<unsigned char> buffer) const;
 	Structs::CreateRoomRequest deserializeCreateRoomRequest(std::vector<unsigned char> buffer) const;
+
+	Structs::CloseRoomRequest deserializeCloseRoomRequest(std::vector<unsigned char> buffer) const;
+	Structs::StartGameRequest deserializeStartGameRequest(std::vector<unsigned char> buffer) const;
+	Structs::GetRoomStateRequest deserializeGetRoomStateRequest(std::vector<unsigned char> buffer) const;
+	Structs::LeaveRoomRequest deserializeLeaveRoomRequest(std::vector<unsigned char> buffer) const;
 };
 

@@ -122,5 +122,46 @@ public:
 		std::string mesagge; //message need to be "{mesagge:"ERROR"}"
 	} typedef ErrorResponse;
 
+	struct LeaveRoomResponse
+	{
+		unsigned int status; //status need to be 1
+	};
+
+	struct StartGameResponse
+	{
+		unsigned int status; //status need to be 1
+	};
+	
+	struct GetRoomStateResponse
+	{
+		unsigned int status; //status need to be 1
+		std::vector<std::string> players;
+		unsigned int questionCount;
+		unsigned int hasGameBegun;
+		unsigned int answerTimeout;
+		unsigned int maxPlayers;
+	};
+
+	struct CloseRoomResponse
+	{
+		unsigned int status; //status need to be 1
+	};
+
+	struct CloseRoomRequest
+	{
+		
+	}typedef CloseRoomRequest;
+
+	struct StartGameRequest
+	{
+	}typedef StartGameRequest;
+
+	struct GetRoomStateRequest
+	{
+	}typedef GetRoomStateRequest;
+
+	struct LeaveRoomRequest
+	{
+	}typedef LeaveRoomRequest;
 };
 
