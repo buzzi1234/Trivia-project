@@ -92,8 +92,8 @@ std::list<Question> SqliteDatabase::getQuestions(int numberOfQuestions)
 
 std::map<std::string, int> SqliteDatabase::getHighScore()
 {
-    std::string query = "SELECT user_name FROM statistics ORDER BY score DESC LIMIT 5;";
-    statesSqlStatement(query);
+    std::string query = "SELECT user_name, score FROM statistics ORDER BY score DESC LIMIT 3;";
+    HightScoreSqlStatement(query);
 
     for (const auto& state : _statesList)
     {
@@ -107,57 +107,57 @@ std::map<std::string, int> SqliteDatabase::getHighScore()
 float SqliteDatabase::getPllayerAverageAnswerTime(const std::string& username)
 {
     std::string query = "SELECT average_answer_time FROM statistics WHERE user_name = '" + username + "';";
-    statesSqlStatement(query);
+    AverageAnswerTimeSqlStatement(query);
 
     if (_statesList.empty())
     {
         throw std::runtime_error("No statistics found for the user: " + username);
     }
-    return std::stof(_statesList.front().getName());
+    return std::stof(_statesList.front().getDescription());
 }
 
 int SqliteDatabase::getNumOfCorrectAnswers(const std::string& username)
 {
     std::string query = "SELECT num_of_correct_answers FROM statistics WHERE user_name = '" + username + "';";
-    statesSqlStatement(query);
+    NumOfCurrectAnswersSqlStatement(query);
     if (_statesList.empty())
     {
         throw std::runtime_error("No statistics found for the user: " + username);
     }
-    return std::stoi(_statesList.front().getName());
+    return std::stoi(_statesList.front().getDescription());
 }
 
 int SqliteDatabase::getNumOfTotalAnswers(const std::string& username)
 {
     std::string query = "SELECT num_of_total_answers FROM statistics WHERE user_name = '" + username + "';";
-    statesSqlStatement(query);
+    NumOfTotalAnswersSqlStatement(query);
     if (_statesList.empty())
     {
         throw std::runtime_error("No statistics found for the user: " + username);
     }
-    return std::stoi(_statesList.front().getName());
+    return std::stoi(_statesList.front().getDescription());
 }
 
 int SqliteDatabase::getNumOfPlayerGames(const std::string& username)
 {
     std::string query = "SELECT num_of_player_games FROM statistics WHERE user_name = '" + username + "';";
-    statesSqlStatement(query);
+    NumOfPlayerGamesSqlStatement(query);
     if (_statesList.empty())
     {
         throw std::runtime_error("No statistics found for the user: " + username);
     }
-    return std::stoi(_statesList.front().getName());
+    return std::stoi(_statesList.front().getDescription());
 }
 
 int SqliteDatabase::getPlayerScore(const std::string& username)
 {
     std::string query = "SELECT player_score FROM statistics WHERE user_name = '" + username + "';";
-    statesSqlStatement(query);
+    PlayerScoreSqlStatement(query);
     if (_statesList.empty())
     {
         throw std::runtime_error("No statistics found for the user: " + username);
     }
-    return std::stoi(_statesList.front().getName());
+    return std::stoi(_statesList.front().getDescription());
 }
 
 
@@ -276,6 +276,192 @@ int statesCallback(void* data, int argc, char** argv, char** azColName)
     return 0;
 }
 
+int highScoreCallback(void* data, int argc, char** argv, char** azColName)
+{
+    int id = 0; // You can leave this 0 or remove if unused
+    std::string name = "";
+    std::string description = "";
+
+    for (int i = 0; i < argc; i++)
+    {
+        if (argv[i] != nullptr)
+        {
+            std::string columnName = std::string(azColName[i]);
+            std::string value = argv[i];
+
+            if (columnName == "user_name") // Match your query
+            {
+                name = value;
+            }
+            else if (columnName == "score") // Match your query
+            {
+                description = value; // store score as string
+            }
+        }
+    }
+
+    States state(id, name, description);
+    auto* statesList = static_cast<std::list<States>*>(data);
+    statesList->push_back(state);
+
+    return 0;
+}
+
+int AverageAnswerTimeCallback(void* data, int argc, char** argv, char** azColName)
+{
+    int id = 0; // You can leave this 0 or remove if unused
+    std::string name = "";
+    std::string description = "";
+
+    for (int i = 0; i < argc; i++)
+    {
+        if (argv[i] != nullptr)
+        {
+            std::string columnName = std::string(azColName[i]);
+            std::string value = argv[i];
+
+            if (columnName == "user_name") // Match your query
+            {
+                name = value;
+            }
+            else if (columnName == "average_answer_time") // Match your query
+            {
+                description = value; // store score as string
+            }
+        }
+    }
+
+    States state(id, name, description);
+    auto* statesList = static_cast<std::list<States>*>(data);
+    statesList->push_back(state);
+
+    return 0;
+}
+
+int NumOfCorrectAnswersCallback(void* data, int argc, char** argv, char** azColName)
+{
+    int id = 0; // You can leave this 0 or remove if unused
+    std::string name = "";
+    std::string description = "";
+
+    for (int i = 0; i < argc; i++)
+    {
+        if (argv[i] != nullptr)
+        {
+            std::string columnName = std::string(azColName[i]);
+            std::string value = argv[i];
+
+            if (columnName == "user_name") // Match your query
+            {
+                name = value;
+            }
+            else if (columnName == "num_of_correct_answers") // Match your query
+            {
+                description = value; // store score as string
+            }
+        }
+    }
+
+    States state(id, name, description);
+    auto* statesList = static_cast<std::list<States>*>(data);
+    statesList->push_back(state);
+
+    return 0;
+}
+
+int NumOfTotalAnswersCallback(void* data, int argc, char** argv, char** azColName)
+{
+    int id = 0; // You can leave this 0 or remove if unused
+    std::string name = "";
+    std::string description = "";
+
+    for (int i = 0; i < argc; i++)
+    {
+        if (argv[i] != nullptr)
+        {
+            std::string columnName = std::string(azColName[i]);
+            std::string value = argv[i];
+
+            if (columnName == "user_name") // Match your query
+            {
+                name = value;
+            }
+            else if (columnName == "num_of_total_answers") // Match your query
+            {
+                description = value; // store score as string
+            }
+        }
+    }
+
+    States state(id, name, description);
+    auto* statesList = static_cast<std::list<States>*>(data);
+    statesList->push_back(state);
+
+    return 0;
+}
+
+int NumOfPlayerGamesCallback(void* data, int argc, char** argv, char** azColName)
+{
+    int id = 0; // You can leave this 0 or remove if unused
+    std::string name = "";
+    std::string description = "";
+
+    for (int i = 0; i < argc; i++)
+    {
+        if (argv[i] != nullptr)
+        {
+            std::string columnName = std::string(azColName[i]);
+            std::string value = argv[i];
+
+            if (columnName == "user_name") // Match your query
+            {
+                name = value;
+            }
+            else if (columnName == "num_of_player_games") // Match your query
+            {
+                description = value; // store score as string
+            }
+        }
+    }
+
+    States state(id, name, description);
+    auto* statesList = static_cast<std::list<States>*>(data);
+    statesList->push_back(state);
+
+    return 0;
+}
+
+int PlayerScoreCallback(void* data, int argc, char** argv, char** azColName)
+{
+    int id = 0; // You can leave this 0 or remove if unused
+    std::string name = "";
+    std::string description = "";
+
+    for (int i = 0; i < argc; i++)
+    {
+        if (argv[i] != nullptr)
+        {
+            std::string columnName = std::string(azColName[i]);
+            std::string value = argv[i];
+
+            if (columnName == "user_name") // Match your query
+            {
+                name = value;
+            }
+            else if (columnName == "player_score") // Match your query
+            {
+                description = value; // store score as string
+            }
+        }
+    }
+
+    States state(id, name, description);
+    auto* statesList = static_cast<std::list<States>*>(data);
+    statesList->push_back(state);
+
+    return 0;
+}
+
 
 // Executes a general SQL command without returning data
 bool SqliteDatabase::sqlStatement(std::string sqlQuery)
@@ -307,6 +493,107 @@ void SqliteDatabase::UserSqlStatement(std::string sqlQuery)
     if (res != SQLITE_OK)
     {
         std::cout << "UserSqlStatement: " << errMessage << std::endl;
+        sqlite3_free(errMessage);
+    }
+}
+void SqliteDatabase::HightScoreSqlStatement(std::string sqlQuery)
+{
+    _statesList.clear();
+
+    const char* sqlStatement = sqlQuery.c_str();
+    char* errMessage;
+    int res;
+
+    res = sqlite3_exec(_db, sqlStatement, highScoreCallback, &_statesList, &errMessage);
+
+    if (res != SQLITE_OK)
+    {
+        std::cout << "HightScoreSqlStatement: " << errMessage << std::endl;
+        sqlite3_free(errMessage);
+    }
+}
+
+void SqliteDatabase::AverageAnswerTimeSqlStatement(std::string sqlQuery)
+{
+    _statesList.clear();
+
+    const char* sqlStatement = sqlQuery.c_str();
+    char* errMessage;
+    int res;
+
+    res = sqlite3_exec(_db, sqlStatement, AverageAnswerTimeCallback, &_statesList, &errMessage);
+
+    if (res != SQLITE_OK)
+    {
+        std::cout << "AverageAnswerTimeSqlStatement: " << errMessage << std::endl;
+        sqlite3_free(errMessage);
+    }
+}
+
+void SqliteDatabase::NumOfCurrectAnswersSqlStatement(std::string sqlQuery)
+{
+    _statesList.clear();
+
+    const char* sqlStatement = sqlQuery.c_str();
+    char* errMessage;
+    int res;
+
+    res = sqlite3_exec(_db, sqlStatement, NumOfCorrectAnswersCallback, &_statesList, &errMessage);
+
+    if (res != SQLITE_OK)
+    {
+        std::cout << "NumOfCurrectAnswersSqlStatement: " << errMessage << std::endl;
+        sqlite3_free(errMessage);
+    }
+}
+
+void SqliteDatabase::NumOfTotalAnswersSqlStatement(std::string sqlQuery)
+{
+    _statesList.clear();
+
+    const char* sqlStatement = sqlQuery.c_str();
+    char* errMessage;
+    int res;
+
+    res = sqlite3_exec(_db, sqlStatement, NumOfTotalAnswersCallback, &_statesList, &errMessage);
+
+    if (res != SQLITE_OK)
+    {
+        std::cout << "NumOfTotalAnswersSqlStatement: " << errMessage << std::endl;
+        sqlite3_free(errMessage);
+    }
+}
+
+void SqliteDatabase::NumOfPlayerGamesSqlStatement(std::string sqlQuery)
+{
+    _statesList.clear();
+
+    const char* sqlStatement = sqlQuery.c_str();
+    char* errMessage;
+    int res;
+
+    res = sqlite3_exec(_db, sqlStatement, NumOfPlayerGamesCallback, &_statesList, &errMessage);
+
+    if (res != SQLITE_OK)
+    {
+        std::cout << "NumOfPlayerGamesSqlStatement: " << errMessage << std::endl;
+        sqlite3_free(errMessage);
+    }
+}
+
+void SqliteDatabase::PlayerScoreSqlStatement(std::string sqlQuery)
+{
+    _statesList.clear();
+
+    const char* sqlStatement = sqlQuery.c_str();
+    char* errMessage;
+    int res;
+
+    res = sqlite3_exec(_db, sqlStatement, PlayerScoreCallback, &_statesList, &errMessage);
+
+    if (res != SQLITE_OK)
+    {
+        std::cout << "PlayerScoreSqlStatement: " << errMessage << std::endl;
         sqlite3_free(errMessage);
     }
 }

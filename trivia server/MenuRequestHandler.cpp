@@ -190,7 +190,7 @@ Structs::RequestResult MenuRequestHandler::joinRoom(Structs::RequestInfo& reqInf
         res.status = FAIL_JOIN_ROOM;
     }
     else {
-        res.status = reqInfo.id;
+        res.status = JOIN_ROOM;
     }
 
     rr.response = j.serializeResponse(res);

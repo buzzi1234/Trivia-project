@@ -85,12 +85,12 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeAll(std::vecto
 /// <returns> json msg </returns>
 std::string JsonResponsePacketSerializer::RoomDataToJsonMsg(Structs::RoomData rd)
 {
-	std::string str = R"({"id" : )" + std::to_string(rd.id) +
-		R"(,"name" : )" + rd.name +
-		R"(,"maxPlayers" : )" + std::to_string(rd.maxPlayers) +
-		R"(,"numOfQuestionsInGame" : )" + std::to_string(rd.numOfQuestionsInGame) +
-		R"(,"timePerQuestion" : )" + std::to_string(rd.timePerQuestion) +
-		R"(,"status" : )" + std::to_string(rd.status) + "}";
+	std::string str = "\"{ \\\"id\\\" : " + std::to_string(rd.id) +
+		",\\\"name\\\" : \\\"" + rd.name + "\\\"" +
+		",\\\"maxPlayers\\\" : " + std::to_string(rd.maxPlayers) +
+		",\\\"numOfQuestionsInGame\\\" : " + std::to_string(rd.numOfQuestionsInGame) +
+		",\\\"timePerQuestion\\\" : " + std::to_string(rd.timePerQuestion) +
+		",\\\"status\\\" : " + std::to_string(rd.status) + "}\"";
 	return str;
 }
 
@@ -118,7 +118,7 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Struc
 	int i = 1;
 	for (auto it : grr.rooms)
 	{
-		status += R"(,room)" + std::to_string(i) + R"( : )" + RoomDataToJsonMsg(it) + "}";
+		status += R"(,"room)" + std::to_string(i) + R"(" : )" + RoomDataToJsonMsg(it) + "}";
 		i++;
 	}
 	std::vector<unsigned char> vec_char(status.begin(), status.end());
@@ -186,9 +186,10 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Struc
 	int i = 1;
 	for (auto it : ghr.statistics)
 	{
-		status += R"(score)" + std::to_string(i) + " : " + std::to_string(it.second) + ",";
+		status += R"(,"score)" + std::to_string(i) + "\" : " + std::to_string(it.second);
 		i++;
 	}
+	status += "}";
 	std::vector<unsigned char> vec_char(status.begin(), status.end());
 
 	return serializeAll(vec_char, GET_HIGH_SCORE);
@@ -205,9 +206,10 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Struc
 	int i = 1;
 	for (auto it : gsr.statistics)
 	{
-		status += R"(stats)" + std::to_string(i) + " : " + it + ",";
+		status += R"(,"stats)" + std::to_string(i) + "\" : " + it;
 		i++;
 	}
+	status += "}";
 	std::vector<unsigned char> vec_char(status.begin(), status.end());
 
 	return serializeAll(vec_char, GET_PERSONAL_STATS);

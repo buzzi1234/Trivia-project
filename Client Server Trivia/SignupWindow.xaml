@@ -13,22 +13,23 @@
         WindowStyle="None">
 
     <Window.Resources>
-        <!-- גרדיאנט רקע -->
+        <!-- רקע גרדיאנט -->
         <LinearGradientBrush x:Key="BackgroundGradient" StartPoint="0,0" EndPoint="1,1">
             <GradientStop Color="#ff9a9e" Offset="0"/>
             <GradientStop Color="#fecfef" Offset="1"/>
         </LinearGradientBrush>
 
+        <!-- גרדיאנט כרטיס -->
         <LinearGradientBrush x:Key="CardGradient" StartPoint="0,0" EndPoint="0,1">
             <GradientStop Color="#FFFFFF" Offset="0"/>
             <GradientStop Color="#F8F9FA" Offset="1"/>
         </LinearGradientBrush>
 
+        <!-- צבעים -->
         <SolidColorBrush x:Key="PrimaryColor" Color="#ff6b6b"/>
         <SolidColorBrush x:Key="AccentColor" Color="#ee5a24"/>
 
-
-        <!-- כפתור מודרני -->
+        <!-- סגנון כפתור מודרני -->
         <Style x:Key="ModernButton" TargetType="Button">
             <Setter Property="Background">
                 <Setter.Value>
@@ -70,17 +71,21 @@
             </Setter>
         </Style>
 
-        <!-- טקסטבוקס -->
+        <!-- סגנון TextBox מודרני -->
         <Style x:Key="ModernTextBox" TargetType="TextBox">
             <Setter Property="Background" Value="White"/>
             <Setter Property="BorderBrush" Value="#E0E6ED"/>
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="Padding" Value="15,12"/>
             <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
-                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="12">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="12">
                             <ScrollViewer x:Name="PART_ContentHost"/>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -93,17 +98,21 @@
             </Setter>
         </Style>
 
-        <!-- PasswordBox -->
+        <!-- סגנון PasswordBox מודרני -->
         <Style x:Key="ModernPasswordBox" TargetType="PasswordBox">
             <Setter Property="Background" Value="White"/>
             <Setter Property="BorderBrush" Value="#E0E6ED"/>
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="Padding" Value="15,12"/>
             <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="PasswordBox">
-                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="12">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="12">
                             <ScrollViewer x:Name="PART_ContentHost"/>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -116,11 +125,37 @@
             </Setter>
         </Style>
 
+        <!-- סגנון כפתור סגירה -->
+        <Style x:Key="CloseButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="15">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#ff6b6b"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
         <!-- אנימציית פתיחה -->
         <Storyboard x:Key="FadeInAnimation">
-            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:1"/>
-            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" From="50" To="0" Duration="0:0:1">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.8"/>
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" 
+                           From="30" To="0" Duration="0:0:0.8">
                 <DoubleAnimation.EasingFunction>
                     <CubicEase EasingMode="EaseOut"/>
                 </DoubleAnimation.EasingFunction>
@@ -134,50 +169,148 @@
         </EventTrigger>
     </Window.Triggers>
 
-
-    <Grid Background="{StaticResource BackgroundGradient}" Margin="0,72,0,0">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0*"/>
-            <ColumnDefinition Width="50*"/>
-            <ColumnDefinition Width="247*"/>
-            <ColumnDefinition Width="303*"/>
-        </Grid.ColumnDefinitions>
+    <!-- פריסה ראשית -->
+    <Grid Background="{StaticResource BackgroundGradient}">
         <Grid.RenderTransform>
             <TranslateTransform/>
         </Grid.RenderTransform>
 
-        <Button Name="CloseButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,15,0" Width="30" Height="30" Background="Transparent" BorderThickness="0" Foreground="White" FontSize="16" Content="✕" Cursor="Hand" Click="CloseButton_Click" Grid.Column="3"/>
+        <!-- כפתור סגירה -->
+        <Button Name="CloseButton" 
+                Style="{StaticResource CloseButtonStyle}"
+                Content="✕" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Top" 
+                Margin="15,15,15,0"
+                Click="CloseButton_Click"/>
 
-        <!-- טופס מרכזי -->
-        <Border Background="{StaticResource CardGradient}" CornerRadius="20" Width="500" Height="570" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.ColumnSpan="2">
+        <!-- כרטיס הטופס המרכזי -->
+        <Border Background="{StaticResource CardGradient}" 
+                CornerRadius="20" 
+                Width="500" 
+                Height="750"
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center">
             <Border.Effect>
                 <DropShadowEffect Color="Black" BlurRadius="30" ShadowDepth="10" Opacity="0.2"/>
             </Border.Effect>
 
-            <StackPanel Margin="50,30">
-                <TextBlock Text="Create Account" FontSize="32" FontWeight="Bold" Foreground="#2D3748" HorizontalAlignment="Center" Margin="0,0,0,30"/>
+            <StackPanel Margin="50,40">
+                <StackPanel Margin="0,0,0,30" HorizontalAlignment="Center">
+                    <Viewbox Width="80" Height="80" Margin="0,0,0,20">
+                        <Canvas Width="120" Height="120">
+                            <Ellipse Width="120" Height="120" Fill="#ff6b6b" Opacity="0.1"/>
 
-                <!-- שדות -->
-                <TextBlock Text="Username" FontSize="14" Margin="0,0,0,5"/>
-                <TextBox Name="UsernameTextBox" Style="{StaticResource ModernTextBox}" Height="45" FontFamily="Rockwell"/>
+                            <Rectangle Width="35" Height="50" Canvas.Left="25" Canvas.Top="35" 
+                                     Fill="#667eea" RadiusX="5" RadiusY="5" 
+                                     Stroke="White" StrokeThickness="2"/>
+                            <Rectangle Width="25" Height="15" Canvas.Left="30" Canvas.Top="45" 
+                                     Fill="White" RadiusX="2" RadiusY="2"/>
+                            <Rectangle Width="25" Height="8" Canvas.Left="30" Canvas.Top="55" 
+                                     Fill="White" RadiusX="2" RadiusY="2"/>
 
-                <TextBlock Text="Email" FontSize="14" Margin="0,15,0,5"/>
-                <TextBox Name="EmailTextBox" Style="{StaticResource ModernTextBox}" Height="45" FontFamily="Rockwell"/>
+                            <Rectangle Width="35" Height="50" Canvas.Left="60" Canvas.Top="35" 
+                                     Fill="White" RadiusX="5" RadiusY="5" 
+                                     Stroke="#ff6b6b" StrokeThickness="2"/>
+                            <Path Canvas.Left="72" Canvas.Top="50" Fill="#ff6b6b" 
+                                  Data="M0,5 C0,2 2,0 5,0 C8,0 10,2 10,5 C10,8 5,15 5,15 S0,8 0,5 Z"/>
+                            <TextBlock Canvas.Left="63" Canvas.Top="37" Text="A" FontSize="8" 
+                                     FontWeight="Bold" Foreground="#ff6b6b"/>
 
-                <TextBlock Text="Password" FontSize="14" Margin="0,15,0,5"/>
-                <PasswordBox Name="PasswordBox" Style="{StaticResource ModernPasswordBox}" Height="45"/>
+                            <Path Fill="#ffd700" Canvas.Left="15" Canvas.Top="20" 
+                                  Data="M5,0 L6,3 L10,3 L7,5 L8,9 L5,7 L2,9 L3,5 L0,3 L4,3 Z"/>
+                            <Path Fill="#ffd700" Canvas.Left="95" Canvas.Top="25" 
+                                  Data="M3,0 L4,2 L6,2 L4,3 L5,6 L3,4 L1,6 L2,3 L0,2 L2,2 Z"/>
+                            <Path Fill="#ffd700" Canvas.Left="85" Canvas.Top="90" 
+                                  Data="M4,0 L5,2 L8,2 L6,4 L7,7 L4,5 L1,7 L2,4 L0,2 L3,2 Z"/>
+                        </Canvas>
+                    </Viewbox>
 
-                <TextBlock Text="Confirm Password" FontSize="14" Margin="0,15,0,5"/>
-                <PasswordBox Name="ConfirmPasswordBox" Style="{StaticResource ModernPasswordBox}" Height="45"/>
+                    <!-- כותרת -->
+                    <TextBlock Text="TRIVIA MASTER" 
+                             FontSize="28" 
+                             FontWeight="Bold" 
+                             Foreground="#2D3748" 
+                             HorizontalAlignment="Center" 
+                             Margin="0,0,0,10"/>
 
-                <!-- כפתורים -->
-                <Button Name="SignupButton" Content="Sign Up" Style="{StaticResource ModernButton}" Height="50" Margin="0,30,0,10" Click="SignupButton_Click"/>
-                <Button Name="LoginButton" Content="Back to Login" Background="Transparent" Foreground="{StaticResource PrimaryColor}" BorderThickness="0" FontSize="14" Click="LoginButton_Click"/>
+                    <TextBlock Text="Create Your Account" 
+                             FontSize="20" 
+                             FontWeight="SemiBold" 
+                             Foreground="#4A5568" 
+                             HorizontalAlignment="Center"/>
+                </StackPanel>
 
-                <!-- הודעת שגיאה -->
-                <TextBlock Name="ErrorMessageTextBlock" Text="" Foreground="#E53E3E" FontSize="12" HorizontalAlignment="Center" Margin="0,15,0,0" Visibility="Collapsed"/>
+                <!-- שדות הטופס -->
+                <StackPanel>
+                    <!-- שם משתמש -->
+                    <TextBlock Text="Username" 
+                             FontSize="14" 
+                             FontWeight="SemiBold"
+                             Foreground="#2D3748"
+                             Margin="0,0,0,8"/>
+                    <TextBox Name="UsernameTextBox" 
+                           Style="{StaticResource ModernTextBox}" 
+                           Height="45"/>
 
+                    <!-- אימייל -->
+                    <TextBlock Text="Email" 
+                             FontSize="14" 
+                             FontWeight="SemiBold"
+                             Foreground="#2D3748"
+                             Margin="0,20,0,8"/>
+                    <TextBox Name="EmailTextBox" 
+                           Style="{StaticResource ModernTextBox}" 
+                           Height="45"/>
 
+                    <!-- סיסמה -->
+                    <TextBlock Text="Password" 
+                             FontSize="14" 
+                             FontWeight="SemiBold"
+                             Foreground="#2D3748"
+                             Margin="0,20,0,8"/>
+                    <PasswordBox Name="PasswordBox" 
+                               Style="{StaticResource ModernPasswordBox}" 
+                               Height="45"/>
+
+                    <!-- אישור סיסמה -->
+                    <TextBlock Text="Confirm Password" 
+                             FontSize="14" 
+                             FontWeight="SemiBold"
+                             Foreground="#2D3748"
+                             Margin="0,20,0,8"/>
+                    <PasswordBox Name="ConfirmPasswordBox" 
+                               Style="{StaticResource ModernPasswordBox}" 
+                               Height="45"/>
+
+                    <!-- כפתורים -->
+                    <Button Name="SignupButton" 
+                          Content="Create Account" 
+                          Style="{StaticResource ModernButton}" 
+                          Height="50" 
+                          Margin="0,30,0,15" 
+                          Click="SignupButton_Click"/>
+
+                    <Button Name="LoginButton" 
+                          Content="Already have an account? Sign In" 
+                          Background="Transparent" 
+                          Foreground="{StaticResource PrimaryColor}" 
+                          BorderThickness="0" 
+                          FontSize="14"
+                          Cursor="Hand"
+                          Margin="0,0,0,10"
+                          Click="LoginButton_Click"/>
+
+                    <!-- הודעת שגיאה -->
+                    <TextBlock Name="ErrorMessageTextBlock" 
+                             Text="" 
+                             Foreground="#E53E3E" 
+                             FontSize="12" 
+                             HorizontalAlignment="Center" 
+                             TextWrapping="Wrap"
+                             Margin="0,10,0,0" 
+                             Visibility="Collapsed"/>
+                </StackPanel>
             </StackPanel>
         </Border>
     </Grid>

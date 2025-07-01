@@ -9,6 +9,7 @@ namespace Client_Server_Trivia
     /// </summary>
     public partial class App : Application
     {
+        
     }
 
 }

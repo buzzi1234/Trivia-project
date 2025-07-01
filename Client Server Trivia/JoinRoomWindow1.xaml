@@ -189,7 +189,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Storyboard x:Key="FadeInAnimation">
             <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.8"/>
             <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" From="30" To="0" Duration="0:0:0.8">
@@ -204,7 +204,7 @@
             <BeginStoryboard Storyboard="{StaticResource FadeInAnimation}"/>
         </EventTrigger>
     </Window.Triggers>
-    <Grid Background="{StaticResource BackgroundGradient}">
+    <Grid Background="{StaticResource BackgroundGradient}" Margin="0,0,0,10">
         <Grid.RenderTransform>
             <TranslateTransform/>
         </Grid.RenderTransform>
@@ -255,12 +255,13 @@
 
                     </StackPanel>
                 </ScrollViewer>
-                
+
                 <TextBlock Text="Room Name" FontSize="14" Margin="10,277,-10,-89" Grid.RowSpan="2" Grid.Row="2"/>
-                <TextBox Name="RoomNameTextBox" Style="{StaticResource ModernTextBox}" Height="45" FontFamily="Rockwell" Margin="10,301,-10,20" Grid.Row="2"/>
-                
-                <Button Grid.Row="3" Name="JoinButton" Content="Join Fake Room" Style="{StaticResource ModernButton}" Height="50" Width="200" HorizontalAlignment="Center" Click="JoinRoom_Click" VerticalAlignment="Top"/>
+                <TextBox Name="RoomNameTextBox" Style="{StaticResource ModernTextBox}" Height="45" FontFamily="Rockwell" Margin="10,301,235,20" Grid.Row="2"/>
+
+                <Button Grid.Row="3" Name="JoinButton" Content="Join Fake Room" Style="{StaticResource ModernButton}" Height="50" Width="200" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                 <Button Grid.Row="3" Name="BackButton" Content="Back to Menu" Style="{StaticResource ModernButton}" Height="50" Width="200" HorizontalAlignment="Center" Click="BackButton_Click" VerticalAlignment="Top"/>
+                <Button Grid.Row="2" Name="JoinRoom" Content="Join Room" Style="{StaticResource ModernButton}" Height="48" Width="157" HorizontalAlignment="Left" Click="JoinRoom_Click" VerticalAlignment="Top" Margin="440,301,0,0" RenderTransformOrigin="1.234,0.506"/>
             </Grid>
         </Border>
     </Grid>

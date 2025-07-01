@@ -1,4 +1,5 @@
 ﻿<Window x:Class="Client_Server_Trivia.HighScoresWindow"
+        x:Name="HighScore"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -12,6 +13,7 @@
         Background="Transparent"
         AllowsTransparency="True"
         WindowStyle="None">
+
     <Window.Resources>
         <LinearGradientBrush x:Key="BackgroundGradient" StartPoint="0,0" EndPoint="1,1">
             <GradientStop Color="#ff9a9e" Offset="0"/>
@@ -205,6 +207,7 @@
               Foreground="#4A5568" HorizontalAlignment="Center"/>
                 </StackPanel>
 
+                <StackPanel/>
                 <!-- Podium Section -->
                 <Grid Grid.Row="1" Margin="0,0,0,30">
                     <Grid.ColumnDefinitions>
@@ -220,9 +223,9 @@
                                 <Border.Effect>
                                     <DropShadowEffect Color="#C0C0C0" BlurRadius="15" ShadowDepth="0" Opacity="0.4"/>
                                 </Border.Effect>
-                                <TextBlock Text="2" Style="{StaticResource ScoreText}" FontSize="36" VerticalAlignment="Center"/>
+                                <TextBlock Text="2" Style= "{StaticResource ScoreText}" FontSize="36" VerticalAlignment="Center"/>
                             </Border>
-                            <TextBlock Name="SecondPlaceScore" Text="0" FontSize="24" FontWeight="Bold" Foreground="#C0C0C0" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="SecondPlaceScore" Text="0" FontSize="24" FontWeight="Bold" Foreground="#C0C0C0" HorizontalAlignment="Center"/>
                             <TextBlock Text="2nd Place" Style="{StaticResource RankText}"/>
                         </StackPanel>
                     </Border>
@@ -241,7 +244,7 @@
                                           RenderTransform="0.8,0,0,0.8,0,0" Opacity="0.9"/>
                                 </Grid>
                             </Border>
-                            <TextBlock Name="FirstPlaceScore" Text="0" FontSize="32" FontWeight="Bold" Foreground="#FFD700" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="FirstPlaceScore" Text="0" FontSize="32" FontWeight="Bold" Foreground="#FFD700" Width="18"/>
                             <TextBlock Text="CHAMPION" FontSize="14" FontWeight="Bold" Foreground="#FFD700" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Border>
@@ -263,8 +266,10 @@
 
                 <!-- Additional Stats Section -->
 
+
+
                 <!-- Back Button -->
-                <Button Grid.Row="3" Name="BackButton" Content="Back to Main Menu" Style="{StaticResource ModernButton}" Height="50" Width="250" HorizontalAlignment="Center" Click="BackButton_Click"/>
+                <Button Grid.Row="1" Name="BackButton" Content="Back to Main Menu" Style="{StaticResource ModernButton}" Height="50" Width="250" HorizontalAlignment="Center" Click="BackButton_Click" Margin="0,291,0,130" Grid.RowSpan="2"/>
             </Grid>
         </Border>
     </Grid>

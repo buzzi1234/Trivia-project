@@ -24,6 +24,10 @@ namespace Client_Server_Trivia
         {
             InitializeComponent();
         }
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown(); // Close the application
+        }
         private void CreateARoomButton_Click(object sender, RoutedEventArgs e)
         {
             var create = new CreateRoomWindow();
@@ -40,8 +44,8 @@ namespace Client_Server_Trivia
         }
         private void StatisticsButton_Click(object sender, RoutedEventArgs e)
         {
-            LobbyWindow signupWindow = new LobbyWindow();
-            signupWindow.Show();
+            StatisticsWindow statisticsWindow = new StatisticsWindow();
+            statisticsWindow.Show();
             this.Hide(); // Hide the main window if needed
             this.Close(); // Close the main window if needed
         }
@@ -56,6 +60,7 @@ namespace Client_Server_Trivia
 
             byte[] buffer = new byte[1024];
             int bytesRead = stream.Read(buffer, 0, buffer.Length);
+
             string res = Encoding.UTF8.GetString(buffer, 5, bytesRead - 5);
             int status = MessageBuilder.GetStatus(res);
             
