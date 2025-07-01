@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Client_Server_Trivia"
         mc:Ignorable="d"
         Title="Trivia Game - Personal Statistics"
-        Height="1150" Width="850"
+        Height="{x:Static SystemParameters.PrimaryScreenHeight}" Width="850"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         Background="Transparent"
@@ -171,192 +171,202 @@
         </EventTrigger>
     </Window.Triggers>
 
-    <Grid Background="{StaticResource BackgroundGradient}">
-        <Grid.RenderTransform>
-            <TranslateTransform/>
-        </Grid.RenderTransform>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Background="{StaticResource BackgroundGradient}" Margin="0,0,0,-407">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="19*"/>
+                <RowDefinition Height="556*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RenderTransform>
+                <TranslateTransform/>
+            </Grid.RenderTransform>
 
-        <Button Name="CloseButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,15,20,0" Width="35" Height="35" Background="Transparent" BorderThickness="0" Foreground="White" FontSize="18" Content="✕" Cursor="Hand" Click="CloseButton_Click"/>
+            <Button Name="CloseButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,15,20,0" Width="35" Height="35" Background="Transparent" BorderThickness="0" Foreground="White" FontSize="18" Content="✕" Cursor="Hand" Click="CloseButton_Click" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
 
-        <Ellipse Width="400" Height="400" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-300,-150,0,0" Fill="#FFFFFF" Opacity="0.1"/>
-        <Ellipse Width="300" Height="300" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,-150,-150" Fill="#FFFFFF" Opacity="0.1"/>
-        <Ellipse Width="200" Height="200" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,-100,0,0" Fill="#FFFFFF" Opacity="0.1"/>
+            <Ellipse Width="400" Height="400" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-300,-150,0,0" Fill="#FFFFFF" Opacity="0.1" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+            <Ellipse Width="300" Height="300" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,-150,-150" Fill="#FFFFFF" Opacity="0.1" Grid.ColumnSpan="2" Grid.Row="1"/>
+            <Ellipse Width="200" Height="200" HorizontalAlignment="Center" VerticalAlignment="Top" Fill="#FFFFFF" Opacity="0.1" Grid.Column="1" Margin="0,437,0,0" Grid.Row="1"/>
 
-        <Border Background="{StaticResource CardGradient}" CornerRadius="25" Width="800" Height="1030" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Border.Effect>
-                <DropShadowEffect Color="Black" BlurRadius="40" ShadowDepth="15" Opacity="0.3"/>
-            </Border.Effect>
+            <Border Background="{StaticResource CardGradient}" CornerRadius="25" Width="800" Height="1030" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Column="1" Margin="0,22,0,0" Grid.Row="1">
+                <Border.Effect>
+                    <DropShadowEffect Color="Black" BlurRadius="40" ShadowDepth="15" Opacity="0.3"/>
+                </Border.Effect>
 
-            <Grid Margin="40">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+                <Grid Margin="40">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="0" Margin="0,0,0,20">
-                    <Viewbox Width="80" Height="80" Margin="0,0,0,15">
-                        <Canvas Width="120" Height="120">
-                            <Ellipse Width="120" Height="120" Fill="#ff6b6b" Opacity="0.1"/>
-                            <Rectangle Width="35" Height="50" Canvas.Left="25" Canvas.Top="35" Fill="#667eea" RadiusX="5" RadiusY="5" Stroke="White" StrokeThickness="2"/>
-                            <Rectangle Width="25" Height="15" Canvas.Left="30" Canvas.Top="45" Fill="White" RadiusX="2" RadiusY="2"/>
-                            <Rectangle Width="25" Height="8" Canvas.Left="30" Canvas.Top="55" Fill="White" RadiusX="2" RadiusY="2"/>
+                    <StackPanel Grid.Row="0" Margin="0,0,0,20">
+                        <Viewbox Width="80" Height="80" Margin="0,0,0,15">
+                            <Canvas Width="120" Height="120">
+                                <Ellipse Width="120" Height="120" Fill="#ff6b6b" Opacity="0.1"/>
+                                <Rectangle Width="35" Height="50" Canvas.Left="25" Canvas.Top="35" Fill="#667eea" RadiusX="5" RadiusY="5" Stroke="White" StrokeThickness="2"/>
+                                <Rectangle Width="25" Height="15" Canvas.Left="30" Canvas.Top="45" Fill="White" RadiusX="2" RadiusY="2"/>
+                                <Rectangle Width="25" Height="8" Canvas.Left="30" Canvas.Top="55" Fill="White" RadiusX="2" RadiusY="2"/>
 
-                            <Rectangle Width="35" Height="50" Canvas.Left="60" Canvas.Top="35" Fill="White" RadiusX="5" RadiusY="5" Stroke="#ff6b6b" StrokeThickness="2"/>
-                            <Path Canvas.Left="72" Canvas.Top="50" Fill="#ff6b6b" Data="M0,5 C0,2 2,0 5,0 C8,0 10,2 10,5 C10,8 5,15 5,15 S0,8 0,5 Z"/>
-                            <TextBlock Canvas.Left="63" Canvas.Top="37" Text="A" FontSize="8" FontWeight="Bold" Foreground="#ff6b6b"/>
-                            <Path Fill="#ffd700" Canvas.Left="15" Canvas.Top="20" Data="M5,0 L6,3 L10,3 L7,5 L8,9 L5,7 L2,9 L3,5 L0,3 L4,3 Z"/>
-                            <Path Fill="#ffd700" Canvas.Left="95" Canvas.Top="25" Data="M3,0 L4,2 L6,2 L4,3 L5,6 L3,4 L1,6 L2,3 L0,2 L2,2 Z"/>
-                            <Path Fill="#ffd700" Canvas.Left="85" Canvas.Top="90" Data="M4,0 L5,2 L8,2 L6,4 L7,7 L4,5 L1,7 L2,4 L0,2 L3,2 Z"/>
-                        </Canvas>
-                    </Viewbox>
-                    <TextBlock Text="MY STATISTICS" FontSize="32" FontWeight="Bold" Foreground="#2D3748" HorizontalAlignment="Center" Margin="0,0,0,5"/>
-                    <TextBlock Text="Personal Performance Overview" FontSize="16" FontWeight="SemiBold" Foreground="#4A5568" HorizontalAlignment="Center"/>
-                </StackPanel>
+                                <Rectangle Width="35" Height="50" Canvas.Left="60" Canvas.Top="35" Fill="White" RadiusX="5" RadiusY="5" Stroke="#ff6b6b" StrokeThickness="2"/>
+                                <Path Canvas.Left="72" Canvas.Top="50" Fill="#ff6b6b" Data="M0,5 C0,2 2,0 5,0 C8,0 10,2 10,5 C10,8 5,15 5,15 S0,8 0,5 Z"/>
+                                <TextBlock Canvas.Left="63" Canvas.Top="37" Text="A" FontSize="8" FontWeight="Bold" Foreground="#ff6b6b"/>
+                                <Path Fill="#ffd700" Canvas.Left="15" Canvas.Top="20" Data="M5,0 L6,3 L10,3 L7,5 L8,9 L5,7 L2,9 L3,5 L0,3 L4,3 Z"/>
+                                <Path Fill="#ffd700" Canvas.Left="95" Canvas.Top="25" Data="M3,0 L4,2 L6,2 L4,3 L5,6 L3,4 L1,6 L2,3 L0,2 L2,2 Z"/>
+                                <Path Fill="#ffd700" Canvas.Left="85" Canvas.Top="90" Data="M4,0 L5,2 L8,2 L6,4 L7,7 L4,5 L1,7 L2,4 L0,2 L3,2 Z"/>
+                            </Canvas>
+                        </Viewbox>
+                        <TextBlock Text="MY STATISTICS" FontSize="32" FontWeight="Bold" Foreground="#2D3748" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                        <TextBlock Text="Personal Performance Overview" FontSize="16" FontWeight="SemiBold" Foreground="#4A5568" HorizontalAlignment="Center"/>
+                    </StackPanel>
 
-                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,20">
-                    <TextBlock Text="Player: " FontSize="18" FontWeight="SemiBold" Foreground="#718096"/>
-                    <TextBlock Name="PlayerNameText" Text="{Binding PlayerName}" FontSize="18" FontWeight="Bold" Foreground="#4CAF50"/>
-                </StackPanel>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,20">
+                        <TextBlock Text="Player: " FontSize="18" FontWeight="SemiBold" Foreground="#718096"/>
+                        <TextBlock Name="PlayerNameText" Text="{Binding PlayerName}" FontSize="18" FontWeight="Bold" Foreground="#4CAF50"/>
+                    </StackPanel>
 
-                <Grid Grid.Row="2" Margin="0,0,0,20">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Row="2" Margin="0,0,0,20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                    <Border Grid.Column="0" Style="{StaticResource StatisticsCard}">
-                        <StackPanel HorizontalAlignment="Center">
-                            <Ellipse Width="40" Height="40" Fill="{StaticResource StatCardGradient}" Margin="0,0,0,10">
-                                <Ellipse.Effect>
-                                    <DropShadowEffect Color="#4CAF50" BlurRadius="10" ShadowDepth="0" Opacity="0.3"/>
-                                </Ellipse.Effect>
-                            </Ellipse>
-                            <TextBlock Name="GamesPlayedValue" Text="{Binding GamesPlayed}" FontSize="24" FontWeight="Bold" Foreground="#2D3748" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Games Played" FontSize="12" Foreground="#718096" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center"/>
+                        <Border Grid.Column="0" Style="{StaticResource StatisticsCard}">
+                            <StackPanel HorizontalAlignment="Center">
+                                <Ellipse Width="40" Height="40" Fill="{StaticResource StatCardGradient}" Margin="0,0,0,10">
+                                    <Ellipse.Effect>
+                                        <DropShadowEffect Color="#4CAF50" BlurRadius="10" ShadowDepth="0" Opacity="0.3"/>
+                                    </Ellipse.Effect>
+                                </Ellipse>
+                                <TextBlock Name="GamesPlayedValue" Text="{Binding GamesPlayed}" FontSize="24" FontWeight="Bold" Foreground="#2D3748" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Games Played" FontSize="12" Foreground="#718096" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Column="1" Style="{StaticResource StatisticsCard}">
+                            <StackPanel HorizontalAlignment="Center">
+                                <Ellipse Width="40" Height="40" Fill="{StaticResource WinRateGradient}" Margin="0,0,0,10">
+                                    <Ellipse.Effect>
+                                        <DropShadowEffect Color="#2196F3" BlurRadius="10" ShadowDepth="0" Opacity="0.3"/>
+                                    </Ellipse.Effect>
+                                </Ellipse>
+                                <TextBlock Name="WinRateValue" FontSize="24" FontWeight="Bold" Foreground="#2D3748" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Win Rate" FontSize="12" Foreground="#718096" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Column="2" Style="{StaticResource StatisticsCard}">
+                            <StackPanel HorizontalAlignment="Center">
+                                <Ellipse Width="40" Height="40" Fill="{StaticResource ScoreGradient}" Margin="0,0,0,10">
+                                    <Ellipse.Effect>
+                                        <DropShadowEffect Color="#FF9800" BlurRadius="10" ShadowDepth="0" Opacity="0.3"/>
+                                    </Ellipse.Effect>
+                                </Ellipse>
+                                <TextBlock Name="AvgScoreValue" FontSize="24" FontWeight="Bold" Foreground="#2D3748" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Average Score" FontSize="12" Foreground="#718096" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Column="3" Style="{StaticResource StatisticsCard}">
+                            <StackPanel HorizontalAlignment="Center">
+                                <Ellipse Width="40" Height="40" Fill="{StaticResource TimeGradient}" Margin="0,0,0,10">
+                                    <Ellipse.Effect>
+                                        <DropShadowEffect Color="#9C27B0" BlurRadius="10" ShadowDepth="0" Opacity="0.3"/>
+                                    </Ellipse.Effect>
+                                </Ellipse>
+                                <TextBlock Name="BestScoreValue" Text="{Binding BestScore}" FontSize="24" FontWeight="Bold" Foreground="#2D3748" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Best Score" FontSize="12" Foreground="#718096" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <Border Grid.Row="3" Style="{StaticResource StatisticsCard}" Margin="50,0,50,20">
+                        <StackPanel>
+                            <TextBlock Text="Achievement Summary" FontSize="18" FontWeight="Bold" Foreground="#2D3748" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Name="AccuracyValue" FontSize="16" FontWeight="SemiBold" Foreground="#4A5568" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Accuracy Rate" FontSize="12" Foreground="#718096" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Name="RankingValue" Text="{Binding CurrentRanking}" FontSize="16" FontWeight="SemiBold" Foreground="#4A5568" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Current Ranking" FontSize="12" Foreground="#718096" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Grid>
                         </StackPanel>
                     </Border>
 
-                    <Border Grid.Column="1" Style="{StaticResource StatisticsCard}">
-                        <StackPanel HorizontalAlignment="Center">
-                            <Ellipse Width="40" Height="40" Fill="{StaticResource WinRateGradient}" Margin="0,0,0,10">
-                                <Ellipse.Effect>
-                                    <DropShadowEffect Color="#2196F3" BlurRadius="10" ShadowDepth="0" Opacity="0.3"/>
-                                </Ellipse.Effect>
-                            </Ellipse>
-                            <TextBlock Name="WinRateValue" FontSize="24" FontWeight="Bold" Foreground="#2D3748" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Win Rate" FontSize="12" Foreground="#718096" HorizontalAlignment="Center"/>
-                        </StackPanel>
-                    </Border>
-
-                    <Border Grid.Column="2" Style="{StaticResource StatisticsCard}">
-                        <StackPanel HorizontalAlignment="Center">
-                            <Ellipse Width="40" Height="40" Fill="{StaticResource ScoreGradient}" Margin="0,0,0,10">
-                                <Ellipse.Effect>
-                                    <DropShadowEffect Color="#FF9800" BlurRadius="10" ShadowDepth="0" Opacity="0.3"/>
-                                </Ellipse.Effect>
-                            </Ellipse>
-                            <TextBlock Name="AvgScoreValue" FontSize="24" FontWeight="Bold" Foreground="#2D3748" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Average Score" FontSize="12" Foreground="#718096" HorizontalAlignment="Center"/>
-                        </StackPanel>
-                    </Border>
-
-                    <Border Grid.Column="3" Style="{StaticResource StatisticsCard}">
-                        <StackPanel HorizontalAlignment="Center">
-                            <Ellipse Width="40" Height="40" Fill="{StaticResource TimeGradient}" Margin="0,0,0,10">
-                                <Ellipse.Effect>
-                                    <DropShadowEffect Color="#9C27B0" BlurRadius="10" ShadowDepth="0" Opacity="0.3"/>
-                                </Ellipse.Effect>
-                            </Ellipse>
-                            <TextBlock Name="BestScoreValue" Text="{Binding BestScore}" FontSize="24" FontWeight="Bold" Foreground="#2D3748" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Best Score" FontSize="12" Foreground="#718096" HorizontalAlignment="Center"/>
-                        </StackPanel>
-                    </Border>
-                </Grid>
-
-                <Border Grid.Row="3" Style="{StaticResource StatisticsCard}" Margin="50,0,50,20">
-                    <StackPanel>
-                        <TextBlock Text="Achievement Summary" FontSize="18" FontWeight="Bold" Foreground="#2D3748" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                    <ScrollViewer Grid.Row="4" Style="{StaticResource ModernScrollViewer}" Margin="0,0,0,20">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0">
-                                <TextBlock Name="AccuracyValue" FontSize="16" FontWeight="SemiBold" Foreground="#4A5568" HorizontalAlignment="Center"/>
-                                <TextBlock Text="Accuracy Rate" FontSize="12" Foreground="#718096" HorizontalAlignment="Center"/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="1">
-                                <TextBlock Name="RankingValue" Text="{Binding CurrentRanking}" FontSize="16" FontWeight="SemiBold" Foreground="#4A5568" HorizontalAlignment="Center"/>
-                                <TextBlock Text="Current Ranking" FontSize="12" Foreground="#718096" HorizontalAlignment="Center"/>
-                            </StackPanel>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource StatisticsCard}">
+                                <StackPanel>
+                                    <TextBlock Text="Games Won" FontSize="16" FontWeight="SemiBold" Foreground="#4CAF50" Margin="0,0,0,5"/>
+                                    <TextBlock Name="GamesWonValue" FontSize="20" FontWeight="Bold" Foreground="#2D3748"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource StatisticsCard}">
+                                <StackPanel>
+                                    <TextBlock Text="Games Lost" FontSize="16" FontWeight="SemiBold" Foreground="#F44336" Margin="0,0,0,5"/>
+                                    <TextBlock Name="GamesLostValue" FontSize="20" FontWeight="Bold" Foreground="#2D3748"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource StatisticsCard}">
+                                <StackPanel>
+                                    <TextBlock Text="Correct Answers" FontSize="16" FontWeight="SemiBold" Foreground="#2196F3" Margin="0,0,0,5"/>
+                                    <TextBlock Name="CorrectAnswersValue" Text="{Binding TotalCorrectAnswers}" FontSize="20" FontWeight="Bold" Foreground="#2D3748"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource StatisticsCard}">
+                                <StackPanel>
+                                    <TextBlock Text="Wrong Answers" FontSize="16" FontWeight="SemiBold" Foreground="#FF5722" Margin="0,0,0,5"/>
+                                    <TextBlock Name="WrongAnswersValue" FontSize="20" FontWeight="Bold" Foreground="#2D3748"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource StatisticsCard}">
+                                <StackPanel>
+                                    <TextBlock Text="Total Questions" FontSize="16" FontWeight="SemiBold" Foreground="#607D8B" Margin="0,0,0,5"/>
+                                    <TextBlock Name="TotalQuestionsValue" Text="{Binding TotalQuestionsAnswered}" FontSize="20" FontWeight="Bold" Foreground="#2D3748"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Row="2" Grid.Column="1" Style="{StaticResource StatisticsCard}">
+                                <StackPanel>
+                                    <TextBlock Text="Average Time" FontSize="16" FontWeight="SemiBold" Foreground="#9C27B0" Margin="0,0,0,5"/>
+                                    <TextBlock Name="AvgTimeValue" FontSize="20" FontWeight="Bold" Foreground="#2D3748"/>
+                                </StackPanel>
+                            </Border>
                         </Grid>
-                    </StackPanel>
-                </Border>
+                    </ScrollViewer>
 
-                <ScrollViewer Grid.Row="4" Style="{StaticResource ModernScrollViewer}" Margin="0,0,0,20">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource StatisticsCard}">
-                            <StackPanel>
-                                <TextBlock Text="Games Won" FontSize="16" FontWeight="SemiBold" Foreground="#4CAF50" Margin="0,0,0,5"/>
-                                <TextBlock Name="GamesWonValue" FontSize="20" FontWeight="Bold" Foreground="#2D3748"/>
-                            </StackPanel>
-                        </Border>
-
-                        <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource StatisticsCard}">
-                            <StackPanel>
-                                <TextBlock Text="Games Lost" FontSize="16" FontWeight="SemiBold" Foreground="#F44336" Margin="0,0,0,5"/>
-                                <TextBlock Name="GamesLostValue" FontSize="20" FontWeight="Bold" Foreground="#2D3748"/>
-                            </StackPanel>
-                        </Border>
-
-                        <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource StatisticsCard}">
-                            <StackPanel>
-                                <TextBlock Text="Correct Answers" FontSize="16" FontWeight="SemiBold" Foreground="#2196F3" Margin="0,0,0,5"/>
-                                <TextBlock Name="CorrectAnswersValue" Text="{Binding TotalCorrectAnswers}" FontSize="20" FontWeight="Bold" Foreground="#2D3748"/>
-                            </StackPanel>
-                        </Border>
-
-                        <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource StatisticsCard}">
-                            <StackPanel>
-                                <TextBlock Text="Wrong Answers" FontSize="16" FontWeight="SemiBold" Foreground="#FF5722" Margin="0,0,0,5"/>
-                                <TextBlock Name="WrongAnswersValue" FontSize="20" FontWeight="Bold" Foreground="#2D3748"/>
-                            </StackPanel>
-                        </Border>
-
-                        <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource StatisticsCard}">
-                            <StackPanel>
-                                <TextBlock Text="Total Questions" FontSize="16" FontWeight="SemiBold" Foreground="#607D8B" Margin="0,0,0,5"/>
-                                <TextBlock Name="TotalQuestionsValue" Text="{Binding TotalQuestionsAnswered}" FontSize="20" FontWeight="Bold" Foreground="#2D3748"/>
-                            </StackPanel>
-                        </Border>
-
-                        <Border Grid.Row="2" Grid.Column="1" Style="{StaticResource StatisticsCard}">
-                            <StackPanel>
-                                <TextBlock Text="Average Time" FontSize="16" FontWeight="SemiBold" Foreground="#9C27B0" Margin="0,0,0,5"/>
-                                <TextBlock Name="AvgTimeValue" FontSize="20" FontWeight="Bold" Foreground="#2D3748"/>
-                            </StackPanel>
-                        </Border>
-                    </Grid>
-                </ScrollViewer>
-
-                <Button Grid.Row="5" Name="BackButton" Content="Back to Statistics" Style="{StaticResource ModernButton}" Height="50" Width="250" HorizontalAlignment="Center" Click="BackButton_Click"/>
-            </Grid>
-        </Border>
-    </Grid>
+                    <Button Grid.Row="5" Name="BackButton" Content="Back to Statistics" Style="{StaticResource ModernButton}" Height="50" Width="250" HorizontalAlignment="Center" Click="BackButton_Click"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </ScrollViewer>
 </Window>

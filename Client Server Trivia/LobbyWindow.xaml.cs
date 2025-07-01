@@ -30,22 +30,22 @@ namespace Client_Server_Trivia
         }
         private void CreateARoomButton_Click(object sender, RoutedEventArgs e)
         {
-            LobbyWindow signupWindow = new LobbyWindow();
-            signupWindow.Show();
-            this.Hide(); // Hide the main window if needed
-            this.Close(); // Close the main window if needed
+            var create = new CreateRoomWindow();
+            create.Show();
+            this.Hide();
+            this.Close();
         }
         private void JoinARoomButton_Click(object sender, RoutedEventArgs e)
         {
-            LobbyWindow signupWindow = new LobbyWindow();
-            signupWindow.Show();
+            var joinRoomWindow1 = new JoinRoomWindow1();
+            joinRoomWindow1.Show();
             this.Hide(); // Hide the main window if needed
             this.Close(); // Close the main window if needed
         }
         private void StatisticsButton_Click(object sender, RoutedEventArgs e)
         {
-            LobbyWindow signupWindow = new LobbyWindow();
-            signupWindow.Show();
+            StatisticsWindow statisticsWindow = new StatisticsWindow();
+            statisticsWindow.Show();
             this.Hide(); // Hide the main window if needed
             this.Close(); // Close the main window if needed
         }
@@ -55,14 +55,12 @@ namespace Client_Server_Trivia
             NetworkStream stream = (NetworkStream)(Application.Current.Properties["stream"]);
 
             //send message
-            byte[] data = MessageBuilder.BuildLengthMessage(9, "{}");
-            stream.Write(data, 0, data.Length);
-
-            data = MessageBuilder.BuildJsonMessage("{}");
+            byte[] data = MessageBuilder.buildMessage(9, "{}");
             stream.Write(data, 0, data.Length);
 
             byte[] buffer = new byte[1024];
             int bytesRead = stream.Read(buffer, 0, buffer.Length);
+
             string res = Encoding.UTF8.GetString(buffer, 5, bytesRead - 5);
             int status = MessageBuilder.GetStatus(res);
             

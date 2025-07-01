@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -33,6 +34,11 @@ namespace Client_Server_Trivia
             string password = PasswordBox.Password.Trim();
             string confirmPassword = ConfirmPasswordBox.Password.Trim();
 
+            signinRequest sign = new signinRequest();
+            sign.mail = email;
+            sign.password = password;
+            sign.username = username;
+
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(email)
                 || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(confirmPassword))
             {
@@ -49,18 +55,28 @@ namespace Client_Server_Trivia
             TcpClient client = new TcpClient("127.0.0.1", 8826);
             NetworkStream stream = client.GetStream();
 
-            string json = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\",\"mail\":\"" + email + "\"}";
+            string json = JsonSerializer.Serialize<signinRequest>(sign);
             //send message
-            byte[] data = MessageBuilder.BuildJsonMessage(json);
+            byte[] data = MessageBuilder.BuildLengthMessage(2, json);
+            stream.Write(data, 0, data.Length);
+
+            data = MessageBuilder.BuildJsonMessage(json);
             stream.Write(data, 0, data.Length);
 
             byte[] buffer = new byte[1024];
             int bytesRead = stream.Read(buffer, 0, buffer.Length);
             string res = Encoding.UTF8.GetString(buffer, 5, bytesRead - 5);
             int status = MessageBuilder.GetStatus(res);
+
+            stream.Close();
+            client.Close();
+
             if(status == 2)
             {
                 MessageBox.Show($"Account created successfully for {username}!\n\n[TODO: Send to server for registration]");
+                var loginPage = new MainWindow();
+                loginPage.Show();
+                this.Hide(); 
             }
             else
             {
@@ -91,5 +107,13 @@ namespace Client_Server_Trivia
         {
             Application.Current.Shutdown();
         }
+    }
+
+    public class signinRequest
+    {
+        public string username { get; set; }
+        public string password { get; set; }
+        public string mail {  get; set; }
+
     }
 }

@@ -1,4 +1,5 @@
 #include "MenuRequestHandler.h"
+#include <cstdlib>
 
 
 //consructor
@@ -89,7 +90,7 @@ Structs::RequestResult MenuRequestHandler::getRooms(Structs::RequestInfo& reqInf
     }
     else
     {
-        grr.status = reqInfo.id;
+        grr.status = GET_ROOMS;
     }
 
     rr.response = j.serializeResponse(grr);
@@ -183,8 +184,9 @@ Structs::RequestResult MenuRequestHandler::joinRoom(Structs::RequestInfo& reqInf
     JsonRequestPacketDeserializer d;
 
     req = d.deserializeJoinRoomRequest(reqInfo.buffer);
-    std::optional<Room*> room = m_handlerFactory.getRoomManager().getRoom(req.roomId);
-    if (room == std::nullopt)
+    if (m_handlerFactory.getRoomManager().getRoom(req.roomId) == std::nullopt 
+        || m_handlerFactory.getRoomManager().getRoom(req.roomId).value()->getRoomData().status 
+        == ROOM_IS_NOT_ACTIVE)
     {
         res.status = FAIL_JOIN_ROOM;
 		rr.newHandler = this;
@@ -206,6 +208,7 @@ Structs::RequestResult MenuRequestHandler::createRoom(Structs::RequestInfo& reqI
     Structs::RequestResult rr;
     Structs::CreateRoomRequest res;
     Structs::CreateRoomResponse req;
+    Structs::RoomData rd;
 
     JsonResponsePacketSerializer j;
     JsonRequestPacketDeserializer d;
@@ -216,15 +219,32 @@ Structs::RequestResult MenuRequestHandler::createRoom(Structs::RequestInfo& reqI
 		Structs::RoomData roomData;
         Room* newRoom = m_handlerFactory.getRoomManager().createRoom(m_user, roomData);
         req.status = CREATE_ROOM;
-        if (newRoom != nullptr)
+
+        rd.maxPlayers = res.maxUsers;
+        rd.numOfQuestionsInGame = res.questionCount;
+        rd.timePerQuestion = res.answerTimeout;
+        rd.id = rand() % 101;
+        rd.name = res.roomName;
+        rd.status = ROOM_IS_ACTIVE;
+
+        std::vector<Structs::RoomData> rooms = this->m_handlerFactory.getRoomManager().getRooms();
+        bool flag = true;
+        for (auto it : rooms)
         {
-            req.status = CREATE_ROOM;
-            rr.newHandler = new RoomAdminRequestHandler(m_user, *newRoom, m_handlerFactory, m_communicator);
+            while(it.id == rd.id)
+            {
+                rd.id = rand() % 101;
+            }
+
+            if (it.name == rd.name)
+            {
+                req.status = FAIL_CREATE_ROOM;
+                flag = false;
+            }
         }
-        else
+        if (flag)
         {
-            req.status = FAIL_CREATE_ROOM;
-            rr.newHandler = this;
+            this->m_handlerFactory.getRoomManager().createRoom(this->m_user, rd);
         }
     }
     else
@@ -232,6 +252,7 @@ Structs::RequestResult MenuRequestHandler::createRoom(Structs::RequestInfo& reqI
         req.status = FAIL_CREATE_ROOM;
 		rr.newHandler = this;
     }
+
 
     rr.response = j.serializeResponse(req);
 

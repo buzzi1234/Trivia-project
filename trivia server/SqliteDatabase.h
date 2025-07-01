@@ -46,6 +46,12 @@ private:
 
 	bool sqlStatement(std::string sqlQuery);
 	void UserSqlStatement(std::string sqlQuery);
+	void HightScoreSqlStatement(std::string sqlQuery);
+	void AverageAnswerTimeSqlStatement(std::string sqlQuery);
+	void NumOfCurrectAnswersSqlStatement(std::string sqlQuery);
+	void NumOfTotalAnswersSqlStatement(std::string sqlQuery);
+	void NumOfPlayerGamesSqlStatement(std::string sqlQuery);
+	void PlayerScoreSqlStatement(std::string sqlQuery);
 	void questionSqlStatement(std::string sqlQuery);
 	void statesSqlStatement(std::string sqlQuery);
 	bool initDB();

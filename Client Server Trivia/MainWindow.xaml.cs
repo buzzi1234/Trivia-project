@@ -66,11 +66,9 @@ namespace Client_Server_Trivia
 
             string json = JsonSerializer.Serialize<loginRequest>(log);
             //send message
-            byte[] data = MessageBuilder.BuildLengthMessage(1, json);
+            byte[] data = MessageBuilder.buildMessage(1, json);
             stream.Write(data, 0, data.Length);
 
-            data = MessageBuilder.BuildJsonMessage(json);
-            stream.Write(data, 0, data.Length);
 
             byte[] buffer = new byte[1024];
             int bytesRead = stream.Read(buffer, 0, buffer.Length);
