@@ -1,7 +1,8 @@
 #include "MenuRequestHandler.h"
 
+
 //consructor
-MenuRequestHandler::MenuRequestHandler(LoggedUser loged, RequestHandlerFactory& factory) : m_user(loged), m_handlerFactory(factory)
+MenuRequestHandler::MenuRequestHandler(LoggedUser loged, RequestHandlerFactory& factory, Communicator& communicator) : m_user(loged), m_handlerFactory(factory), m_communicator(communicator)
 {
 }
 
@@ -182,16 +183,18 @@ Structs::RequestResult MenuRequestHandler::joinRoom(Structs::RequestInfo& reqInf
     JsonRequestPacketDeserializer d;
 
     req = d.deserializeJoinRoomRequest(reqInfo.buffer);
-    if (m_handlerFactory.getRoomManager().getRoom(req.roomId) == std::nullopt)
+    std::optional<Room*> room = m_handlerFactory.getRoomManager().getRoom(req.roomId);
+    if (room == std::nullopt)
     {
         res.status = FAIL_JOIN_ROOM;
+		rr.newHandler = this;
     }
     else {
-        res.status = reqInfo.id;
+        res.status = JOIN_ROOM;
+        rr.newHandler = new RoomMemberRequestHandler(m_user, *room.value(), m_handlerFactory);
     }
 
     rr.response = j.serializeResponse(res);
-    rr.newHandler = new RoomMemberRequestHandler();
 
     return rr;
 
@@ -210,15 +213,27 @@ Structs::RequestResult MenuRequestHandler::createRoom(Structs::RequestInfo& reqI
     res = d.deserializeCreateRoomRequest(reqInfo.buffer);
     if (res.maxUsers > 0 && res.questionCount > 0 && res.roomName != "")
     {
+		Structs::RoomData roomData;
+        Room* newRoom = m_handlerFactory.getRoomManager().createRoom(m_user, roomData);
         req.status = CREATE_ROOM;
+        if (newRoom != nullptr)
+        {
+            req.status = CREATE_ROOM;
+            rr.newHandler = new RoomAdminRequestHandler(m_user, *newRoom, m_handlerFactory, m_communicator);
+        }
+        else
+        {
+            req.status = FAIL_CREATE_ROOM;
+            rr.newHandler = this;
+        }
     }
     else
     {
         req.status = FAIL_CREATE_ROOM;
+		rr.newHandler = this;
     }
 
     rr.response = j.serializeResponse(req);
-    rr.newHandler = new RoomAdminRequestHandler();
 
     return rr;
 
@@ -237,6 +252,11 @@ Structs::RequestResult MenuRequestHandler::handleErrorRequest(Structs::RequestIn
     reault.newHandler = nullptr;
 
     return reault;
+}
+
+LoggedUser MenuRequestHandler::getUser() const
+{
+    return m_user;
 }
 
 

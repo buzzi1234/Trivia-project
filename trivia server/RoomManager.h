@@ -12,8 +12,8 @@ public:
 	RoomManager() = default;
 	~RoomManager();
 
-	void createRoom(LoggedUser lu, Structs::RoomData rd);
-	void deleteRoom(unsigned int id);
+	Room* createRoom(LoggedUser lu, Structs::RoomData rd);
+	bool deleteRoom(unsigned int id);
 	int getRoomState(unsigned int id) const;
 	std::vector<Structs::RoomData> getRooms() const;
 	std::optional<Room*> getRoom(unsigned int id);
