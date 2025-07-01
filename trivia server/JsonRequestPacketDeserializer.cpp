@@ -102,3 +102,27 @@ Structs::CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomR
 
     return t;
 }
+
+Structs::CloseRoomRequest JsonRequestPacketDeserializer::deserializeCloseRoomRequest(std::vector<unsigned char> buffer) const
+{
+	Structs::CloseRoomRequest t;
+    return t;
+}
+
+Structs::StartGameRequest JsonRequestPacketDeserializer::deserializeStartGameRequest(std::vector<unsigned char> buffer) const
+{
+	Structs::StartGameRequest t;
+    return t;
+}
+
+Structs::GetRoomStateRequest JsonRequestPacketDeserializer::deserializeGetRoomStateRequest(std::vector<unsigned char> buffer) const
+{
+	Structs::GetRoomStateRequest t; 
+    return t;
+}
+
+Structs::LeaveRoomRequest JsonRequestPacketDeserializer::deserializeLeaveRoomRequest(std::vector<unsigned char> buffer) const
+{
+	Structs::LeaveRoomRequest t;
+    return t;
+}

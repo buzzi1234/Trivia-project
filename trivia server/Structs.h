@@ -146,5 +146,22 @@ public:
 	{
 		unsigned int status; //status need to be 1
 	};
+
+	struct CloseRoomRequest
+	{
+		
+	}typedef CloseRoomRequest;
+
+	struct StartGameRequest
+	{
+	}typedef StartGameRequest;
+
+	struct GetRoomStateRequest
+	{
+	}typedef GetRoomStateRequest;
+
+	struct LeaveRoomRequest
+	{
+	}typedef LeaveRoomRequest;
 };
 
