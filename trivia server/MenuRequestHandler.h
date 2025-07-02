@@ -31,6 +31,8 @@ public:
 	Structs::RequestResult getHighScore(Structs::RequestInfo& reqInfo) const;
 	Structs::RequestResult joinRoom(Structs::RequestInfo& reqInfo) const;
 	Structs::RequestResult createRoom(Structs::RequestInfo& reqInfo) const;
+	Structs::RequestResult printUsers(Structs::RequestInfo& reqInfo) const;
+
 	Structs::RequestResult handleErrorRequest(Structs::RequestInfo& reqInfo) const;
 
 	LoggedUser getUser() const;

@@ -90,12 +90,12 @@ void Communicator::stop()
 
 std::optional<SOCKET> Communicator::getUserSocket(const std::string& username) const
 {
-	std::lock_guard<std::mutex> lock(_clientsMutex);
-	auto it = _userToSocket.find(username);
-	if (it != _userToSocket.end())
-	{
-		return it->second;
-	}
+    std::lock_guard<std::mutex> lock(_clientsMutex);
+    auto it = _userToSocket.find(username);
+    if (it != _userToSocket.end())
+    {
+        return it->second;
+    }
     return std::nullopt;
 }
 
@@ -134,17 +134,10 @@ void Communicator::handleNewClient(SOCKET clientSocket)
             info.receivalTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
             Structs::RequestResult result = handler->handleRequest(info);
+            
             if (result.newHandler != nullptr)
             {
-                auto* menuHandler = dynamic_cast<const MenuRequestHandler*>(handler.get());
-                if (menuHandler)
-                {
-                    loggedUsername = menuHandler->getUser().getUserName();
-                    loggedIn = true;
-
-                    std::lock_guard<std::mutex> lock(_clientsMutex);
-                    _userToSocket[loggedUsername] = clientSocket;
-                }
+                handler.reset(result.newHandler);
             }
 
             send(clientSocket, reinterpret_cast<char*>(result.response.data()), result.response.size(), 0);

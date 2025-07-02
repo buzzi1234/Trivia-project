@@ -98,3 +98,11 @@ void LoginManager::logout(std::string username)
     }
 
 }
+
+void LoginManager::printUsers() const
+{
+    for (auto it : this->m_loggedUsers)
+    {
+        std::cout << it->getUserName() << std::endl;
+    }
+}

@@ -154,14 +154,18 @@ public:
 
 	struct StartGameRequest
 	{
+		
 	}typedef StartGameRequest;
 
 	struct GetRoomStateRequest
 	{
+
 	}typedef GetRoomStateRequest;
 
 	struct LeaveRoomRequest
 	{
+
 	}typedef LeaveRoomRequest;
+
 };
 

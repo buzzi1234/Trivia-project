@@ -13,7 +13,7 @@ bool MenuRequestHandler::isRequestRelevant(Structs::RequestInfo& reqInfo) const
     if (reqInfo.id == LOGOUT || reqInfo.id == GET_PERSONAL_STATS ||
         reqInfo.id == GET_HIGH_SCORE || reqInfo.id == JOIN_ROOM ||
         reqInfo.id == GET_PLAYERS_IN_ROOM || reqInfo.id == CREATE_ROOM ||
-        reqInfo.id == GET_ROOMS)
+        reqInfo.id == GET_ROOMS || reqInfo.id == PRINT_USERS)
     {
         return true;
     }
@@ -46,6 +46,8 @@ Structs::RequestResult MenuRequestHandler::handleRequest(Structs::RequestInfo& r
             break;
         case GET_ROOMS:
             return getRooms(reqInfo);
+        case PRINT_USERS:
+            return printUsers(reqInfo);
 
         }
         
@@ -72,7 +74,7 @@ Structs::RequestResult MenuRequestHandler::signout(Structs::RequestInfo& reqInfo
     }
 
     rr.response = j.serializeResponse(lr);
-    rr.newHandler = this;
+    rr.newHandler = new LoginRequestHandler(m_handlerFactory);
 
     return rr;
 }
@@ -184,6 +186,8 @@ Structs::RequestResult MenuRequestHandler::joinRoom(Structs::RequestInfo& reqInf
     JsonRequestPacketDeserializer d;
 
     req = d.deserializeJoinRoomRequest(reqInfo.buffer);
+    std::optional<Room*> room = m_handlerFactory.getRoomManager().getRoom(req.roomId);
+
     if (m_handlerFactory.getRoomManager().getRoom(req.roomId) == std::nullopt 
         || m_handlerFactory.getRoomManager().getRoom(req.roomId).value()->getRoomData().status 
         == ROOM_IS_NOT_ACTIVE)
@@ -214,6 +218,7 @@ Structs::RequestResult MenuRequestHandler::createRoom(Structs::RequestInfo& reqI
     JsonRequestPacketDeserializer d;
 
     res = d.deserializeCreateRoomRequest(reqInfo.buffer);
+
     if (res.maxUsers > 0 && res.questionCount > 0 && res.roomName != "")
     {
 		Structs::RoomData roomData;
@@ -225,7 +230,7 @@ Structs::RequestResult MenuRequestHandler::createRoom(Structs::RequestInfo& reqI
         rd.timePerQuestion = res.answerTimeout;
         rd.id = rand() % 101;
         rd.name = res.roomName;
-        rd.status = ROOM_IS_ACTIVE;
+        rd.status = ROOM_IS_NOT_ACTIVE;
 
         std::vector<Structs::RoomData> rooms = this->m_handlerFactory.getRoomManager().getRooms();
         bool flag = true;
@@ -239,12 +244,14 @@ Structs::RequestResult MenuRequestHandler::createRoom(Structs::RequestInfo& reqI
             if (it.name == rd.name)
             {
                 req.status = FAIL_CREATE_ROOM;
+                rr.newHandler = this;
                 flag = false;
             }
         }
         if (flag)
         {
-            this->m_handlerFactory.getRoomManager().createRoom(this->m_user, rd);
+            Room* room = this->m_handlerFactory.getRoomManager().createRoom(this->m_user, rd);
+            rr.newHandler = new RoomAdminRequestHandler(m_user, *room, m_handlerFactory, m_communicator);
         }
     }
     else
@@ -258,6 +265,17 @@ Structs::RequestResult MenuRequestHandler::createRoom(Structs::RequestInfo& reqI
 
     return rr;
 
+}
+
+Structs::RequestResult MenuRequestHandler::printUsers(Structs::RequestInfo& reqInfo) const
+{
+    this->m_handlerFactory.getLoginManager().printUsers();
+    Structs::RequestResult rr;
+
+    rr.newHandler = this;
+    rr.response = reqInfo.buffer;
+
+    return rr;
 }
 
 Structs::RequestResult MenuRequestHandler::handleErrorRequest(Structs::RequestInfo& reqInfo) const

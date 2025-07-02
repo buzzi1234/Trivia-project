@@ -1,0 +1,53 @@
+﻿<Window x:Class="Client_Server_Trivia.RoomAdminWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Client_Server_Trivia"
+        Title="Trivia Game - Room Lobby (Admin)"
+        Height="900" Width="800"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="Transparent"
+        AllowsTransparency="True"
+        WindowStyle="None">
+        <Window.Resources>
+            <LinearGradientBrush x:Key="BackgroundGradient" StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#ff9a9e" Offset="0"/>
+                <GradientStop Color="#fecfef" Offset="1"/>
+            </LinearGradientBrush>
+            <LinearGradientBrush x:Key="CardGradient" StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#FFFFFF" Offset="0"/>
+                <GradientStop Color="#F8F9FA" Offset="1"/>
+            </LinearGradientBrush>
+        </Window.Resources>
+        <Grid Background="{StaticResource BackgroundGradient}" Margin="0,0,0,10">
+            <Grid.RenderTransform>
+                <TranslateTransform/>
+            </Grid.RenderTransform>
+
+            <Border Background="{StaticResource CardGradient}" CornerRadius="25"
+                Width="750" Height="790" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Border.Effect>
+                    <DropShadowEffect Color="Black" BlurRadius="40" ShadowDepth="15" Opacity="0.3"/>
+                </Border.Effect>
+
+                <Grid Margin="40">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="ROOM LOBBY - ADMIN" FontSize="36" FontWeight="Bold" Foreground="#2D3748" HorizontalAlignment="Center" Margin="0,0,0,30"/>
+
+                    <Border Grid.Row="1" BorderBrush="#E0E0E0" BorderThickness="2" CornerRadius="10" Padding="20" Background="White">
+                        <TextBlock Text="[ Room info and players list placeholder ]" FontSize="16" Foreground="#4A5568" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0" >
+                    <Button Content="Close Room" Background="Red" Foreground="White" Width="150" Height="45" FontWeight="Bold" Cursor="Hand" Margin="10,0" Click="CloseRoomButton_Click"/>
+                    <Button Content="Start Game" Background="Green" Foreground="White" Width="150" Height="45" FontWeight="Bold" Cursor="Hand" Margin="10,0" Click="StartGameButton_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Window>

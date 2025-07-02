@@ -13,6 +13,7 @@ public:
 	int signup(std::string username, std::string password, std::string email);
 	int login(std::string username, std::string password);
 	void logout(std::string username);
+	void printUsers() const;
 
 private:
 	IDatabase* m_database;

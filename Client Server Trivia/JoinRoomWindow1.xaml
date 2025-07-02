@@ -253,6 +253,17 @@
                 <ScrollViewer Grid.Row="2" Style="{StaticResource ModernScrollViewer}" Margin="0,0,0,20">
                     <StackPanel Name="RoomsStackPanel">
 
+                        <TextBlock x:Name="room1" Text="" FontSize="32" FontWeight="Bold" Foreground="Black"  Width="18"/>
+                        <TextBlock x:Name="room2" Text="" FontSize="32" FontWeight="Bold" Foreground="Black"  Width="18"/>
+                        <TextBlock x:Name="room3" Text="" FontSize="32" FontWeight="Bold" Foreground="Black"  Width="18"/>
+                        <TextBlock x:Name="room4" Text="" FontSize="32" FontWeight="Bold" Foreground="Black"  Width="18"/>
+                        <TextBlock x:Name="room5" Text="" FontSize="32" FontWeight="Bold" Foreground="Black"  Width="18"/>
+                        <TextBlock x:Name="room6" Text="" FontSize="32" FontWeight="Bold" Foreground="Black"  Width="18"/>
+                        <TextBlock x:Name="room7" Text="" FontSize="32" FontWeight="Bold" Foreground="Black"  Width="18"/>
+                        <TextBlock x:Name="room8" Text="" FontSize="32" FontWeight="Bold" Foreground="Black"  Width="18"/>
+                        <TextBlock x:Name="room9" Text="" FontSize="32" FontWeight="Bold" Foreground="Black"  Width="18"/>
+                        <TextBlock x:Name="room10" Text="" FontSize="32" FontWeight="Bold" Foreground="Black"  Width="18"/>
+
                     </StackPanel>
                 </ScrollViewer>
 

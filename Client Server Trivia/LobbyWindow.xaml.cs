@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -34,6 +35,27 @@ namespace Client_Server_Trivia
             create.Show();
             this.Hide();
             this.Close();
+        }
+        private void PrintUserButton_Click(object sender, RoutedEventArgs e)
+        {
+            TcpClient client = (TcpClient)(Application.Current.Properties["client"]);
+            NetworkStream stream = (NetworkStream)(Application.Current.Properties["stream"]);
+
+           
+
+            byte[] data = MessageBuilder.buildMessage(31, "{}");
+            stream.Write(data, 0, data.Length);
+
+            byte[] buffer = new byte[1024];
+            int bytesRead = stream.Read(buffer, 0, buffer.Length);
+
+            string res = Encoding.UTF8.GetString(buffer, 5, bytesRead - 5);
+            int status = MessageBuilder.GetStatus(res);
+
+            if (status == 31)
+            {
+                MessageBox.Show("good");
+            }
         }
         private void JoinARoomButton_Click(object sender, RoutedEventArgs e)
         {

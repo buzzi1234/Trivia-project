@@ -44,7 +44,7 @@ Structs::RequestResult RoomMemberRequestHandler::leaveRoom() const
 Structs::RequestResult RoomMemberRequestHandler::getRoomState() const
 {
 	Structs::RoomData rd = m_room.getRoomData();
-	Structs::GetRoomStateResponse resp = { 1, m_room.getAllUsers(), rd.numOfQuestionsInGame, 0, rd.timePerQuestion, rd.maxPlayers };
+	Structs::GetRoomStateResponse resp = { 1, m_room.getAllUsers(), rd.numOfQuestionsInGame, 0, rd.timePerQuestion,};
 	std::vector<unsigned char> msg = JsonResponsePacketSerializer().serializeResponse(resp);
 
 	return { msg, nullptr };

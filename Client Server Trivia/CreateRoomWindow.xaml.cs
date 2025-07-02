@@ -77,9 +77,9 @@ namespace Client_Server_Trivia
             if (status == 17)
             {
                 MessageBox.Show($"Room created successfully for {roomName}!\n\n[TODO: Send to server for registration]");
-                //var inRoom = new InRoomLobbyWindow();
-                //inRoom.Show();
-                //this.Hide();
+                var inRoom = new RoomAdminWindow();
+                inRoom.Show();
+                this.Hide();
             }
             else
             {

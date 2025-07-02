@@ -194,6 +194,8 @@ Style="{StaticResource CloseButtonStyle}" Content="✕" HorizontalAlignment="Rig
                     <Button Name="CreateARoom" Content=" Create A Room" Style="{StaticResource ModernButton}" Height="55" Margin="0,0,0,20" Click="CreateARoomButton_Click"/>
 
                     <Button Name="JoinARoom" Content=" Join A Room" Style="{StaticResource ModernButton}" Height="55" Margin="0,0,0,20" Click="JoinARoomButton_Click"/>
+                    
+                    <Button Name="PrintUsers" Content=" Print User" Style="{StaticResource ModernButton}" Height="55" Margin="0,0,0,20" Click="PrintUserButton_Click"/>
 
                     <Button Name="Statistics" Content=" View Statistics" Style="{StaticResource ModernButton}" Height="55" Margin="0,0,0,30" Click="StatisticsButton_Click"/>
 

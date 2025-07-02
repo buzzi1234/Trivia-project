@@ -26,8 +26,54 @@ namespace Client_Server_Trivia
         public JoinRoomWindow1()
         {
             InitializeComponent();
+            Loaded += PersonalStatisticsWindow_Loaded;
         }
 
+        private async void PersonalStatisticsWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            TcpClient client = (TcpClient)(Application.Current.Properties["client"]);
+            NetworkStream stream = (NetworkStream)(Application.Current.Properties["stream"]);
+
+            byte[] data = MessageBuilder.buildMessage(11, "{}");
+            await stream.WriteAsync(data, 0, data.Length); // ✅ Non-blocking
+
+            byte[] buffer = new byte[1024];
+            int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length); // ✅ Non-blocking
+
+            string res = Encoding.UTF8.GetString(buffer, 5, bytesRead - 5);
+            int status = MessageBuilder.GetStatus(res);
+
+            if (status == 11)
+            {
+                string room = "room";
+                var jsonDoc = JsonDocument.Parse(res);
+                for (int i = 1; i < 11; i++)
+                {
+                    try
+                    {
+                        var roomValue = JsonDocument.Parse(jsonDoc.RootElement.GetProperty(room + i.ToString()).ToString());
+                        switch (i)
+                        {
+                            case 1: room1.Text = roomValue.RootElement.GetProperty("name").ToString(); break;
+                            case 2: room2.Text = roomValue.RootElement.GetProperty("name").ToString(); break;
+                            case 3: room3.Text = roomValue.RootElement.GetProperty("name").ToString(); break;
+                            case 4: room4.Text = roomValue.RootElement.GetProperty("name").ToString(); break;
+                            case 5: room5.Text = roomValue.RootElement.GetProperty("name").ToString(); break;
+                            case 6: room6.Text = roomValue.RootElement.GetProperty("name").ToString(); break;
+                            case 7: room7.Text = roomValue.RootElement.GetProperty("name").ToString(); break;
+                            case 8: room8.Text = roomValue.RootElement.GetProperty("name").ToString(); break;
+                            case 9: room9.Text = roomValue.RootElement.GetProperty("name").ToString(); break;
+                            case 10: room10.Text = roomValue.RootElement.GetProperty("name").ToString(); break;
+                        }
+                        
+                    }
+
+                    catch { 
+                        
+                    }
+                }
+            }
+        }
         private void JoinRoom_Click(object sender, RoutedEventArgs e)
         {
             string roomName = RoomNameTextBox.Text.Trim();
@@ -51,6 +97,9 @@ namespace Client_Server_Trivia
             if (status == 15)
             {
                 MessageBox.Show($"You had joined the Room {roomName}");
+                var inRoom = new PlayerLobbyWindow();
+                inRoom.Show();
+                this.Close();
             }
             
 
@@ -83,12 +132,20 @@ namespace Client_Server_Trivia
             int status = MessageBuilder.GetStatus(res);
             if (status == 11)
             {
-                int i = 1;
+
+                string room = "room";
                 var jsonDoc = JsonDocument.Parse(res);
-                var jsonRoomData = JsonDocument.Parse(jsonDoc.RootElement.GetProperty("room1").GetString());
-                return jsonRoomData.RootElement.GetProperty("id").GetInt32();
+                for (int i = 1; i < 11; i++)
+                {
+
+                    var roomValue = JsonDocument.Parse(jsonDoc.RootElement.GetProperty(room + i.ToString()).ToString());
+                    if(roomValue.RootElement.GetProperty("name").ToString() == roomName)
+                    {
+                        return roomValue.RootElement.GetProperty("id").GetInt32();
+                    }    
+                }
             }
-            return 1;
+            return -1;
         }
         
     }
