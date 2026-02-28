@@ -10,4 +10,4 @@ this project is mainly built in CPP for the server, and C# for the Client\GUI.
 I and Yosef were the writters for this all project 
 
 ## Project status
-This is project was almost done!
+This is project was almost done! Enjoy! << ; >>
